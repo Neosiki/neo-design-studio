@@ -1,0 +1,33 @@
+# 줄바꿈 정규화
+#
+# 배경: Windows에서 core.autocrlf 없이 작업하면 저장소 전체가 CRLF로 다시 쓰여
+# 내용이 하나도 안 바뀐 파일 수백 개가 "수정됨"으로 잡힌다. 이 파일은 저장소에
+# 들어가는 텍스트를 항상 LF로 고정해 그 상황을 원천 차단한다.
+
+* text=auto eol=lf
+
+# 셸 스크립트는 어떤 OS에서 체크아웃하든 LF여야 한다
+*.sh text eol=lf
+*.mjs text eol=lf
+*.js text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+
+# 바이너리는 건드리지 않는다
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.mp3 binary
+*.mp4 binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.pptx binary
+*.pdf binary

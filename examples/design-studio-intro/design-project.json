@@ -1,0 +1,259 @@
+{
+  "schemaVersion": "1.0",
+  "id": "design-studio-intro",
+  "name": "Design Studio 소개",
+  "createdAt": "2026-08-16T00:00:00.000Z",
+  "updatedAt": "2026-08-18T02:53:19.416Z",
+  "brief": {
+    "purpose": "Design Studio가 하나의 매니페스트에서 웹·발표자료·영상을 함께 만든다는 것을 보여준다",
+    "audience": "이 스킬을 처음 쓰는 제작자와 팀 리드",
+    "language": "ko",
+    "aspectRatio": "16:9",
+    "tone": "차분하고 사실 위주",
+    "deliverables": [
+      "html",
+      "deck",
+      "video"
+    ],
+    "constraints": [
+      "외부 이미지 없이 타이포그래피와 색만으로 성립할 것",
+      "모든 수치는 저장소 안의 문서에서 확인 가능할 것"
+    ]
+  },
+  "brand": {
+    "name": "Design Studio",
+    "assetProtocol": "placeholder",
+    "tokens": {
+      "color": {
+        "bg": "#0b0e14",
+        "fg": "#e8eef7",
+        "muted": "#9aa7b8",
+        "surface": "#141922",
+        "accent": "#6cb6ff",
+        "accentFg": "#08111d"
+      },
+      "typography": {
+        "display": {
+          "family": "Pretendard",
+          "weights": [
+            600,
+            800
+          ],
+          "fallback": [
+            "Noto Sans KR",
+            "system-ui",
+            "sans-serif"
+          ]
+        },
+        "body": {
+          "family": "Pretendard",
+          "weights": [
+            400,
+            500
+          ],
+          "fallback": [
+            "Noto Sans KR",
+            "system-ui",
+            "sans-serif"
+          ]
+        },
+        "mono": {
+          "family": "JetBrains Mono",
+          "weights": [
+            400,
+            700
+          ],
+          "fallback": [
+            "ui-monospace",
+            "SFMono-Regular",
+            "monospace"
+          ]
+        },
+        "scale": [
+          14,
+          16,
+          20,
+          28,
+          40,
+          64,
+          96
+        ]
+      },
+      "spacing": {
+        "unit": 8
+      },
+      "radius": {
+        "sm": 6,
+        "md": 12,
+        "lg": 24
+      },
+      "motion": {
+        "level": "subtle",
+        "durationMs": {
+          "fast": 160,
+          "base": 280,
+          "slow": 520
+        },
+        "easing": {
+          "base": "cubic-bezier(0.22, 1, 0.36, 1)"
+        }
+      }
+    }
+  },
+  "assets": [],
+  "references": [
+    {
+      "id": "ref-roadmap",
+      "path": "refs/roadmap-excerpt.md",
+      "why": "이 예제가 구현해야 할 P0 범위와 완료 조건을 정의한 문서",
+      "capturedAt": "2026-08-16T00:00:00.000Z",
+      "locked": true
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-roadmap",
+      "title": "Design Studio 벤치마크 및 고도화 로드맵",
+      "path": "refs/roadmap-excerpt.md",
+      "publisher": "Neosiki/design-studio",
+      "accessedAt": "2026-08-16T00:00:00.000Z",
+      "quotes": [
+        {
+          "text": "조사 범위: GitHub 공개 저장소 11개와 현재 디자인 스튜디오 코드·문서",
+          "locator": "머리말"
+        },
+        {
+          "text": "하나의 브랜드, 자료, 스토리로 웹, 발표자료, 인포그래픽, 제품 영상을 일관되게 제작하고 검증하는 에이전트 기반 디자인 운영체제",
+          "locator": "1장 요약"
+        }
+      ]
+    }
+  ],
+  "productFacts": [
+    {
+      "claim": "이 예제의 CLI는 외부 npm 패키지 없이 init·plan·build·check·render·resume을 수행한다",
+      "verifiedBy": [
+        "file://scripts/design/cli.mjs"
+      ],
+      "verifiedAt": "2026-08-16T00:00:00.000Z",
+      "confidence": "confirmed"
+    }
+  ],
+  "style": {
+    "id": "quiet-technical",
+    "name": "Quiet Technical",
+    "supports": [
+      "html",
+      "deck",
+      "video"
+    ],
+    "rationale": "제품 자체가 검수 도구라 화려한 표현보다 정보 밀도와 대비 안정성이 신뢰를 만든다. 어두운 배경에 한 가지 강조색만 쓰는 방향을 골랐다.",
+    "candidates": [
+      {
+        "id": "a",
+        "label": "A · 밝은 에디토리얼",
+        "preview": "refs/direction-a.html"
+      },
+      {
+        "id": "b",
+        "label": "B · Quiet Technical",
+        "preview": "refs/direction-b.html",
+        "chosen": true
+      },
+      {
+        "id": "c",
+        "label": "C · 볼드 컬러블록",
+        "preview": "refs/direction-c.html"
+      }
+    ],
+    "lockedAt": "2026-08-16T00:00:00.000Z"
+  },
+  "approvals": {
+    "facts": {
+      "state": "approved",
+      "at": "2026-08-16T00:00:00.000Z",
+      "note": "예제 안의 단언은 모두 저장소 파일로 확인 가능"
+    },
+    "assets": {
+      "state": "waived",
+      "at": "2026-08-16T00:00:00.000Z",
+      "note": "외부 자산을 쓰지 않는 예제라 브랜드 자산 협의를 면제한다"
+    },
+    "direction": {
+      "state": "approved",
+      "at": "2026-08-16T00:00:00.000Z",
+      "note": "세 방향 중 B(Quiet Technical) 선택",
+      "evidence": [
+        "refs/direction-a.html",
+        "refs/direction-b.html",
+        "refs/direction-c.html"
+      ]
+    },
+    "outline": {
+      "state": "approved",
+      "at": "2026-08-16T00:00:00.000Z",
+      "note": "웹 3섹션 · 덱 5장 · 영상 4장면 구성 확정"
+    },
+    "draft": {
+      "state": "pending"
+    }
+  },
+  "artifacts": [
+    {
+      "id": "site",
+      "type": "html",
+      "title": "Design Studio 소개 페이지",
+      "ir": "ir/site.json",
+      "status": "planned",
+      "outputs": []
+    },
+    {
+      "id": "deck",
+      "type": "deck",
+      "title": "Design Studio 소개 덱",
+      "ir": "ir/deck.json",
+      "status": "planned",
+      "outputs": []
+    },
+    {
+      "id": "teaser",
+      "type": "video",
+      "title": "Design Studio 12초 티저",
+      "ir": "ir/teaser.json",
+      "status": "planned",
+      "outputs": []
+    }
+  ],
+  "qa": {
+    "lastRun": "2026-08-18T02:53:19.389Z",
+    "status": "pass",
+    "errors": 0,
+    "warnings": 0,
+    "reportPath": "qa-report.html"
+  },
+  "cache": {
+    "inputs": {}
+  },
+  "history": [
+    {
+      "at": "2026-08-17T08:48:26.308Z",
+      "command": "check",
+      "result": "ok"
+    },
+    {
+      "at": "2026-08-17T08:49:16.463Z",
+      "command": "check",
+      "result": "ok"
+    },
+    {
+      "at": "2026-08-17T21:54:01.937Z",
+      "command": "check",
+      "result": "ok"
+    },
+    {
+      "at": "2026-08-18T02:53:19.416Z",
+      "command": "check",
+      "result": "ok"
+    }
+  ]
+}

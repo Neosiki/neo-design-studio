@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "prompt": "SaaS 제품 로그인 페이지를 만들고 싶은데, 스타일 방향 3개를 비교해서 보여줘",
+    "expected": "clarifying questions로 design context/brand를 묻는다; variation 3개를 design_canvas로 산출한다; 보라색 그라디언트/emoji/Inter 같은 AI slop을 쓰지 않는다; variation마다 어떤 축에서 갈리는지 구체적인 근거를 밝힌다",
+    "tests": "workflow 질문하기 + variations 로직 + 반 AI slop 체크리스트 + design_canvas 사용"
+  },
+  {
+    "id": 2,
+    "prompt": "AI 도구 창업 프로젝트를 소개하는 10페이지 제품 pitch deck 하나 만들어줘",
+    "expected": "deck_stage.js로 시작한다; 디자인 시스템(색상/서체/layout 리듬)을 먼저 말로 vocalize하고 확인을 받는다; Section divider/content/data/quote 등 여러 layout을 번갈아 쓴다; 글자 크기 ≥24px; 1-indexed labels",
+    "tests": "Junior Designer가 먼저 보고하고 나서 작업 + deck_stage 사용 + 시각 리듬 + scale 규범"
+  },
+  {
+    "id": 3,
+    "prompt": "신경망이 어떻게 동작하는지 설명하는 30초 HTML 애니메이션 하나 만들어줘",
+    "expected": "animations.jsx의 Stage+Sprite를 쓴다; 타임라인을 먼저 쓰고 컴포넌트를 쓴다; 등장은 easeOut, 퇴장은 easeIn; 애니메이션을 쌓지 말고 phase로 나눠 이야기한다; 글자는 ≥3초 머문다",
+    "tests": "animations 워크플로 + easing 정확도 + 리듬 설계 + 길이 제어"
+  },
+  {
+    "id": 4,
+    "prompt": "Habit Tracker App 프로토타입 하나 만들어줘",
+    "expected": "사용자에게 overview 나열인지 flow demo인지 묻는다(기본은 overview); assets/ios_frame.jsx를 쓰고 Dynamic Island를 직접 그리지 않는다; Tracker는 고밀도형이라 화면마다 정보 밀도 요소가 ≥ 3개 있어야 한다(습관 완료율, 연속 일수, 추세 곡선, 성취 badge 등. 장식은 제외); 최소 5-7화면을 나란히 놓는다(홈/습관 추가/상세/통계/설정)",
+    "tests": "overview/flow 형태 라우팅 + ios_frame 하드 바인딩 + 정보 밀도 분류(고밀도형) + 여러 화면 나란히"
+  },
+  {
+    "id": 5,
+    "prompt": "독서 노트 App 프로토타입 하나 만들어줘",
+    "expected": "overview 나열을 기본으로; ios_frame.jsx; 독서 노트는 콘텐츠 전시형에 가까워서 정보 밀도 요구가 Tracker만큼 극단적이지는 않지만, 노트 목록 화면에는 여전히 ≥ 3층의 정보가 필요하다(책, 인용, 태그, 진행률); 최소 4-6화면(홈 책장/노트 상세/하이라이트/검색/노트북 관리); 서체는 serif display 우선",
+    "tests": "overview 기본값 + ios_frame + 정보 계층 + 콘텐츠 중심의 시각 리듬"
+  },
+  {
+    "id": 6,
+    "prompt": "러닝 기록 App 프로토타입 하나 만들어줘",
+    "expected": "overview 나열; ios_frame.jsx; 러닝 App은 고밀도형이다(지도, 페이스 곡선, 심박 구간, 1km 구간별 데이터). 화면마다 제품 차별화 정보가 ≥ 3개; 최소 5화면(오늘 총괄/러닝 중 실시간 데이터/경로 지도/기록 히스토리/월간 통계); AI slop과 겹치지 않게 한다(보라색 그라디언트 금지, 장식 icon을 쌓지 않는다. 단 데이터 시각화 icon은 남겨도 된다)",
+    "tests": "overview + ios_frame + 고밀도형 데이터 시각화 + 지도/차트 혼합 배치 + slop 경계 조건"
+  }
+]

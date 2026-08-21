@@ -1,0 +1,604 @@
+{
+  "schemaVersion": "1.0",
+  "id": "board",
+  "type": "video",
+  "title": "규칙을 검사로",
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "safeArea": {
+      "top": 80,
+      "right": 120,
+      "bottom": 160,
+      "left": 120
+    }
+  },
+  "scenes": [
+    {
+      "id": "s01",
+      "sequence": 0,
+      "startMs": 0,
+      "durationMs": 9000,
+      "narrativeRole": "hook",
+      "subtitle": "설계 문서를 아무리 잘 써도 사람은 그걸 다 읽지 않습니다. 그래서 우리는 규칙을 문서가 아니라 검사로 옮기기로 했습니다.",
+      "shot": {
+        "camera": "static",
+        "transitionIn": "cut"
+      },
+      "layers": [
+        {
+          "id": "e1",
+          "region": {
+            "x": 120,
+            "y": 80,
+            "w": 1680,
+            "h": 403
+          },
+          "enterMs": 0,
+          "exitMs": 9000,
+          "block": {
+            "id": "e1-text",
+            "kind": "heading",
+            "text": "설계 문서를 아무리 잘 써도 사람은 그걸 다 읽지 않습니다.",
+            "alt": "설계 문서를 아무리 잘 써도 사람은 그걸 다 읽지 않습니다.",
+            "style": {
+              "fontRole": "display",
+              "fontSize": 96,
+              "color": "accent",
+              "lineHeight": 1.4,
+              "align": "left"
+            }
+          },
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": {
+              "strokeWidth": 5
+            },
+            "art": {
+              "text": {
+                "content": "설계 문서를 아무리 잘 써도 사람은 그걸 다 읽지 않습니다.",
+                "fontRole": "display",
+                "fontSize": 96,
+                "lineHeight": 1.4,
+                "align": "left"
+              }
+            },
+            "phases": [
+              {
+                "id": "ink",
+                "kind": "ink",
+                "startMs": 0,
+                "durationMs": 2600
+              }
+            ],
+            "hand": {
+              "assetId": "hand",
+              "show": true
+            }
+          }
+        },
+        {
+          "id": "e2",
+          "region": {
+            "x": 120,
+            "y": 517,
+            "w": 1680,
+            "h": 403
+          },
+          "enterMs": 4400,
+          "exitMs": 9000,
+          "block": {
+            "id": "e2-text",
+            "kind": "body",
+            "text": "그래서 우리는 규칙을 문서가 아니라 검사로 옮기기로 했습니다.",
+            "alt": "그래서 우리는 규칙을 문서가 아니라 검사로 옮기기로 했습니다.",
+            "style": {
+              "fontRole": "body",
+              "fontSize": 96,
+              "color": "fg",
+              "lineHeight": 1.4,
+              "align": "left"
+            }
+          },
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": {
+              "strokeWidth": 5
+            },
+            "art": {
+              "text": {
+                "content": "그래서 우리는 규칙을 문서가 아니라 검사로 옮기기로 했습니다.",
+                "fontRole": "body",
+                "fontSize": 96,
+                "lineHeight": 1.4,
+                "align": "left"
+              }
+            },
+            "phases": [
+              {
+                "id": "ink",
+                "kind": "ink",
+                "startMs": 0,
+                "durationMs": 2600
+              }
+            ],
+            "hand": {
+              "assetId": "hand",
+              "show": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "sequence": 1,
+      "startMs": 9000,
+      "durationMs": 17400,
+      "narrativeRole": "context",
+      "subtitle": "먼저 프로젝트 상태를 파일 하나에 모았습니다. 브랜드 토큰과 자산 출처, 승인 기록이 같은 자리에 남습니다. 그러면 산출물이 셋으로 늘어나도 근거는 하나입니다.",
+      "shot": {
+        "camera": "static",
+        "transitionIn": "dissolve"
+      },
+      "layers": [
+        {
+          "id": "e1",
+          "region": {
+            "x": 120,
+            "y": 80,
+            "w": 1680,
+            "h": 286
+          },
+          "enterMs": 200,
+          "exitMs": 17400,
+          "block": {
+            "id": "e1-text",
+            "kind": "heading",
+            "text": "먼저 프로젝트 상태를 파일 하나에 모았습니다.",
+            "alt": "먼저 프로젝트 상태를 파일 하나에 모았습니다.",
+            "style": {
+              "fontRole": "display",
+              "fontSize": 84,
+              "color": "accent",
+              "lineHeight": 1.4,
+              "align": "left"
+            }
+          },
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": {
+              "strokeWidth": 5
+            },
+            "art": {
+              "text": {
+                "content": "먼저 프로젝트 상태를 파일 하나에 모았습니다.",
+                "fontRole": "display",
+                "fontSize": 84,
+                "lineHeight": 1.4,
+                "align": "left"
+              }
+            },
+            "phases": [
+              {
+                "id": "ink",
+                "kind": "ink",
+                "startMs": 0,
+                "durationMs": 2600
+              }
+            ],
+            "hand": {
+              "assetId": "hand",
+              "show": true
+            }
+          }
+        },
+        {
+          "id": "e2",
+          "region": {
+            "x": 120,
+            "y": 400,
+            "w": 823,
+            "h": 520
+          },
+          "enterMs": 5700,
+          "exitMs": 17400,
+          "block": {
+            "id": "e2-text",
+            "kind": "body",
+            "text": "브랜드 토큰과 자산 출처, 승인 기록이 같은 자리에 남습니다.",
+            "alt": "브랜드 토큰과 자산 출처, 승인 기록이 같은 자리에 남습니다.",
+            "style": {
+              "fontRole": "body",
+              "fontSize": 84,
+              "color": "fg",
+              "lineHeight": 1.4,
+              "align": "left"
+            }
+          },
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": {
+              "strokeWidth": 5
+            },
+            "art": {
+              "text": {
+                "content": "브랜드 토큰과 자산 출처, 승인 기록이 같은 자리에 남습니다.",
+                "fontRole": "body",
+                "fontSize": 84,
+                "lineHeight": 1.4,
+                "align": "left"
+              }
+            },
+            "phases": [
+              {
+                "id": "ink",
+                "kind": "ink",
+                "startMs": 0,
+                "durationMs": 2600
+              }
+            ],
+            "hand": {
+              "assetId": "hand",
+              "show": true
+            }
+          }
+        },
+        {
+          "id": "e3",
+          "region": {
+            "x": 977,
+            "y": 400,
+            "w": 823,
+            "h": 520
+          },
+          "enterMs": 11200,
+          "exitMs": 17400,
+          "block": {
+            "id": "e3-text",
+            "kind": "body",
+            "text": "그러면 산출물이 셋으로 늘어나도 근거는 하나입니다.",
+            "alt": "그러면 산출물이 셋으로 늘어나도 근거는 하나입니다.",
+            "style": {
+              "fontRole": "body",
+              "fontSize": 96,
+              "color": "fg",
+              "lineHeight": 1.4,
+              "align": "left"
+            }
+          },
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": {
+              "strokeWidth": 5
+            },
+            "art": {
+              "text": {
+                "content": "그러면 산출물이 셋으로 늘어나도 근거는 하나입니다.",
+                "fontRole": "body",
+                "fontSize": 96,
+                "lineHeight": 1.4,
+                "align": "left"
+              }
+            },
+            "phases": [
+              {
+                "id": "ink",
+                "kind": "ink",
+                "startMs": 0,
+                "durationMs": 2600
+              }
+            ],
+            "hand": {
+              "assetId": "hand",
+              "show": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "sequence": 2,
+      "startMs": 26400,
+      "durationMs": 12100,
+      "narrativeRole": "proof",
+      "subtitle": "하지만 여기서 한 가지 문제가 남습니다. 검사에 걸리지 않는 실수는 여전히 사람이 잡아야 한다는 것입니다.",
+      "shot": {
+        "camera": "static",
+        "transitionIn": "dissolve"
+      },
+      "layers": [
+        {
+          "id": "e1",
+          "region": {
+            "x": 120,
+            "y": 80,
+            "w": 1680,
+            "h": 403
+          },
+          "enterMs": 200,
+          "exitMs": 12100,
+          "block": {
+            "id": "e1-text",
+            "kind": "heading",
+            "text": "하지만 여기서 한 가지 문제가 남습니다.",
+            "alt": "하지만 여기서 한 가지 문제가 남습니다.",
+            "style": {
+              "fontRole": "display",
+              "fontSize": 96,
+              "color": "accent",
+              "lineHeight": 1.4,
+              "align": "left"
+            }
+          },
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": {
+              "strokeWidth": 5
+            },
+            "art": {
+              "text": {
+                "content": "하지만 여기서 한 가지 문제가 남습니다.",
+                "fontRole": "display",
+                "fontSize": 96,
+                "lineHeight": 1.4,
+                "align": "left"
+              }
+            },
+            "phases": [
+              {
+                "id": "ink",
+                "kind": "ink",
+                "startMs": 0,
+                "durationMs": 2600
+              }
+            ],
+            "hand": {
+              "assetId": "hand",
+              "show": true
+            }
+          }
+        },
+        {
+          "id": "e2",
+          "region": {
+            "x": 120,
+            "y": 517,
+            "w": 1680,
+            "h": 403
+          },
+          "enterMs": 5800,
+          "exitMs": 12100,
+          "block": {
+            "id": "e2-text",
+            "kind": "body",
+            "text": "검사에 걸리지 않는 실수는 여전히 사람이 잡아야 한다는 것입니다.",
+            "alt": "검사에 걸리지 않는 실수는 여전히 사람이 잡아야 한다는 것입니다.",
+            "style": {
+              "fontRole": "body",
+              "fontSize": 96,
+              "color": "fg",
+              "lineHeight": 1.4,
+              "align": "left"
+            }
+          },
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": {
+              "strokeWidth": 5
+            },
+            "art": {
+              "text": {
+                "content": "검사에 걸리지 않는 실수는 여전히 사람이 잡아야 한다는 것입니다.",
+                "fontRole": "body",
+                "fontSize": 96,
+                "lineHeight": 1.4,
+                "align": "left"
+              }
+            },
+            "phases": [
+              {
+                "id": "ink",
+                "kind": "ink",
+                "startMs": 0,
+                "durationMs": 2600
+              }
+            ],
+            "hand": {
+              "assetId": "hand",
+              "show": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s04",
+      "sequence": 3,
+      "startMs": 38500,
+      "durationMs": 17500,
+      "narrativeRole": "cta",
+      "subtitle": "그래서 검사 항목을 늘리는 대신 실패 사례를 픽스처로 남겼습니다. 새 검사를 만들면 그것을 통과하지 못하는 사례부터 씁니다. 이제 규칙은 사라지지 않습니다.",
+      "shot": {
+        "camera": "static",
+        "transitionIn": "dissolve"
+      },
+      "layers": [
+        {
+          "id": "e1",
+          "region": {
+            "x": 120,
+            "y": 80,
+            "w": 1680,
+            "h": 286
+          },
+          "enterMs": 200,
+          "exitMs": 17500,
+          "block": {
+            "id": "e1-text",
+            "kind": "heading",
+            "text": "그래서 검사 항목을 늘리는 대신 실패 사례를 픽스처로 남겼습니다.",
+            "alt": "그래서 검사 항목을 늘리는 대신 실패 사례를 픽스처로 남겼습니다.",
+            "style": {
+              "fontRole": "display",
+              "fontSize": 84,
+              "color": "accent",
+              "lineHeight": 1.4,
+              "align": "left"
+            }
+          },
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": {
+              "strokeWidth": 5
+            },
+            "art": {
+              "text": {
+                "content": "그래서 검사 항목을 늘리는 대신 실패 사례를 픽스처로 남겼습니다.",
+                "fontRole": "display",
+                "fontSize": 84,
+                "lineHeight": 1.4,
+                "align": "left"
+              }
+            },
+            "phases": [
+              {
+                "id": "ink",
+                "kind": "ink",
+                "startMs": 0,
+                "durationMs": 2600
+              }
+            ],
+            "hand": {
+              "assetId": "hand",
+              "show": true
+            }
+          }
+        },
+        {
+          "id": "e2",
+          "region": {
+            "x": 120,
+            "y": 400,
+            "w": 823,
+            "h": 520
+          },
+          "enterMs": 5700,
+          "exitMs": 17500,
+          "block": {
+            "id": "e2-text",
+            "kind": "body",
+            "text": "새 검사를 만들면 그것을 통과하지 못하는 사례부터 씁니다.",
+            "alt": "새 검사를 만들면 그것을 통과하지 못하는 사례부터 씁니다.",
+            "style": {
+              "fontRole": "body",
+              "fontSize": 84,
+              "color": "fg",
+              "lineHeight": 1.4,
+              "align": "left"
+            }
+          },
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": {
+              "strokeWidth": 5
+            },
+            "art": {
+              "text": {
+                "content": "새 검사를 만들면 그것을 통과하지 못하는 사례부터 씁니다.",
+                "fontRole": "body",
+                "fontSize": 84,
+                "lineHeight": 1.4,
+                "align": "left"
+              }
+            },
+            "phases": [
+              {
+                "id": "ink",
+                "kind": "ink",
+                "startMs": 0,
+                "durationMs": 2600
+              }
+            ],
+            "hand": {
+              "assetId": "hand",
+              "show": true
+            }
+          }
+        },
+        {
+          "id": "e3",
+          "region": {
+            "x": 977,
+            "y": 400,
+            "w": 823,
+            "h": 520
+          },
+          "enterMs": 12200,
+          "exitMs": 17500,
+          "block": {
+            "id": "e3-text",
+            "kind": "body",
+            "text": "이제 규칙은 사라지지 않습니다.",
+            "alt": "이제 규칙은 사라지지 않습니다.",
+            "style": {
+              "fontRole": "body",
+              "fontSize": 96,
+              "color": "fg",
+              "lineHeight": 1.4,
+              "align": "left"
+            }
+          },
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": {
+              "strokeWidth": 5
+            },
+            "art": {
+              "text": {
+                "content": "이제 규칙은 사라지지 않습니다.",
+                "fontRole": "body",
+                "fontSize": 96,
+                "lineHeight": 1.4,
+                "align": "left"
+              }
+            },
+            "phases": [
+              {
+                "id": "ink",
+                "kind": "ink",
+                "startMs": 0,
+                "durationMs": 2600
+              }
+            ],
+            "hand": {
+              "assetId": "hand",
+              "show": true
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "audio": {
+    "targetLufs": -16,
+    "silentVariant": true
+  },
+  "captions": {
+    "srt": "narration.srt",
+    "burnIn": false,
+    "language": "ko"
+  }
+}

@@ -1,0 +1,238 @@
+name: design verify
+
+# P0 기반 구조의 회귀를 막는 최소 워크플로.
+# 검수가 실패하면 명령이 성공으로 끝나지 않는다는 계약을 CI에서 강제한다.
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'schemas/**'
+      - 'scripts/design/**'
+      - 'examples/**'
+      - 'skills/**'
+      - 'tests/**'
+      - '.github/workflows/design-verify.yml'
+  pull_request:
+    # GitHub Actions는 YAML 앵커를 지원하지 않아 위 목록을 그대로 반복한다
+    paths:
+      - 'schemas/**'
+      - 'scripts/design/**'
+      - 'examples/**'
+      - 'skills/**'
+      - 'tests/**'
+      - '.github/workflows/design-verify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: ${{ matrix.os }} · node ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Windows·macOS·Linux에서 같은 절차가 도는지 확인한다 (로드맵 7장 완료 조건)
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 스키마 JSON 파싱 확인
+        shell: bash
+        run: |
+          for f in schemas/*.json; do
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" || exit 1
+            echo "ok $f"
+          done
+
+      - name: 회귀 테스트 (의존성 없음)
+        run: node tests/run.mjs
+
+      - name: 예제 프로젝트 스키마 검증
+        working-directory: examples/design-studio-intro
+        run: node ../../scripts/design/cli.mjs validate
+
+      - name: 예제 프로젝트 빌드 · 검수 · 렌더
+        working-directory: examples/design-studio-intro
+        run: |
+          node ../../scripts/design/cli.mjs build
+          node ../../scripts/design/cli.mjs check --strict
+          node ../../scripts/design/cli.mjs render
+          node ../../scripts/design/cli.mjs check --strict
+
+      - name: 실패 픽스처가 실제로 실패하는지 확인 (종료 코드 4)
+        shell: bash
+        working-directory: tests/fixtures/failing-project
+        run: |
+          set +e
+          node ../../../scripts/design/cli.mjs check
+          code=$?
+          set -e
+          if [ "$code" != "4" ]; then
+            echo "::error::검수 실패 픽스처가 종료 코드 4로 끝나지 않았습니다 (실제: $code)"
+            exit 1
+          fi
+          echo "기대대로 종료 코드 4"
+
+      - name: 조판 기준이 렌더러와 검사기에서 같은 값인가
+        run: node tests/ci/typo-parity.mjs
+
+      - name: 유출 검사가 살아 있는가 (예제 깨끗 + 심은 키를 잡음)
+        run: node tests/ci/secret-canary.mjs
+
+      - name: whiteboard 플러그인 왕복 (계획 → 검증 → 렌더)
+        shell: bash
+        working-directory: examples/whiteboard-intro
+        run: |
+          node ../../scripts/design/cli.mjs whiteboard plan narration.srt \
+            --artifact board --title "규칙을 검사로" --target 14 --min 9 --max 20 --hand hand
+          node ../../scripts/design/cli.mjs whiteboard verify
+          node ../../scripts/design/cli.mjs whiteboard render
+          test -f out/board/mix.sh || { echo "::error::믹싱 스크립트가 생성되지 않았습니다"; exit 1; }
+
+      - name: whiteboard 선노출 회귀 (보호 선언을 지우면 막혀야 한다)
+        shell: bash
+        working-directory: tests/fixtures/whiteboard
+        run: |
+          node -e "
+            const fs=require('fs'); const f='ir/board.json';
+            const ir=JSON.parse(fs.readFileSync(f,'utf8'));
+            fs.writeFileSync('ir/board.bak.json', JSON.stringify(ir));
+            delete ir.scenes[0].layers[0].protectedRegions;
+            fs.writeFileSync(f, JSON.stringify(ir, null, 2));
+          "
+          set +e
+          node ../../../scripts/design/cli.mjs whiteboard verify
+          code=$?
+          set -e
+          node -e "require('fs').copyFileSync('ir/board.bak.json','ir/board.json')"
+          rm -f ir/board.bak.json
+          if [ "$code" != "4" ]; then
+            echo "::error::선노출이 종료 코드 4로 막히지 않았습니다 (실제: $code)"
+            exit 1
+          fi
+          echo "기대대로 종료 코드 4"
+
+      - name: Studio 편집기 생성 · 패치 왕복
+        shell: bash
+        working-directory: examples/design-studio-intro
+        run: |
+          node ../../scripts/design/cli.mjs studio
+          test -f out/studio.html || { echo "::error::편집기가 생성되지 않았습니다"; exit 1; }
+          node ../../scripts/design/cli.mjs checkpoint create --label "CI 기준점"
+          node ../../scripts/design/cli.mjs checkpoint list
+          # 스키마를 어기는 패치는 거부되고 원본이 지켜져야 한다
+          node -e "
+            const fs=require('fs');
+            const m=JSON.parse(fs.readFileSync('design-project.json','utf8'));
+            const irs={}; for (const a of m.artifacts) irs[a.id]=JSON.parse(fs.readFileSync(a.ir,'utf8'));
+            irs.deck.slides[0].layout='없는-레이아웃';
+            fs.writeFileSync('bad.json', JSON.stringify({project:m.id, irs}));
+          "
+          set +e
+          node ../../scripts/design/cli.mjs studio --apply bad.json
+          code=$?
+          set -e
+          rm -f bad.json
+          if [ "$code" != "2" ]; then
+            echo "::error::잘못된 패치가 종료 코드 2로 거부되지 않았습니다 (실제: $code)"
+            exit 1
+          fi
+          echo "기대대로 거부됨"
+
+      - name: 스타일 레지스트리가 원본과 같은 판인지
+        shell: bash
+        run: |
+          cp styles/registry.json registry-before.json
+          node scripts/design/cli.mjs styles rebuild
+          node -e "
+            const fs=require('fs');
+            const a=JSON.parse(fs.readFileSync('registry-before.json','utf8'));
+            const b=JSON.parse(fs.readFileSync('styles/registry.json','utf8'));
+            if (a.generatedFrom.sha256 !== b.generatedFrom.sha256) {
+              console.error('::error::design-styles.md를 고치고 styles rebuild를 커밋하지 않았습니다');
+              process.exit(1);
+            }
+            if (a.styles.length !== b.styles.length) {
+              console.error('::error::스타일 수가 다릅니다: '+a.styles.length+' vs '+b.styles.length);
+              process.exit(1);
+            }
+            console.log('레지스트리 최신 · 스타일 '+b.styles.length+'개');
+          "
+          rm -f registry-before.json
+          git checkout styles/registry.json 2>/dev/null || true
+
+      - name: 삼방향 후보의 온도가 겹치지 않는지
+        run: node tests/ci/three-way.mjs
+
+      - name: MCP 서버 왕복 (initialize → tools/list → tools/call)
+        shell: bash
+        run: |
+          printf '%s\n%s\n%s\n' \
+            '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
+            '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
+            '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"design_status","arguments":{"project":"examples/design-studio-intro"}}}' \
+            | node scripts/design/mcp.mjs > mcp-out.jsonl
+          node -e "
+            const fs=require('fs');
+            const lines=fs.readFileSync('mcp-out.jsonl','utf8').trim().split('\n').map(l=>JSON.parse(l));
+            if (lines.length !== 3) { console.error('::error::응답 '+lines.length+'개 (3개 기대)'); process.exit(1); }
+            if (!lines[0].result.serverInfo) { console.error('::error::initialize 실패'); process.exit(1); }
+            if (lines[1].result.tools.length < 10) { console.error('::error::도구가 부족'); process.exit(1); }
+            const payload = JSON.parse(lines[2].result.content[0].text);
+            if (!payload.ok) { console.error('::error::status 실패: '+JSON.stringify(payload.errors)); process.exit(1); }
+            console.log('MCP 도구 '+lines[1].result.tools.length+'개, status ok');
+          "
+          rm -f mcp-out.jsonl
+
+      - name: 검수 보고서 업로드
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-report-${{ matrix.os }}-node${{ matrix.node }}
+          path: |
+            examples/design-studio-intro/qa.json
+            examples/design-studio-intro/qa-report.html
+          if-no-files-found: ignore
+          retention-days: 14
+
+  # 골든 프레임은 브라우저가 필요하다. 렌더 결과가 실행마다 같은지, 그리고 등장 전
+  # 요소의 자리가 정말 비어 있는지를 픽셀로 확인한다. 리눅스 한 조합에서만 돌린다 —
+  # 해시는 브라우저 렌더러에 의존하므로 OS를 늘리면 골든이 갈라진다.
+  golden:
+    name: 골든 프레임 (ubuntu · chromium)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Playwright 설치
+        run: |
+          npm install playwright --no-audit --no-fund
+          # --with-deps는 apt로 시스템 라이브러리를 깐다. ubuntu-latest 이미지에는 이미 들어 있고,
+          # 그 apt 단계가 미러 문제로 26분을 잡아먹은 적이 있다 — 없어도 되는 대기였다.
+          npx playwright install chromium
+
+      - name: 골든 프레임 · 선노출 픽셀 · 편집기 동등성
+        run: node tests/golden.mjs
+
+      - name: 실패 시 렌더 결과 업로드
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-failure
+          path: |
+            tests/fixtures/whiteboard/out/**
+            examples/design-studio-intro/out/**
+          if-no-files-found: ignore
+          retention-days: 7

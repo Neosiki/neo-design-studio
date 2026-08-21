@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "test": "node tests/run.mjs",
+    "design": "node scripts/design/cli.mjs",
+    "mcp": "node scripts/design/mcp.mjs",
+    "serve": "node scripts/design/serve.mjs"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.59.1",
+    "pptxgenjs": "^4.0.1",
+    "sharp": "^0.34.5"
+  },
+  "name": "design-studio"
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0",
+  "id": "badclip",
+  "type": "video",
+  "title": "자막이 너무 빠른 클립",
+  "canvas": { "width": 1920, "height": 1080, "fps": 30 },
+  "scenes": [
+    {
+      "id": "fast",
+      "startMs": 0,
+      "durationMs": 2000,
+      "subtitle": "자막은 초당 아홉 자를 넘어가면 눈이 따라가지 못하고 화면의 그림을 볼 겨를이 사라진다는 것이 자막 규범의 출발점이다",
+      "layers": [
+        {
+          "id": "l1",
+          "region": { "x": 200, "y": 400, "w": 1500, "h": 200 },
+          "enterMs": 0,
+          "block": {
+            "id": "fast-line",
+            "kind": "heading",
+            "text": "빠른 자막",
+            "box": { "x": 200, "y": 400, "w": 1500, "h": 200 },
+            "style": { "fontSize": 72, "color": "fg" }
+          }
+        }
+      ]
+    }
+  ]
+}

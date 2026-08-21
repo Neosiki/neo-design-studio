@@ -1,0 +1,71 @@
+{
+  "_meta": {
+    "description": "개인 자산 인덱스 템플릿 — 이 파일을 복사해서 실제 데이터를 채워 넣는다",
+    "how_to_use": "1. 이 파일을 ~/.claude/memory/personal-asset-index.json 으로 복사한다  2. 실제 정보를 채운다  3. design-philosophy skill이 자동으로 읽는다",
+    "note": "실제 데이터 파일은 skill 디렉터리 안에 두지 않는다. skill과 함께 배포되면서 개인정보가 새는 것을 막기 위해서다"
+  },
+
+  "identity": {
+    "real_name": "본인 실명",
+    "pen_names": ["필명1", "필명2"],
+    "english_name": "English Name",
+    "title": "직함 / 한 줄 소개",
+    "bio_short": "50-100자 짧은 소개",
+    "bio_long": "200-300자 상세 소개",
+    "avatar_url": "프로필 이미지 URL",
+    "source": "데이터 출처 메모"
+  },
+
+  "contact": {
+    "email": "your@email.com",
+    "wechat_personal": "위챗 ID",
+    "source": "데이터 출처 메모"
+  },
+
+  "social_media": {
+    "github": {
+      "url": "https://github.com/yourname",
+      "username": "yourname"
+    },
+    "youtube": {
+      "url": "https://www.youtube.com/@YourChannel",
+      "channel_name": "채널명"
+    },
+    "source": "데이터 출처 메모"
+  },
+
+  "websites": {
+    "main_site": {
+      "url": "https://yoursite.com",
+      "description": "사이트 설명",
+      "local_path": "/path/to/local/project/"
+    }
+  },
+
+  "products": {
+    "product_1": {
+      "name": "제품명",
+      "type": "iOS App / Web App / CLI Tool / 전자책",
+      "achievement": "주요 성과",
+      "icon_path": "/path/to/icon.png",
+      "project_path": "/path/to/project/"
+    }
+  },
+
+  "stats": {
+    "social_followers": "팔로워 수",
+    "product_users": "사용자 수",
+    "source": "데이터 출처 메모"
+  },
+
+  "design_assets": {
+    "article_images": {
+      "base_path": "/path/to/images/",
+      "notable_sets": []
+    }
+  },
+
+  "knowledge_base": {
+    "wechat_articles": "/path/to/knowledge_base/"
+  }
+}

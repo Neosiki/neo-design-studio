@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Neosiki/design-studio/schemas/artifact.schema.json",
+  "title": "디자인 스튜디오 Studio 산출물 IR",
+  "description": "산출물별 중간 표현. 공통 매니페스트(project.schema.json)가 브랜드·출처·승인을 담고, 이 파일은 산출물 고유의 구조만 담는다. HTML·PPTX·MP4는 모두 이 IR에서 생성된다.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "type"],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0" },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+    "type": { "enum": ["html", "deck", "video", "infographic", "image"] },
+    "title": { "type": "string" },
+    "tokenOverrides": {
+      "type": "object",
+      "description": "이 산출물에서만 덮어쓰는 브랜드 토큰. 키는 project tokens와 동일 구조의 부분집합.",
+      "additionalProperties": true
+    },
+    "canvas": { "$ref": "#/$defs/canvas" },
+    "pages": { "type": "array", "items": { "$ref": "#/$defs/page" } },
+    "slides": { "type": "array", "items": { "$ref": "#/$defs/slide" } },
+    "scenes": { "type": "array", "items": { "$ref": "#/$defs/scene" } },
+    "audio": { "$ref": "#/$defs/audio" },
+    "captions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "srt": { "type": "string", "description": "SRT 파일 경로. 영상 IR의 장면 계획 입력으로도 쓰인다." },
+        "burnIn": { "type": "boolean", "default": false },
+        "language": { "type": "string" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "const": "html" } }, "required": ["type"] },
+      "then": { "required": ["pages"] }
+    },
+    {
+      "if": { "properties": { "type": { "const": "deck" } }, "required": ["type"] },
+      "then": { "required": ["slides", "canvas"] }
+    },
+    {
+      "if": { "properties": { "type": { "const": "video" } }, "required": ["type"] },
+      "then": { "required": ["scenes", "canvas"] }
+    },
+    {
+      "if": { "properties": { "type": { "const": "infographic" } }, "required": ["type"] },
+      "then": { "required": ["pages", "canvas"] }
+    }
+  ],
+  "$defs": {
+    "canvas": {
+      "type": "object",
+      "required": ["width", "height"],
+      "additionalProperties": false,
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "fps": { "type": "number", "minimum": 1, "maximum": 120, "default": 30 },
+        "background": { "type": "string" },
+        "safeArea": {
+          "type": "object",
+          "description": "px 단위 안전영역. 지정하면 검수가 텍스트 이탈을 여기 기준으로 판단한다.",
+          "additionalProperties": false,
+          "properties": {
+            "top": { "type": "number", "minimum": 0 },
+            "right": { "type": "number", "minimum": 0 },
+            "bottom": { "type": "number", "minimum": 0 },
+            "left": { "type": "number", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "description": "본문의 주장·수치와 원본 출처의 연결. sourceId는 project.sources[].id를 가리킨다.",
+      "required": ["text", "sourceId"],
+      "additionalProperties": false,
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "sourceId": { "type": "string" },
+        "locator": { "type": "string" },
+        "kind": { "enum": ["number", "quote", "fact", "claim"], "default": "fact" }
+      }
+    },
+    "box": {
+      "type": "object",
+      "description": "캔버스 좌표계 기준 사각 영역(px).",
+      "required": ["x", "y", "w", "h"],
+      "additionalProperties": false,
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "w": { "type": "number", "minimum": 0 },
+        "h": { "type": "number", "minimum": 0 }
+      }
+    },
+    "block": {
+      "type": "object",
+      "description": "슬라이드·페이지·장면을 구성하는 최소 편집 단위. PPTX 네이티브 내보내기의 도형 하나에 대응한다.",
+      "required": ["id", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "kind": {
+          "enum": ["heading", "subheading", "body", "bullets", "quote", "kpi", "image", "chart", "table", "code", "shape", "spacer", "logo", "caption"]
+        },
+        "text": { "type": "string" },
+        "items": { "type": "array", "items": { "type": "string" } },
+        "assetId": { "type": "string", "description": "project.assets[].id 참조" },
+        "alt": { "type": "string" },
+        "box": { "$ref": "#/$defs/box" },
+        "style": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "fontRole": { "enum": ["display", "body", "mono"], "default": "body" },
+            "fontSize": { "type": "number", "minimum": 1 },
+            "weight": { "type": "number", "minimum": 100, "maximum": 1000 },
+            "lineHeight": { "type": "number", "minimum": 0.8 },
+            "letterSpacing": {
+              "type": "number", "minimum": -0.1, "maximum": 0.5,
+              "description": "em 단위 자간. 생략하면 언어·크기별 기본값(references/typography.md 4.5)이 적용된다. 한글·한자에 음수 값을 주면 획이 붙는다."
+            },
+            "color": { "type": "string", "description": "토큰 키(fg, accent 등) 또는 #hex" },
+            "bg": { "type": "string" },
+            "align": { "enum": ["left", "center", "right", "justify"] },
+            "maxLines": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "claims": { "type": "array", "items": { "$ref": "#/$defs/claim" } },
+        "data": { "description": "chart·table의 데이터. 형식은 렌더러가 정한다." }
+      }
+    },
+    "page": {
+      "type": "object",
+      "required": ["id"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "path": { "type": "string", "description": "생성될 HTML 파일 경로" },
+        "title": { "type": "string" },
+        "viewports": {
+          "type": "array",
+          "description": "검수가 확인할 뷰포트. 비어 있으면 1440x900 하나만 확인한다.",
+          "items": { "type": "string", "pattern": "^[0-9]{2,5}x[0-9]{2,5}$" }
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+              "kind": { "enum": ["hero", "feature", "gallery", "content", "cta", "footer", "nav", "custom"] },
+              "layout": { "type": "string" },
+              "blocks": { "type": "array", "items": { "$ref": "#/$defs/block" } },
+              "interactions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["trigger", "effect"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "trigger": { "enum": ["click", "hover", "scroll", "load", "focus"] },
+                    "target": { "type": "string" },
+                    "effect": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "slide": {
+      "type": "object",
+      "required": ["id", "layout"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "layout": {
+          "enum": ["title", "section", "statement", "bullets", "two-column", "image-full", "image-left", "image-right", "kpi", "chart", "table", "quote", "closing", "custom"]
+        },
+        "title": { "type": "string" },
+        "blocks": { "type": "array", "items": { "$ref": "#/$defs/block" } },
+        "notes": { "type": "string", "description": "발표자 노트" },
+        "transition": { "enum": ["none", "fade", "slide", "push"], "default": "none" }
+      }
+    },
+    "scene": {
+      "type": "object",
+      "description": "영상 장면. startMs·durationMs가 타임라인을 결정하고, subtitle이 자막 구간과 장면을 연결한다.",
+      "required": ["id", "startMs", "durationMs"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "sequence": { "type": "integer", "minimum": 0 },
+        "startMs": { "type": "integer", "minimum": 0 },
+        "durationMs": { "type": "integer", "minimum": 1 },
+        "narrativeRole": {
+          "enum": ["hook", "context", "problem", "solution", "demo", "proof", "transition", "cta", "outro"]
+        },
+        "subtitle": { "type": "string", "description": "이 장면에 대응하는 자막 원문" },
+        "shot": {
+          "type": "object",
+          "description": "카메라 언어. references/camera-language.md 어휘를 그대로 쓴다.",
+          "additionalProperties": false,
+          "properties": {
+            "camera": { "enum": ["static", "push-in", "pull-out", "pan", "tilt", "orbit", "handheld"] },
+            "easing": { "type": "string" },
+            "transitionIn": { "enum": ["cut", "fade", "dissolve", "wipe", "whoosh"] }
+          }
+        },
+        "layers": {
+          "type": "array",
+          "description": "장면 안에서 순서대로 등장하는 요소. 순서가 곧 드러나는 순서다.",
+          "items": {
+            "type": "object",
+            "required": ["id"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+              "block": { "$ref": "#/$defs/block" },
+              "region": { "$ref": "#/$defs/box" },
+              "enterMs": { "type": "integer", "minimum": 0, "description": "장면 시작 기준 상대 시각" },
+              "exitMs": { "type": "integer", "minimum": 0 },
+              "protectedRegions": {
+                "type": "array",
+                "description": "이 요소를 그릴 때 침범하면 안 되는 영역. 뒤에 등장할 요소가 미리 드러나는 문제를 막는다.",
+                "items": { "$ref": "#/$defs/box" }
+              },
+              "render": {
+                "type": "object",
+                "description": "렌더 플러그인 힌트. whiteboard 같은 수직형 플러그인이 여기를 읽는다.",
+                "additionalProperties": true,
+                "properties": {
+                  "plugin": { "type": "string" },
+                  "mode": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "sfx": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["cue"],
+            "additionalProperties": false,
+            "properties": {
+              "cue": { "type": "string", "description": "assets/sfx 상대 경로 또는 큐 이름" },
+              "atMs": { "type": "integer", "minimum": 0 },
+              "gainDb": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "voiceover": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "assetId": { "type": "string" },
+            "path": { "type": "string" },
+            "script": { "type": "string" },
+            "gainDb": { "type": "number", "default": 0 }
+          }
+        },
+        "bgm": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "assetId": { "type": "string" },
+            "path": { "type": "string" },
+            "gainDb": { "type": "number", "default": -18 },
+            "duckDb": { "type": "number", "default": -6, "description": "보이스오버 구간에서 추가로 낮출 값" }
+          }
+        },
+        "targetLufs": { "type": "number", "default": -16 },
+        "silentVariant": {
+          "type": "boolean",
+          "default": true,
+          "description": "무음 작업본 MP4를 함께 출력할지 여부"
+        }
+      }
+    }
+  }
+}

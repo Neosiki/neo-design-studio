@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "1.0",
+  "id": "board",
+  "type": "video",
+  "title": "화이트보드 회귀 픽스처",
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "safeArea": { "top": 80, "right": 120, "bottom": 160, "left": 120 }
+  },
+  "scenes": [
+    {
+      "id": "s01",
+      "sequence": 0,
+      "startMs": 0,
+      "durationMs": 8000,
+      "narrativeRole": "hook",
+      "subtitle": "선을 먼저 긋고 색을 나중에 채웁니다.",
+      "shot": { "camera": "static", "transitionIn": "cut" },
+      "layers": [
+        {
+          "id": "shape",
+          "region": { "x": 160, "y": 140, "w": 760, "h": 560 },
+          "enterMs": 0,
+          "exitMs": 8000,
+          "protectedRegions": [{ "x": 700, "y": 560, "w": 900, "h": 380 }],
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": { "paper": "#f7f3ea", "ink": "#241f1a", "accent": "#b4451f", "strokeWidth": 8 },
+            "art": {
+              "viewBox": "0 0 400 300",
+              "paths": [
+                { "id": "box", "d": "M40 60 H360 V240 H40 Z", "phase": "ink", "lengthHint": 1000 },
+                { "id": "diag", "d": "M40 240 L360 60", "phase": "ink", "lengthHint": 368 },
+                { "id": "fillbox", "d": "M60 80 H180 V150 H60 Z", "phase": "color", "fill": "accent", "lengthHint": 380 }
+              ]
+            },
+            "phases": [
+              { "id": "ink", "kind": "ink", "startMs": 0, "durationMs": 3400 },
+              { "id": "color", "kind": "color", "startMs": 3600, "durationMs": 1800, "stroke": "accent" }
+            ],
+            "speed": { "settleMs": 150 },
+            "hand": { "assetId": "hand", "show": true, "width": 160, "hideDuringColor": true }
+          }
+        },
+        {
+          "id": "caption",
+          "region": { "x": 700, "y": 560, "w": 900, "h": 380 },
+          "enterMs": 5000,
+          "exitMs": 8000,
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "skeleton",
+            "theme": { "paper": "#f7f3ea", "ink": "#241f1a" },
+            "art": {
+              "text": { "content": "선 먼저, 색은 나중에", "fontRole": "display", "fontSize": 64, "align": "left" }
+            },
+            "phases": [{ "id": "ink", "kind": "ink", "startMs": 0, "durationMs": 1600 }],
+            "hand": { "assetId": "hand", "show": true, "width": 160 }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "sequence": 1,
+      "startMs": 8000,
+      "durationMs": 6000,
+      "narrativeRole": "solution",
+      "subtitle": "래스터 그림은 쓸어내며 드러냅니다.",
+      "shot": { "camera": "static", "transitionIn": "dissolve" },
+      "layers": [
+        {
+          "id": "sweepart",
+          "region": { "x": 360, "y": 200, "w": 1200, "h": 600 },
+          "enterMs": 0,
+          "exitMs": 6000,
+          "render": {
+            "plugin": "whiteboard",
+            "mode": "grid",
+            "sweep": "left-right",
+            "theme": { "paper": "#f7f3ea", "ink": "#241f1a" },
+            "art": { "assetId": "diagram" },
+            "phases": [{ "id": "ink", "kind": "ink", "startMs": 200, "durationMs": 3200 }],
+            "hand": { "assetId": "hand", "show": true, "width": 160 }
+          }
+        }
+      ]
+    }
+  ],
+  "audio": {
+    "voiceover": { "path": "audio/vo.mp3", "gainDb": 0 },
+    "bgm": { "path": "audio/bgm.mp3", "gainDb": -20, "duckDb": -6 },
+    "targetLufs": -16,
+    "silentVariant": true
+  },
+  "captions": { "srt": "narration.srt", "burnIn": false, "language": "ko" }
+}

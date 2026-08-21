@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0",
+  "id": "teaser",
+  "type": "video",
+  "title": "Design Studio 12초 티저",
+  "canvas": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "safeArea": { "top": 60, "right": 96, "bottom": 140, "left": 96 }
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "sequence": 0,
+      "startMs": 0,
+      "durationMs": 3000,
+      "narrativeRole": "hook",
+      "subtitle": "같은 브랜드인데 결과물마다 다르게 보인 적 있나요.",
+      "shot": { "camera": "push-in", "transitionIn": "cut", "easing": "cubic-bezier(0.22, 1, 0.36, 1)" },
+      "layers": [
+        {
+          "id": "line",
+          "region": { "x": 200, "y": 460, "w": 1520, "h": 160 },
+          "enterMs": 200,
+          "exitMs": 3000,
+          "protectedRegions": [{ "x": 200, "y": 640, "w": 1520, "h": 120 }],
+          "block": {
+            "id": "hook-text",
+            "kind": "heading",
+            "text": "같은 브랜드, 다른 결과물",
+            "style": { "fontRole": "display", "fontSize": 96, "weight": 800, "color": "fg", "align": "center", "lineHeight": 1.2 }
+          }
+        },
+        {
+          "id": "sub",
+          "region": { "x": 200, "y": 640, "w": 1520, "h": 120 },
+          "enterMs": 900,
+          "exitMs": 3000,
+          "block": {
+            "id": "hook-sub",
+            "kind": "body",
+            "text": "웹, 덱, 영상이 서로 다른 근거 위에 서 있다",
+            "style": { "fontSize": 40, "color": "muted", "align": "center", "lineHeight": 1.5 }
+          }
+        }
+      ],
+      "sfx": [{ "cue": "assets/sfx/transition/whoosh.mp3", "atMs": 0, "gainDb": -12 }]
+    },
+    {
+      "id": "cause",
+      "sequence": 1,
+      "startMs": 3000,
+      "durationMs": 3500,
+      "narrativeRole": "problem",
+      "subtitle": "브랜드 토큰과 출처가 파일마다 흩어져 있기 때문입니다.",
+      "shot": { "camera": "static", "transitionIn": "dissolve" },
+      "layers": [
+        {
+          "id": "cause-line",
+          "region": { "x": 200, "y": 480, "w": 1520, "h": 200 },
+          "enterMs": 100,
+          "exitMs": 3500,
+          "block": {
+            "id": "cause-text",
+            "kind": "heading",
+            "text": "근거가 흩어져 있으면\n일관성은 우연이 된다",
+            "style": { "fontRole": "display", "fontSize": 72, "weight": 800, "color": "fg", "align": "center", "lineHeight": 1.35 }
+          }
+        }
+      ]
+    },
+    {
+      "id": "solution",
+      "sequence": 2,
+      "startMs": 6500,
+      "durationMs": 3500,
+      "narrativeRole": "solution",
+      "subtitle": "하나의 매니페스트에 모으고, 승인과 검수를 명령으로 만듭니다.",
+      "shot": { "camera": "push-in", "transitionIn": "cut" },
+      "layers": [
+        {
+          "id": "sol-title",
+          "region": { "x": 200, "y": 400, "w": 1520, "h": 120 },
+          "enterMs": 100,
+          "exitMs": 3500,
+          "protectedRegions": [{ "x": 460, "y": 580, "w": 1000, "h": 260 }],
+          "block": {
+            "id": "sol-text",
+            "kind": "heading",
+            "text": "design-project.json",
+            "style": { "fontRole": "mono", "fontSize": 72, "weight": 700, "color": "accent", "align": "center", "lineHeight": 1.3 }
+          }
+        },
+        {
+          "id": "sol-list",
+          "region": { "x": 460, "y": 580, "w": 1000, "h": 260 },
+          "enterMs": 900,
+          "exitMs": 3500,
+          "block": {
+            "id": "sol-items",
+            "kind": "bullets",
+            "items": ["브랜드 토큰과 자산 출처", "레퍼런스와 선택 근거", "승인 게이트와 검수 결과"],
+            "style": { "fontSize": 40, "color": "fg", "lineHeight": 1.8 }
+          }
+        }
+      ]
+    },
+    {
+      "id": "cta",
+      "sequence": 3,
+      "startMs": 10000,
+      "durationMs": 2500,
+      "narrativeRole": "cta",
+      "subtitle": "design init으로 시작하세요.",
+      "shot": { "camera": "static", "transitionIn": "fade" },
+      "layers": [
+        {
+          "id": "cta-line",
+          "region": { "x": 460, "y": 500, "w": 1000, "h": 100 },
+          "enterMs": 100,
+          "exitMs": 2500,
+          "block": {
+            "id": "cta-text",
+            "kind": "heading",
+            "text": "design init",
+            "style": { "fontRole": "mono", "fontSize": 72, "weight": 700, "color": "accent", "align": "center", "lineHeight": 1.3 }
+          }
+        }
+      ],
+      "sfx": [{ "cue": "assets/sfx/impact/brand-stamp.mp3", "atMs": 100, "gainDb": -10 }]
+    }
+  ],
+  "audio": {
+    "bgm": { "gainDb": -20, "duckDb": -6 },
+    "voiceover": { "gainDb": 0, "script": "같은 브랜드인데 결과물마다 다르게 보인 적 있나요. 근거가 흩어져 있기 때문입니다. 하나의 매니페스트에 모으고, 승인과 검수를 명령으로 만드세요." },
+    "targetLufs": -16,
+    "silentVariant": true
+  }
+}

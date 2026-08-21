@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "id": "whiteboard-fixture",
+  "name": "화이트보드 회귀 픽스처",
+  "brief": {
+    "purpose": "화이트보드 렌더 회귀를 고정한다",
+    "audience": "CI",
+    "language": "ko",
+    "deliverables": ["video"]
+  },
+  "brand": {
+    "name": "Fixture",
+    "tokens": {
+      "color": { "bg": "#f7f3ea", "fg": "#241f1a", "muted": "#6d6559", "accent": "#b4451f", "accentFg": "#ffffff" },
+      "typography": {
+        "display": { "family": "Pretendard", "fallback": ["Noto Sans KR", "sans-serif"] },
+        "body": { "family": "Pretendard", "fallback": ["Noto Sans KR", "sans-serif"] },
+        "scale": [16, 24, 40, 64]
+      }
+    }
+  },
+  "assets": [
+    { "id": "hand", "kind": "image", "path": "assets/hand-pen.svg", "alt": "펜을 쥔 손",
+      "provenance": { "origin": "generated" }, "license": { "spdx": "MIT", "redistributable": true } },
+    { "id": "diagram", "kind": "image", "path": "assets/diagram.svg", "alt": "세 원이 이어진 도식",
+      "provenance": { "origin": "generated" }, "license": { "spdx": "MIT", "redistributable": true } }
+  ],
+  "approvals": {
+    "direction": { "state": "waived", "at": "2026-08-16T00:00:00.000Z", "note": "회귀 픽스처" },
+    "outline": { "state": "waived", "at": "2026-08-16T00:00:00.000Z", "note": "회귀 픽스처" }
+  },
+  "artifacts": [
+    { "id": "board", "type": "video", "title": "화이트보드 회귀 픽스처", "ir": "ir/board.json", "status": "planned", "outputs": [] }
+  ],
+  "qa": { "status": "never" },
+  "cache": { "inputs": {} },
+  "history": []
+}

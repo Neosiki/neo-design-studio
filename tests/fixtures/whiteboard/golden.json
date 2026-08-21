@@ -1,0 +1,11 @@
+{
+  "note": "design 골든 프레임 해시. node tests/golden.mjs --update 로 갱신.",
+  "frames": {
+    "first": "a97f4b241cdfd03d",
+    "ink-mid": "f2a9824f411a68cc",
+    "overlap": "91a476ad9a02f0b6",
+    "color": "d0b43c44d94f9dad",
+    "sweep": "ffe672775dfe2e2e",
+    "last": "dfd1484397c058c7"
+  }
+}

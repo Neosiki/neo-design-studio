@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Neosiki/design-studio/schemas/style.schema.json",
+  "title": "스타일 레지스트리",
+  "description": "references/design-styles.md에서 뽑아낸 기계 검색용 메타데이터. 손으로 고치지 않는다 — 문서를 고치고 design styles rebuild로 다시 만든다.",
+  "type": "object",
+  "required": ["schemaVersion", "generatedFrom", "styles"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0" },
+    "generatedFrom": {
+      "type": "object",
+      "description": "무엇으로부터 만들어졌는지. 원본이 바뀌면 해시가 달라져 다시 만들어야 함을 알 수 있다.",
+      "required": ["path", "sha256"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "entries": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "styles": { "type": "array", "items": { "$ref": "#/$defs/style" } },
+    "showcases": {
+      "type": "array",
+      "description": "assets/showcases의 예제 갤러리. 스타일 60종과는 다른 축(Pentagram·Build·Takram 3종 × 장면)이다.",
+      "items": {
+        "type": "object",
+        "required": ["scene", "variants"],
+        "additionalProperties": false,
+        "properties": {
+          "scene": { "type": "string" },
+          "spec": { "type": "string" },
+          "variants": { "type": "object", "additionalProperties": { "type": "string" } }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "style": {
+      "type": "object",
+      "required": ["id", "name", "section", "supports", "temperature", "fidelity"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "name": { "type": "string", "description": "원문 이름 (중문+영문). 정본은 문서다." },
+        "section": { "enum": ["web", "deck", "infographic"] },
+        "supports": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "enum": ["html", "deck", "video", "infographic", "image"] }
+        },
+        "temperature": {
+          "enum": ["bold", "neutral", "quiet"],
+          "description": "온도. 세 방향을 고를 때 이 값이 겹치지 않게 강제한다 — 셋 다 quiet가 가장 흔한 실패 모드다."
+        },
+        "temperatureKo": { "type": "string" },
+        "fidelity": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "생성 이미지 없이 순수 HTML/CSS로 재현할 수 있는 정도(%). 70 미만이면 어느 부분을 단색으로 낮췄는지 산출물에 밝혀야 한다."
+        },
+        "contrast": {
+          "enum": ["light", "dark", "mixed", "unknown"],
+          "description": "화면 바탕의 밝기. hex → 색 극단값 → 낱말 순으로 유도하며, 근거가 없으면 unknown으로 둔다(추측하지 않는다)."
+        },
+        "motionLevel": { "enum": ["none", "subtle", "moderate", "expressive"] },
+        "audiences": { "type": "array", "items": { "type": "string" }, "description": "적용 필드에서 자른 용도 태그" },
+        "palette": { "type": "array", "items": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }, "description": "문서에 적힌 예시 색. 배합표가 아니라 앵커다 — 그대로 복사하면 slop이 된다." },
+        "fonts": { "type": "array", "items": { "type": "string" } },
+        "references": { "type": "string", "description": "이 스타일이 참고한 실제 사례" },
+        "dna": { "type": "string", "description": "시각 DNA 원문" },
+        "html": { "type": "string", "description": "HTML/CSS 구현 방법 원문" },
+        "fontNote": { "type": "string" },
+        "source": { "type": "string" },
+        "preview": { "type": "string" }
+      }
+    }
+  }
+}
