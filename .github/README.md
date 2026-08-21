@@ -104,3 +104,34 @@ curl http://127.0.0.1:7801/ops
 
 관련 온라인 데모: [English Explorer](https://neosiki.github.io/english-explorer/) · [3D 영어 학습 소개](https://neosiki.github.io/english-learning.html)
 
+
+## 실제 실행 화면과 데이터저널리즘 미디어
+
+### 3D 영어 학습 앱 실행 화면
+
+![영어 학습 앱 실행 화면](../assets/case-studies/english-learning/english-explorer-product-video-A.gif)
+
+위 GIF는 English Explorer의 실제 실행 장면을 연속 화면으로 보여주는 미리보기입니다. 정지 포스터와 고화질 영상도 함께 제공합니다.
+
+- [영어 학습 앱 포스터 이미지](../assets/case-studies/english-learning/english-explorer-product-video-A-poster.jpg)
+- [영어 학습 앱 MP4 실행 영상](../assets/case-studies/english-learning/english-explorer-product-video-A.mp4)
+- [3D 영어 앱 데모 MP4](../assets/case-studies/english-learning/3d-english-app-demo.mp4)
+- [English Explorer 온라인 데모](https://neosiki.github.io/english-explorer/)
+
+### 지진 디지털저널리즘 이미지
+
+지정된 `korean-earthquake-data-journalism` 저장소의 실제 시각화 이미지를 복사해 바로 볼 수 있도록 구성했습니다.
+
+![지진 데이터 개요](../assets/case-studies/earthquake-journalism/01_overview.png)
+
+![연도별 지진 추이](../assets/case-studies/earthquake-journalism/02_yearly_trend.png)
+
+![규모 분포](../assets/case-studies/earthquake-journalism/03_magnitude_distribution.png)
+
+![지역별 분포](../assets/case-studies/earthquake-journalism/04_regional_distribution.png)
+
+추가 시각화: [주요 사건](../assets/case-studies/earthquake-journalism/05_key_events.png) · [데이터 범위](../assets/case-studies/earthquake-journalism/06_data_coverage.png) · [주요 사건 타임라인](../assets/case-studies/earthquake-journalism/07_major_event_timeline.png) · [좌표 산점도](../assets/case-studies/earthquake-journalism/08_coordinate_scatter.png)
+
+- [지진 디지털저널리즘 세로형 MP4 영상](../assets/case-studies/earthquake-journalism/korean_earthquake_data_journalism_vertical_extended.mp4)
+- [원본 저장소](https://github.com/Neosiki/korean-earthquake-data-journalism)
+- [사례 설명 문서](../docs/examples/data-journalism-korean-earthquake.md)

@@ -42,3 +42,18 @@
 
 두 사례를 새로 만들 때는 입력 자료와 출처를 먼저 고정하고, 프로젝트 정의와 산출물의 관계를 남겨야 합니다. 숫자를 사용하는 지진 콘텐츠는 원본 출처·조회 기간·단위·결측 처리·반올림 방식을 기록해야 하며, 교육용 3D 콘텐츠는 장면별 목표·상호작용·피드백·대체 설명을 기록해야 합니다.
 
+
+
+## 미디어 미리보기
+
+### 영어 학습 앱
+
+![영어 학습 앱 실행 GIF](../../assets/case-studies/english-learning/english-explorer-product-video-A.gif)
+
+[실행 영상 MP4](../../assets/case-studies/english-learning/english-explorer-product-video-A.mp4) · [포스터](../../assets/case-studies/english-learning/english-explorer-product-video-A-poster.jpg)
+
+### 지진 디지털저널리즘
+
+![지진 데이터 개요](../../assets/case-studies/earthquake-journalism/01_overview.png)
+
+[연도별 추이](../../assets/case-studies/earthquake-journalism/02_yearly_trend.png) · [지역별 분포](../../assets/case-studies/earthquake-journalism/04_regional_distribution.png) · [세로형 MP4](../../assets/case-studies/earthquake-journalism/korean_earthquake_data_journalism_vertical_extended.mp4)
