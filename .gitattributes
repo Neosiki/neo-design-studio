@@ -31,3 +31,6 @@
 *.otf binary
 *.pptx binary
 *.pdf binary
+
+
+<!-- 파일 역할: 텍스트 줄바꿈·바이너리 처리 규칙 -->
