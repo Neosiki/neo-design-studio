@@ -104,8 +104,3 @@ curl http://127.0.0.1:7801/ops
 
 관련 온라인 데모: [English Explorer](https://neosiki.github.io/english-explorer/) · [3D 영어 학습 소개](https://neosiki.github.io/english-learning.html)
 
-### 지진 디지털저널리즘 결과물
-
-![지진 디지털저널리즘용 인포그래픽 샘플](../assets/showcases/infographic/infographic-build.png)
-
-관련 사례: [지진 디지털저널리즘 문서](../docs/examples/data-journalism-korean-earthquake.md) · [관련 저장소](https://github.com/Neosiki/korean-earthquake-data-journalism)

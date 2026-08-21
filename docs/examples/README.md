@@ -27,7 +27,6 @@
 - 사례 문서: [`data-journalism-korean-earthquake.md`](./data-journalism-korean-earthquake.md)
 - 관련 저장소: [korean-earthquake-data-journalism](https://github.com/Neosiki/korean-earthquake-data-journalism)
 - 데이터저널리즘 사례 페이지: [홈페이지 프로젝트 아카이브](https://neosiki.github.io/index.html#all-projects)
-- 쇼케이스 이미지: [`infographic-build.png`](../../assets/showcases/infographic/infographic-build.png)
 
 ## 스킬 적용 순서
 
@@ -42,3 +41,4 @@
 ## 재현성 체크
 
 두 사례를 새로 만들 때는 입력 자료와 출처를 먼저 고정하고, 프로젝트 정의와 산출물의 관계를 남겨야 합니다. 숫자를 사용하는 지진 콘텐츠는 원본 출처·조회 기간·단위·결측 처리·반올림 방식을 기록해야 하며, 교육용 3D 콘텐츠는 장면별 목표·상호작용·피드백·대체 설명을 기록해야 합니다.
+
