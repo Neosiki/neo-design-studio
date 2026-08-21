@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "1.0",
+  "id": "failing-fixture",
+  "name": "일부러 실패하는 프로젝트",
+  "createdAt": "2026-08-16T00:00:00.000Z",
+  "updatedAt": "2026-08-18T02:53:20.305Z",
+  "brief": {
+    "purpose": "(제작 목적을 한 문장으로 적으세요)",
+    "audience": "CI",
+    "language": "en",
+    "deliverables": [
+      "deck",
+      "video"
+    ],
+    "constraints": [
+      "배포 키 AKIAIOSFODNN7EXAMPLE 를 그대로 넣어 둔다"
+    ]
+  },
+  "brand": {
+    "name": "Failing",
+    "tokens": {
+      "color": {
+        "bg": "#ffffff",
+        "fg": "#c8c8c8",
+        "muted": "#e0e0e0",
+        "accent": "#ffd400",
+        "accentFg": "#ffffff"
+      },
+      "typography": {
+        "display": {
+          "family": "Inter",
+          "weights": [
+            400
+          ],
+          "fallback": [
+            "Noto Sans KR",
+            "Geist"
+          ]
+        },
+        "body": {
+          "family": "sans-serif"
+        },
+        "scale": [
+          9,
+          12,
+          20,
+          24,
+          28,
+          32,
+          96,
+          128
+        ]
+      },
+      "motion": {
+        "level": "expressive",
+        "durationMs": {
+          "fast": 200,
+          "base": 600,
+          "slow": 1400
+        }
+      }
+    }
+  },
+  "assets": [
+    {
+      "id": "ghost-logo",
+      "kind": "logo",
+      "path": "assets/ghost-logo.png",
+      "alt": "로고",
+      "provenance": {
+        "origin": "unknown"
+      }
+    },
+    {
+      "id": "leaky-env",
+      "kind": "data",
+      "path": "config/.env.production",
+      "provenance": {
+        "origin": "user-supplied"
+      }
+    }
+  ],
+  "references": [],
+  "sources": [
+    {
+      "id": "src-internal",
+      "title": "사내 대시보드",
+      "url": "http://localhost:3000/reports/q3",
+      "accessedAt": "2026-08-16T00:00:00.000Z"
+    },
+    {
+      "id": "src-desktop",
+      "title": "개인 메모",
+      "path": "C:\\Users\\jiyeon\\Desktop\\메모.md",
+      "accessedAt": "2026-08-16T00:00:00.000Z"
+    }
+  ],
+  "style": {
+    "id": "whatever",
+    "name": "아무거나",
+    "rationale": "근거 없이 그냥 골랐다",
+    "candidates": [
+      {
+        "id": "a",
+        "label": "A"
+      },
+      {
+        "id": "b",
+        "label": "B"
+      }
+    ]
+  },
+  "approvals": {
+    "direction": {
+      "state": "approved",
+      "at": "2026-08-16T00:00:00.000Z"
+    },
+    "outline": {
+      "state": "approved",
+      "at": "2026-08-16T00:00:00.000Z"
+    }
+  },
+  "artifacts": [
+    {
+      "id": "baddeck",
+      "type": "deck",
+      "title": "문제 있는 덱",
+      "ir": "ir/baddeck.json",
+      "status": "rendered",
+      "outputs": [
+        {
+          "path": "out/baddeck/baddeck.html",
+          "format": "html"
+        },
+        {
+          "path": "dist/leaked.html",
+          "format": "html"
+        }
+      ]
+    },
+    {
+      "id": "badvideo",
+      "type": "video",
+      "title": "문제 있는 영상",
+      "ir": "ir/badvideo.json",
+      "status": "built",
+      "outputs": []
+    },
+    {
+      "id": "badclip",
+      "type": "video",
+      "title": "자막이 너무 빠른 클립",
+      "ir": "ir/badclip.json",
+      "status": "planned",
+      "outputs": []
+    }
+  ],
+  "qa": {
+    "lastRun": "2026-08-18T02:53:20.236Z",
+    "status": "fail",
+    "errors": 38,
+    "warnings": 39,
+    "reportPath": "qa-report.html"
+  },
+  "cache": {
+    "inputs": {}
+  },
+  "history": [
+    {
+      "at": "2026-08-17T04:37:04.325Z",
+      "command": "check",
+      "result": "fail"
+    },
+    {
+      "at": "2026-08-17T08:48:26.520Z",
+      "command": "check",
+      "result": "fail"
+    },
+    {
+      "at": "2026-08-17T08:49:16.560Z",
+      "command": "check",
+      "result": "fail"
+    },
+    {
+      "at": "2026-08-17T21:54:02.030Z",
+      "command": "check",
+      "result": "fail"
+    },
+    {
+      "at": "2026-08-18T02:53:20.305Z",
+      "command": "check",
+      "result": "fail"
+    }
+  ]
+}

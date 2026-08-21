@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "1.0",
+  "id": "whiteboard-intro",
+  "name": "규칙을 검사로",
+  "createdAt": "2026-08-16T00:00:00.000Z",
+  "updatedAt": "2026-08-17T08:48:26.404Z",
+  "brief": {
+    "purpose": "SRT 한 파일에서 화이트보드 영상이 나오는 과정을 실제로 보여준다",
+    "audience": "화이트보드 영상을 만들어야 하는 제작자",
+    "language": "ko",
+    "aspectRatio": "16:9",
+    "tone": "손으로 설명하듯 차분하게",
+    "deliverables": [
+      "video"
+    ],
+    "constraints": [
+      "손 이미지를 포함한 모든 자산의 출처가 파일 단위로 확인 가능할 것",
+      "음성이 없어도 자막만으로 이해될 것"
+    ]
+  },
+  "brand": {
+    "name": "Design Studio",
+    "assetProtocol": "verified",
+    "tokens": {
+      "color": {
+        "bg": "#f7f3ea",
+        "fg": "#241f1a",
+        "muted": "#6d6559",
+        "surface": "#efe8db",
+        "accent": "#b4451f",
+        "accentFg": "#ffffff"
+      },
+      "typography": {
+        "display": {
+          "family": "Pretendard",
+          "weights": [
+            600,
+            700
+          ],
+          "fallback": [
+            "Noto Sans KR",
+            "system-ui",
+            "sans-serif"
+          ]
+        },
+        "body": {
+          "family": "Pretendard",
+          "weights": [
+            400,
+            500
+          ],
+          "fallback": [
+            "Noto Sans KR",
+            "system-ui",
+            "sans-serif"
+          ]
+        },
+        "scale": [
+          16,
+          20,
+          28,
+          40,
+          56,
+          72
+        ]
+      },
+      "spacing": {
+        "unit": 8,
+        "safeArea": {
+          "top": 0.06,
+          "right": 0.06,
+          "bottom": 0.13,
+          "left": 0.06
+        }
+      },
+      "radius": {
+        "sm": 4,
+        "md": 10
+      },
+      "motion": {
+        "level": "subtle",
+        "durationMs": {
+          "fast": 180,
+          "base": 320,
+          "slow": 640
+        }
+      }
+    }
+  },
+  "assets": [
+    {
+      "id": "hand",
+      "kind": "image",
+      "path": "assets/hand-pen.svg",
+      "alt": "펜을 쥔 손",
+      "provenance": {
+        "origin": "generated",
+        "capturedAt": "2026-08-16T00:00:00.000Z",
+        "note": "Design Studio가 직접 그린 SVG. 원본 저장소의 손 사진은 파일 단위 재배포 조건이 정리되어 있지 않아 쓰지 않는다."
+      },
+      "license": {
+        "spdx": "MIT",
+        "name": "저장소 라이선스와 동일",
+        "redistributable": true,
+        "attribution": "Neosiki/design-studio"
+      }
+    }
+  ],
+  "references": [
+    {
+      "id": "ref-srt-whiteboard",
+      "url": "https://github.com/geeklee/srt-whiteboard-animation",
+      "why": "SRT를 화면 표시가 아니라 장면·순서·타이밍을 정하는 입력으로 쓰는 구조를 참고했다. 구현은 그대로 가져오지 않고 SVG·seek 계약 위에서 재설계했다.",
+      "capturedAt": "2026-08-16T00:00:00.000Z",
+      "locked": true
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-roadmap",
+      "title": "Design Studio 벤치마크 및 고도화 로드맵 · 4.11절",
+      "path": "../design-studio-intro/refs/roadmap-excerpt.md",
+      "publisher": "Neosiki/design-studio",
+      "accessedAt": "2026-08-16T00:00:00.000Z"
+    }
+  ],
+  "productFacts": [
+    {
+      "claim": "이 영상의 장면 경계는 시간 상한이 아니라 문장 종료·전환어를 함께 보고 정해진다",
+      "verifiedBy": [
+        "file://scripts/design/lib/whiteboard/plan.mjs"
+      ],
+      "verifiedAt": "2026-08-16T00:00:00.000Z",
+      "confidence": "confirmed"
+    }
+  ],
+  "style": {
+    "id": "paper-hand",
+    "name": "Paper Hand",
+    "supports": [
+      "video"
+    ],
+    "rationale": "설명하는 사람의 손이 보이면 시청자가 속도를 예측한다. 종이색과 먹색만으로 대비를 만들고 강조는 한 색만 쓴다.",
+    "candidates": [
+      {
+        "id": "a",
+        "label": "A · 어두운 칠판",
+        "preview": "refs/direction-a.md"
+      },
+      {
+        "id": "b",
+        "label": "B · Paper Hand",
+        "preview": "refs/direction-b.md",
+        "chosen": true
+      },
+      {
+        "id": "c",
+        "label": "C · 흰 배경 순수 타이포",
+        "preview": "refs/direction-c.md"
+      }
+    ],
+    "lockedAt": "2026-08-16T00:00:00.000Z"
+  },
+  "approvals": {
+    "facts": {
+      "state": "approved",
+      "at": "2026-08-16T00:00:00.000Z",
+      "note": "단언 근거가 저장소 파일로 확인됨"
+    },
+    "assets": {
+      "state": "approved",
+      "at": "2026-08-16T00:00:00.000Z",
+      "note": "손 이미지 자체 제작, 라이선스 MIT"
+    },
+    "direction": {
+      "state": "approved",
+      "at": "2026-08-16T00:00:00.000Z",
+      "note": "세 방향 중 B(Paper Hand) 선택",
+      "evidence": [
+        "refs/direction-a.md",
+        "refs/direction-b.md",
+        "refs/direction-c.md"
+      ]
+    },
+    "outline": {
+      "state": "approved",
+      "at": "2026-08-16T00:00:00.000Z",
+      "note": "SRT 기반 4장면 구성 확정"
+    },
+    "draft": {
+      "state": "pending"
+    }
+  },
+  "artifacts": [
+    {
+      "id": "board",
+      "type": "video",
+      "title": "규칙을 검사로",
+      "ir": "ir/board.json",
+      "status": "planned",
+      "outputs": []
+    }
+  ],
+  "qa": {
+    "lastRun": "2026-08-17T08:48:26.401Z",
+    "status": "warn",
+    "errors": 0,
+    "warnings": 4,
+    "reportPath": "qa-report.html"
+  },
+  "cache": {
+    "inputs": {}
+  },
+  "history": [
+    {
+      "at": "2026-08-17T08:48:26.404Z",
+      "command": "check",
+      "result": "ok"
+    }
+  ]
+}

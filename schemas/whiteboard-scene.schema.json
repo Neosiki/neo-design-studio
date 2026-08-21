@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Neosiki/design-studio/schemas/whiteboard-scene.schema.json",
+  "title": "화이트보드 장면 주석 (whiteboardScene)",
+  "description": "영상 IR의 layers[].render.plugin === 'whiteboard' 일 때 layers[].render가 따르는 스펙. 원본 저장소의 annotation.json을 Design Studio 영상 IR 위로 일반화한 것 — 장면·타이밍·자막은 IR의 scene/layer가 이미 갖고 있으므로 여기서는 '어떻게 그려지는가'만 다룬다.",
+  "type": "object",
+  "required": ["plugin", "mode"],
+  "additionalProperties": false,
+  "properties": {
+    "plugin": { "const": "whiteboard" },
+    "mode": {
+      "enum": ["skeleton", "grid"],
+      "description": "skeleton = SVG 경로를 따라 선이 자라난다(선화에 밀착). grid = 영역을 한 방향으로 쓸어내며 드러낸다(어떤 내용에도 안정적). 프로젝트 설정 한 줄로 전환할 수 있어야 한다.",
+      "default": "skeleton"
+    },
+    "art": { "$ref": "#/$defs/art" },
+    "phases": {
+      "type": "array",
+      "description": "ink → color 단계. 선을 먼저 긋고 색을 나중에 채워 실제 화이트보드 제작의 시각 리듬을 만든다. 비우면 ink 한 단계로 본다.",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/phase" }
+    },
+    "sweep": {
+      "enum": ["left-right", "right-left", "top-bottom", "bottom-top"],
+      "default": "left-right",
+      "description": "grid 모드의 쓸어내는 방향"
+    },
+    "strokeOrder": {
+      "type": "array",
+      "description": "skeleton 모드에서 경로를 그리는 순서. 비우면 art의 경로 선언 순서를 따른다.",
+      "items": { "type": "string" }
+    },
+    "speed": {
+      "type": "object",
+      "description": "필기 속도. 값을 지정하지 않으면 테마 토큰의 기본값을 쓴다.",
+      "additionalProperties": false,
+      "properties": {
+        "pxPerSecond": { "type": "number", "minimum": 1, "description": "skeleton 모드의 선 길이 기준 속도" },
+        "settleMs": { "type": "integer", "minimum": 0, "default": 120, "description": "한 경로를 다 그린 뒤 다음으로 넘어가기 전 멈춤" }
+      }
+    },
+    "hand": { "$ref": "#/$defs/hand" },
+    "theme": { "$ref": "#/$defs/theme" }
+  },
+  "$defs": {
+    "art": {
+      "type": "object",
+      "description": "그릴 대상. 인라인 SVG 경로 또는 등록된 자산 중 하나.",
+      "additionalProperties": false,
+      "properties": {
+        "viewBox": {
+          "type": "string",
+          "pattern": "^-?[0-9.]+ -?[0-9.]+ [0-9.]+ [0-9.]+$",
+          "description": "인라인 경로의 좌표계. 레이어 region에 맞춰 배치된다."
+        },
+        "paths": {
+          "type": "array",
+          "description": "SVG path 목록. skeleton 모드가 이 순서대로 선을 자라게 한다.",
+          "items": { "$ref": "#/$defs/path" }
+        },
+        "assetId": {
+          "type": "string",
+          "description": "project.assets[].id. SVG 또는 래스터 이미지. 래스터는 grid 모드만 지원한다."
+        },
+        "text": {
+          "type": "object",
+          "description": "손글씨처럼 한 글자씩 드러나는 텍스트. 경로가 없는 간단한 캡션에 쓴다.",
+          "additionalProperties": false,
+          "properties": {
+            "content": { "type": "string", "minLength": 1 },
+            "fontRole": { "enum": ["display", "body", "mono"], "default": "body" },
+            "fontSize": { "type": "number", "minimum": 1 },
+            "align": { "enum": ["left", "center", "right"], "default": "left" },
+            "lineHeight": { "type": "number", "minimum": 0.8, "default": 1.4 }
+          },
+          "required": ["content"]
+        }
+      }
+    },
+    "path": {
+      "type": "object",
+      "required": ["id", "d"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "d": { "type": "string", "minLength": 2, "description": "SVG path 데이터" },
+        "phase": { "type": "string", "default": "ink", "description": "이 경로가 속한 단계 id" },
+        "stroke": { "type": "string", "description": "토큰 키(ink, accent 등) 또는 #hex. 비우면 단계 기본색." },
+        "strokeWidth": { "type": "number", "minimum": 0.1 },
+        "fill": { "type": "string", "description": "color 단계에서 채울 색. 토큰 키 또는 #hex." },
+        "lengthHint": {
+          "type": "number",
+          "minimum": 0,
+          "description": "경로 길이(px). 브라우저 없이 타이밍을 계산해야 하는 검사·계획 단계가 쓴다. 비우면 렌더 시 getTotalLength로 구한다."
+        }
+      }
+    },
+    "phase": {
+      "type": "object",
+      "required": ["id"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$", "description": "관례: ink, color" },
+        "kind": { "enum": ["ink", "color"], "default": "ink" },
+        "startMs": { "type": "integer", "minimum": 0, "description": "레이어 enterMs 기준 상대 시각" },
+        "durationMs": { "type": "integer", "minimum": 1 },
+        "stroke": { "type": "string" },
+        "strokeWidth": { "type": "number", "minimum": 0.1 },
+        "opacity": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "hand": {
+      "type": "object",
+      "description": "경로 끝을 따라가는 손 이미지. 자산으로 등록해야 출처가 추적된다.",
+      "additionalProperties": false,
+      "properties": {
+        "assetId": { "type": "string", "description": "project.assets[].id. 손 이미지를 교체할 수 있게 하드코딩하지 않는다." },
+        "show": { "type": "boolean", "default": true },
+        "width": { "type": "number", "minimum": 1, "default": 220 },
+        "anchor": {
+          "type": "object",
+          "description": "이미지 안에서 펜촉이 있는 위치의 비율(0~1). 손 이미지를 바꿔도 촉 위치를 맞출 수 있다.",
+          "additionalProperties": false,
+          "properties": {
+            "x": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.12 },
+            "y": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.08 }
+          }
+        },
+        "hideDuringColor": { "type": "boolean", "default": true, "description": "색 채우기 단계에서는 손을 숨긴다" }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "description": "고정 중국어·고정 미색 스타일을 그대로 들여오지 않기 위한 토큰. 지정하지 않은 값은 브랜드 토큰에서 상속한다.",
+      "additionalProperties": false,
+      "properties": {
+        "paper": { "type": "string", "description": "배경(종이) 색. 토큰 키 또는 #hex." },
+        "ink": { "type": "string", "description": "선 색" },
+        "accent": { "type": "string", "description": "강조 색" },
+        "grain": { "type": "number", "minimum": 0, "maximum": 1, "default": 0, "description": "종이 질감 세기. 0이면 깨끗한 단색." },
+        "strokeWidth": { "type": "number", "minimum": 0.1, "default": 6 },
+        "pxPerSecond": { "type": "number", "minimum": 1, "default": 900, "description": "기본 필기 속도" }
+      }
+    }
+  }
+}

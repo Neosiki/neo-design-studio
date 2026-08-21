@@ -1,0 +1,379 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Neosiki/design-studio/schemas/project.schema.json",
+  "title": "디자인 스튜디오 Studio 프로젝트 매니페스트",
+  "description": "하나의 브랜드·자료·스토리에서 HTML·PPTX·영상 산출물을 만들 때 공유하는 단일 진실 원본. 중단 후 재개(Design resume)와 검수(Design check)의 기준이 된다.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "name", "brief", "brand", "approvals", "artifacts"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0",
+      "description": "매니페스트 스키마 버전. CLI는 메이저 버전이 다르면 실행을 거부한다."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+      "description": "프로젝트 슬러그. 캐시 키와 산출물 경로에 사용."
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "brief": { "$ref": "#/$defs/brief" },
+    "brand": { "$ref": "#/$defs/brand" },
+    "assets": {
+      "type": "array",
+      "description": "제작에 쓰이는 모든 외부 자산. 출처·라이선스·해시가 없는 자산은 검수에서 실패한다.",
+      "items": { "$ref": "#/$defs/asset" }
+    },
+    "references": {
+      "type": "array",
+      "description": "제작 전에 조사하고 잠근 레퍼런스. 잠근 뒤 교체하려면 사유를 남겨야 한다.",
+      "items": { "$ref": "#/$defs/reference" }
+    },
+    "style": { "$ref": "#/$defs/style" },
+    "sources": {
+      "type": "array",
+      "description": "본문의 주장·수치가 인용하는 원본. artifact IR의 claims[].sourceId가 여기를 가리킨다.",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "productFacts": {
+      "type": "array",
+      "description": "핵심 원칙 #0 사실 검증 결과. 제품·버전·규격 단언은 여기에 근거를 남긴다.",
+      "items": { "$ref": "#/$defs/productFact" }
+    },
+    "approvals": { "$ref": "#/$defs/approvals" },
+    "artifacts": {
+      "type": "array",
+      "description": "이 프로젝트가 만들어내는 산출물 목록. 각 항목의 ir 경로가 artifact.schema.json을 따른다.",
+      "items": { "$ref": "#/$defs/artifactRef" }
+    },
+    "qa": { "$ref": "#/$defs/qaState" },
+    "cache": {
+      "type": "object",
+      "description": "입력 파일 해시 캐시. 변하지 않은 입력은 다시 처리하지 않는다.",
+      "additionalProperties": false,
+      "properties": {
+        "inputs": {
+          "type": "object",
+          "description": "경로 → sha256",
+          "additionalProperties": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "history": {
+      "type": "array",
+      "description": "Design CLI가 실행될 때마다 추가하는 감사 로그. resume이 마지막 단계를 여기서 읽는다.",
+      "items": { "$ref": "#/$defs/historyEntry" }
+    }
+  },
+  "$defs": {
+    "brief": {
+      "type": "object",
+      "required": ["purpose", "audience", "language", "deliverables"],
+      "additionalProperties": false,
+      "properties": {
+        "purpose": { "type": "string", "minLength": 1, "description": "제작 목적 한 문장" },
+        "audience": { "type": "string", "minLength": 1 },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+          "description": "본문 언어. ko, en, zh-CN 등"
+        },
+        "aspectRatio": {
+          "type": "string",
+          "pattern": "^[0-9]{1,2}:[0-9]{1,2}$",
+          "default": "16:9"
+        },
+        "tone": { "type": "string" },
+        "deliverables": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "enum": ["html", "deck", "video", "infographic", "image"] }
+        },
+        "constraints": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "brand": {
+      "type": "object",
+      "required": ["name", "tokens"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "assetProtocol": {
+          "enum": ["verified", "placeholder", "waived"],
+          "default": "placeholder",
+          "description": "verified=실제 브랜드 자산 확보, placeholder=대체 표현 사용, waived=사용자가 명시적으로 면제"
+        },
+        "tokens": { "$ref": "#/$defs/tokens" }
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "required": ["color", "typography"],
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "type": "object",
+          "required": ["bg", "fg", "accent"],
+          "additionalProperties": { "type": "string", "pattern": "^#[0-9a-fA-F]{3,8}$" },
+          "properties": {
+            "bg": { "type": "string", "pattern": "^#[0-9a-fA-F]{3,8}$" },
+            "fg": { "type": "string", "pattern": "^#[0-9a-fA-F]{3,8}$" },
+            "muted": { "type": "string", "pattern": "^#[0-9a-fA-F]{3,8}$" },
+            "accent": { "type": "string", "pattern": "^#[0-9a-fA-F]{3,8}$" },
+            "accentFg": { "type": "string", "pattern": "^#[0-9a-fA-F]{3,8}$" },
+            "surface": { "type": "string", "pattern": "^#[0-9a-fA-F]{3,8}$" }
+          }
+        },
+        "typography": {
+          "type": "object",
+          "required": ["display", "body"],
+          "additionalProperties": false,
+          "properties": {
+            "display": { "$ref": "#/$defs/fontSpec" },
+            "body": { "$ref": "#/$defs/fontSpec" },
+            "mono": { "$ref": "#/$defs/fontSpec" },
+            "scale": {
+              "type": "array",
+              "description": "px 단위 타입 스케일. 검수에서 본문 최소 크기를 판단한다.",
+              "items": { "type": "number", "minimum": 8 }
+            }
+          }
+        },
+        "spacing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "unit": { "type": "number", "minimum": 1, "default": 8 },
+            "safeArea": {
+              "type": "object",
+              "description": "영상·슬라이드 안전영역 비율(0~0.5)",
+              "additionalProperties": false,
+              "properties": {
+                "top": { "type": "number", "minimum": 0, "maximum": 0.5 },
+                "right": { "type": "number", "minimum": 0, "maximum": 0.5 },
+                "bottom": { "type": "number", "minimum": 0, "maximum": 0.5 },
+                "left": { "type": "number", "minimum": 0, "maximum": 0.5 }
+              }
+            }
+          }
+        },
+        "radius": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0 } },
+        "motion": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "level": { "enum": ["none", "subtle", "moderate", "expressive"], "default": "subtle" },
+            "durationMs": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0 } },
+            "easing": { "type": "object", "additionalProperties": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "fontSpec": {
+      "type": "object",
+      "required": ["family"],
+      "additionalProperties": false,
+      "properties": {
+        "family": { "type": "string", "minLength": 1 },
+        "weights": { "type": "array", "items": { "type": "number", "minimum": 100, "maximum": 1000 } },
+        "assetId": { "type": "string", "description": "웹폰트 파일을 assets[]에 등록했다면 그 id" },
+        "fallback": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "required": ["id", "kind", "path", "provenance"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "kind": { "enum": ["logo", "image", "screenshot", "font", "audio", "video", "icon", "data"] },
+        "path": { "type": "string", "minLength": 1, "description": "프로젝트 디렉터리 기준 상대 경로" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "provenance": {
+          "type": "object",
+          "required": ["origin"],
+          "additionalProperties": false,
+          "properties": {
+            "origin": { "enum": ["official", "user-supplied", "generated", "stock", "unknown"] },
+            "url": { "type": "string" },
+            "capturedAt": { "type": "string", "format": "date-time" },
+            "note": { "type": "string" }
+          }
+        },
+        "license": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "spdx": { "type": "string" },
+            "name": { "type": "string" },
+            "redistributable": { "type": "boolean" },
+            "attribution": { "type": "string" }
+          }
+        },
+        "alt": { "type": "string", "description": "접근성 대체 텍스트" }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "required": ["id", "why"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "url": { "type": "string" },
+        "path": { "type": "string" },
+        "why": { "type": "string", "minLength": 4, "description": "이 레퍼런스를 고른 이유. 근거 없는 레퍼런스는 잠글 수 없다." },
+        "capturedAt": { "type": "string", "format": "date-time" },
+        "locked": { "type": "boolean", "default": false },
+        "supersedes": { "type": "string", "description": "교체한 레퍼런스 id" },
+        "supersedeReason": { "type": "string" }
+      }
+    },
+    "style": {
+      "type": "object",
+      "required": ["id", "rationale"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "description": "references/design-styles.md의 스타일 식별자" },
+        "name": { "type": "string" },
+        "supports": { "type": "array", "items": { "enum": ["html", "deck", "video", "infographic", "image"] } },
+        "rationale": { "type": "string", "minLength": 8, "description": "왜 이 스타일인지. 세 방향 중 이 방향이 선택된 근거." },
+        "candidates": {
+          "type": "array",
+          "description": "사용자에게 보여준 세 방향. 삼방향 하드 게이트의 증거.",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" },
+              "preview": { "type": "string", "description": "초안 HTML 또는 이미지 경로" },
+              "chosen": { "type": "boolean", "default": false }
+            }
+          }
+        },
+        "lockedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": ["id", "title"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "title": { "type": "string", "minLength": 1 },
+        "url": { "type": "string" },
+        "path": { "type": "string" },
+        "publisher": { "type": "string" },
+        "accessedAt": { "type": "string", "format": "date-time" },
+        "quotes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["text"],
+            "additionalProperties": false,
+            "properties": {
+              "text": { "type": "string", "minLength": 1 },
+              "locator": { "type": "string", "description": "페이지·타임코드·섹션" }
+            }
+          }
+        }
+      }
+    },
+    "productFact": {
+      "type": "object",
+      "required": ["claim", "verifiedBy", "verifiedAt"],
+      "additionalProperties": false,
+      "properties": {
+        "claim": { "type": "string", "minLength": 1 },
+        "verifiedBy": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "확인에 사용한 URL" },
+        "verifiedAt": { "type": "string", "format": "date-time" },
+        "confidence": { "enum": ["confirmed", "partial", "unresolved"], "default": "confirmed" }
+      }
+    },
+    "approvals": {
+      "type": "object",
+      "description": "단계별 승인 게이트. render·export는 필요한 게이트가 approved가 아니면 실행되지 않는다.",
+      "required": ["direction"],
+      "additionalProperties": false,
+      "properties": {
+        "facts": { "$ref": "#/$defs/gate" },
+        "assets": { "$ref": "#/$defs/gate" },
+        "direction": { "$ref": "#/$defs/gate" },
+        "outline": { "$ref": "#/$defs/gate" },
+        "draft": { "$ref": "#/$defs/gate" },
+        "final": { "$ref": "#/$defs/gate" }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "required": ["state"],
+      "additionalProperties": false,
+      "properties": {
+        "state": { "enum": ["pending", "approved", "rejected", "waived"] },
+        "by": { "type": "string" },
+        "at": { "type": "string", "format": "date-time" },
+        "note": { "type": "string" },
+        "evidence": {
+          "type": "array",
+          "description": "승인 근거 파일 경로. 삼방향 게이트라면 세 초안 경로가 들어간다.",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "artifactRef": {
+      "type": "object",
+      "required": ["id", "type", "ir"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "type": { "enum": ["html", "deck", "video", "infographic", "image"] },
+        "title": { "type": "string" },
+        "ir": { "type": "string", "description": "artifact.schema.json을 따르는 IR 파일 경로" },
+        "status": { "enum": ["planned", "built", "rendered", "exported", "stale"], "default": "planned" },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "format"],
+            "additionalProperties": false,
+            "properties": {
+              "path": { "type": "string" },
+              "format": { "enum": ["html", "pptx", "pdf", "png", "svg", "mp4", "gif", "webm", "json"] },
+              "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+              "bytes": { "type": "integer", "minimum": 0 },
+              "renderedAt": { "type": "string", "format": "date-time" },
+              "mode": { "enum": ["fast", "native"], "description": "deck에서 fast=이미지 기반, native=편집 가능 객체" }
+            }
+          }
+        }
+      }
+    },
+    "qaState": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lastRun": { "type": "string", "format": "date-time" },
+        "status": { "enum": ["pass", "warn", "fail", "never"] },
+        "errors": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "integer", "minimum": 0 },
+        "reportPath": { "type": "string" }
+      }
+    },
+    "historyEntry": {
+      "type": "object",
+      "required": ["at", "command"],
+      "additionalProperties": false,
+      "properties": {
+        "at": { "type": "string", "format": "date-time" },
+        "command": { "type": "string" },
+        "result": { "enum": ["ok", "fail", "blocked"] },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

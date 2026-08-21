@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300">
+  <!-- Design Studio가 직접 그린 펜을 든 손. 외부 에셋 출처 문제를 피하기 위해 자체 제작. -->
+  <g fill="none" stroke="#2a2118" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M28 26 L96 118" stroke="#1d2530" stroke-width="13"/>
+    <path d="M20 18 L36 34 L30 44 L12 28 Z" fill="#1d2530" stroke="#1d2530"/>
+    <path d="M92 112 C112 132 132 150 150 160 C176 174 196 186 200 208
+             C204 232 190 258 162 272 C132 286 96 282 74 262
+             C56 246 48 220 52 194 C56 168 70 140 92 112 Z" fill="#f0d3b4"/>
+    <path d="M104 158 C126 150 150 152 168 164" stroke-width="5" opacity=".55"/>
+    <path d="M96 186 C120 176 148 178 168 192" stroke-width="5" opacity=".55"/>
+    <path d="M92 216 C116 208 144 210 164 222" stroke-width="5" opacity=".55"/>
+    <path d="M74 262 C96 276 132 280 158 268" stroke-width="5" opacity=".35"/>
+  </g>
+</svg>

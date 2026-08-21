@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0",
+  "id": "badvideo",
+  "type": "video",
+  "title": "문제 있는 영상",
+  "canvas": { "width": 1920, "height": 1080, "fps": 30 },
+  "scenes": [
+    {
+      "id": "a",
+      "startMs": 0,
+      "durationMs": 3000,
+      "layers": [
+        {
+          "id": "l1",
+          "region": { "x": 100, "y": 100, "w": 800, "h": 200 },
+          "enterMs": 5000,
+          "exitMs": 6000,
+          "block": { "id": "b1", "kind": "heading", "text": "화면에 안 나오는 레이어", "style": { "fontSize": 60 } }
+        }
+      ]
+    },
+    {
+      "id": "b",
+      "startMs": 2000,
+      "durationMs": 500,
+      "layers": [
+        {
+          "id": "l2",
+          "region": { "x": 1700, "y": 900, "w": 400, "h": 300 },
+          "enterMs": 0,
+          "exitMs": 500,
+          "block": { "id": "b2", "kind": "body", "text": "캔버스 밖 영역", "style": { "fontSize": 40 } }
+        }
+      ]
+    },
+    {
+      "id": "c",
+      "startMs": 9000,
+      "durationMs": 15000,
+      "layers": []
+    }
+  ],
+  "audio": {
+    "voiceover": { "gainDb": 0, "path": "audio/missing-vo.mp3" },
+    "bgm": { "gainDb": -2 }
+  }
+}

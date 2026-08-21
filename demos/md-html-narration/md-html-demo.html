@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>md 아니면 html, 이건 어리석은 질문 · 해설 데모 (v3 · 자막+지속 동작+오버플로우 수정)</title>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@300;400;600;700;800&family=Noto+Serif+SC:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #0a0a0a; min-height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px; box-sizing: border-box; font-family: -apple-system, sans-serif; }
+  #root { box-shadow: 0 30px 80px rgba(0,0,0,0.6); border-radius: 4px; overflow: hidden; }
+  * { box-sizing: border-box; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+// ── timeline.json (inline · 간소화판, 각 구간에 chunks 포함하여 자막용) ───
+const TIMELINE = {"title":"md 아니면 html, 이건 어리석은 질문","totalDuration":198.168,"voiceover":"voiceover.mp3","scenes":[
+  {"id":"opening","start":0,"end":22.32,"duration":22.32,"chunks":[
+    {"text":"며칠 전,","absoluteStart":0,"absoluteEnd":0.984},
+    {"text":"Claude Code 팀의 Thariq가 히트 글을 썼다. 제목은 한 문장: HTML은 새로운 markdown이다.","absoluteStart":0.984,"absoluteEnd":8.5},
+    {"text":"그는 거의 더 이상 md 파일을 쓰지 않고, 전부 AI에게 HTML로 생성시키고 있다고 말했다. 500만 뷰, X에서 즉시 논쟁이 벌어졌다.","absoluteStart":8.5,"absoluteEnd":14.952},
+    {"text":"한쪽은 md 진영으로, md가 AI 시대의 소스코드라고 생각한다. 다른 쪽은 HTML이야말로 궁극적 해답이라고 본다.","absoluteStart":14.952,"absoluteEnd":22.32}
+  ],"cues":[{"id":"thariq","absoluteTime":0.984},{"id":"two-camps","absoluteTime":14.952}]},
+  {"id":"md-side","start":22.82,"end":56.516,"duration":33.696,"chunks":[
+    {"text":"md 진영의 증거는 사실 꽤 탄탄하다.","absoluteStart":22.82,"absoluteEnd":26.5},
+    {"text":"OpenAI가 지난해 공개한 AGENTS.md는 6만 개 이상의 프로젝트에서 사용된다,","absoluteStart":26.5,"absoluteEnd":31.5},
+    {"text":"AWS, Anthropic, Google, 마이크로소프트, OpenAI 등 AI 업계의 절반가량이 함께 Linux Foundation에 기부했다.","absoluteStart":31.5,"absoluteEnd":38.5},
+    {"text":"Karpathy의 llm-wiki, 단 하나의 CLAUDE.md 파일로 5만 스타.","absoluteStart":38.5,"absoluteEnd":45.14},
+    {"text":"Cloudflare 실측: 같은 블로그의 HTML은 1만6천 토큰, md로 바꾸면 3천 토큰에 불과하다. 80% 절약.","absoluteStart":45.14,"absoluteEnd":54.764},
+    {"text":"GitHub 공식 입장: 문서는 더 이상 코드를 설명하는 것이 아니라, 문서가 곧 코드이다.","absoluteStart":54.764,"absoluteEnd":56.516}
+  ],"cues":[{"id":"agents-md","absoluteTime":27.5},{"id":"token-saving","absoluteTime":45.14},{"id":"doc-is-code","absoluteTime":54.764}]},
+  {"id":"html-side","start":57.016,"end":100.168,"duration":43.152,"chunks":[
+    {"text":"하지만 html 진영도 틀리지는 않다. Thariq의 논거에 나는 전적으로 동의한다.","absoluteStart":57.016,"absoluteEnd":62.92},
+    {"text":"첫째는 공간 정보다. diff, 콜 그래프, 아키텍처 다이어그램은 본래 공간적 차원이 있고, html은 좌우 대조가 가능하다.","absoluteStart":62.92,"absoluteEnd":74.632},
+    {"text":"둘째는 동적 경험. 버튼 색상, 이징 곡선 — 글로 아무리 설명해도 소용없고, html은 직접 볼 수 있게 한다.","absoluteStart":74.632,"absoluteEnd":85.864},
+    {"text":"셋째는 구조화된 읽기. 접을 수 있는 챕터, 탭 코드 블록, 사이드바 용어집.","absoluteStart":85.864,"absoluteEnd":93},
+    {"text":"Anthropic의 Live Artifacts는 HTML이 상호작용 가능하고 실시간 데이터를 가져오는 대시보드로 업그레이드되었다.","absoluteStart":93,"absoluteEnd":100.168}
+  ],"cues":[{"id":"spatial","absoluteTime":62.92},{"id":"dynamic","absoluteTime":74.632},{"id":"structured","absoluteTime":85.864}]},
+  {"id":"the-real-question","start":100.668,"end":117.588,"duration":16.92,"chunks":[
+    {"text":"읽고 나서 나는 이렇게 말하고 싶었다,","absoluteStart":100.668,"absoluteEnd":101.748},
+    {"text":"이 둘은 사실상 어리석은 질문을 두고 다투고 있다。","absoluteStart":101.748,"absoluteEnd":106},
+    {"text":"양쪽 모두 이겼다. 그러나 승리는 다른 문제들에 대한 것이다.","absoluteStart":106,"absoluteEnd":109.044},
+    {"text":"md 진영의 대답: 우리는 무엇으로 쓰는가。","absoluteStart":109.044,"absoluteEnd":112.62},
+    {"text":"html 진영의 대답: 우리는 사람들에게 무엇을 보여주는가。","absoluteStart":112.62,"absoluteEnd":115.5},
+    {"text":"두 개의 다른 질문인데, 누가 누구를 대체하겠는가。","absoluteStart":115.5,"absoluteEnd":117.588}
+  ],"cues":[{"id":"reveal","absoluteTime":101.748},{"id":"question-md","absoluteTime":109.044},{"id":"question-html","absoluteTime":112.62}]},
+  {"id":"the-split","start":118.088,"end":158.744,"duration":40.656,"chunks":[
+    {"text":"내가 생각하는 진짜 문제는 이거다。","absoluteStart":118.088,"absoluteEnd":121},
+    {"text":"md와 html은 대체관계가 아니라 분업 관계다。","absoluteStart":121,"absoluteEnd":126.5},
+    {"text":"예전에는 당신이 md를 쓰고 스스로도 md를 읽었기 때문에 타협이 필요했고, 그래서 md가 우세했다。","absoluteStart":126.5,"absoluteEnd":131},
+    {"text":"AI가 등장한 후, 생산 비용은 AI에게 흡수되었다。","absoluteStart":131,"absoluteEnd":135},
+    {"text":"원래 타협이 필요했던 요구가 양쪽의 극단적 최적화로 분해되었다。","absoluteStart":135,"absoluteEnd":140},
+    {"text":"생산 측은 가볍고 빠르며 토큰 효율적이어야 한다 — 그게 md다。","absoluteStart":140,"absoluteEnd":148.28},
+    {"text":"소비 측은 풍부하고 시각화 가능하며 공유하기 쉬워야 한다 — 그게 html이다。","absoluteStart":148.28,"absoluteEnd":153.464},
+    {"text":"양쪽이 각각 정상에 오르자, 중간의 타협 위치는 더 이상 필요하지 않게 되었다。","absoluteStart":153.464,"absoluteEnd":158.744}
+  ],"cues":[{"id":"split","absoluteTime":122.84},{"id":"ai-changes","absoluteTime":131},{"id":"md-side-win","absoluteTime":148.28},{"id":"html-side-win","absoluteTime":153.464}]},
+  {"id":"activity-proof","start":159.244,"end":184.084,"duration":24.84,"chunks":[
+    {"text":"가장 명확한 사례는 Thariq 자신이다。","absoluteStart":159.244,"absoluteEnd":162.5},
+    {"text":"3월에 그는 'Skills 가이드'를 발표하며 핵심은 여전히 markdown이라고 강조했다。","absoluteStart":162.5,"absoluteEnd":167},
+    {"text":"5월에는 'HTML is the new markdown'을 발표했다。","absoluteStart":167,"absoluteEnd":169.372},
+    {"text":"같은 사람, 양쪽이 각각 정상에 오르고 서로 충돌하지 않는다。","absoluteStart":169.372,"absoluteEnd":174},
+    {"text":"Karpathy와 Lex Fridman의 조합도 마찬가지다。","absoluteStart":174,"absoluteEnd":177},
+    {"text":"핵심은 markdown 위키이고, 외형은 동적 HTML — 소비층을 한 겹 더 얹은 것이다。","absoluteStart":177,"absoluteEnd":184.084}
+  ],"cues":[{"id":"thariq-march","absoluteTime":164.236},{"id":"same-person","absoluteTime":169.372},{"id":"karpathy-lex","absoluteTime":176.764}]},
+  {"id":"closing","start":184.584,"end":197.88,"duration":13.296,"chunks":[
+    {"text":"그러니 다음에 이걸 두고 싸우고 싶을 때,","absoluteStart":184.584,"absoluteEnd":186.672},
+    {"text":"먼저 스스로에게 물어라 — 당신이 마주한 것은 '작성'인가, 아니면 '보기'인가?","absoluteStart":186.672,"absoluteEnd":192},
+    {"text":"작성: md 사용。","absoluteStart":192,"absoluteEnd":193.704},
+    {"text":"보기: html 사용。","absoluteStart":193.704,"absoluteEnd":195.5},
+    {"text":"도구가 전환을 처리하니 입장을 내려놓아도 된다。","absoluteStart":195.5,"absoluteEnd":197.88}
+  ],"cues":[{"id":"final","absoluteTime":186.672},{"id":"md-final","absoluteTime":192},{"id":"html-final","absoluteTime":193.704}]}
+]};
+
+// ── narration_stage.jsx (inline) ─────────────────────────────
+const NarrationStageLib = (() => {
+  const NarrationContext = React.createContext({});
+  function NarrationStage({ timeline, audioSrc, width = 1920, height = 1080, background = '#0e0e0e', controls = true, children }) {
+    const audioRef = React.useRef(null);
+    const [time, setTime] = React.useState(0);
+    const [playing, setPlaying] = React.useState(false);
+    const recording = typeof window !== 'undefined' && window.__recording === true;
+    React.useEffect(() => { if (typeof window !== 'undefined') { window.__totalDuration = timeline.totalDuration; window.__ready = true; } }, [timeline.totalDuration]);
+    React.useEffect(() => {
+      let raf;
+      if (recording) {
+        let startedAt = null;
+        const tick = (now) => {
+          if (startedAt === null) startedAt = now;
+          setTime(Math.min((now - startedAt) / 1000, timeline.totalDuration));
+          raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+        if (typeof window !== 'undefined') window.__seek = (t) => { startedAt = performance.now() - t * 1000; setTime(t); };
+      } else {
+        const tick = () => {
+          if (audioRef.current && !audioRef.current.paused) setTime(audioRef.current.currentTime);
+          raf = requestAnimationFrame(tick);
+        };
+        tick();
+      }
+      return () => cancelAnimationFrame(raf);
+    }, [recording, timeline.totalDuration]);
+    const currentScene = React.useMemo(() => {
+      if (!timeline.scenes) return null;
+      for (let i = 0; i < timeline.scenes.length; i++) {
+        const s = timeline.scenes[i]; const next = timeline.scenes[i + 1];
+        if (time >= s.start && (!next || time < next.start)) return s;
+      }
+      return timeline.scenes[0];
+    }, [time, timeline.scenes]);
+    const sceneTime = currentScene ? Math.max(0, time - currentScene.start) : 0;
+    const allCues = React.useMemo(() => { const m = {}; for (const s of timeline.scenes || []) for (const c of s.cues || []) m[c.id] = c; return m; }, [timeline.scenes]);
+    const isCueTriggered = React.useCallback(id => { const c = allCues[id]; return c ? time >= c.absoluteTime : false; }, [allCues, time]);
+    const cueProgress = React.useCallback((id, ramp = 0.6) => { const c = allCues[id]; if (!c) return 0; const dt = time - c.absoluteTime; if (dt <= 0) return 0; if (dt >= ramp) return 1; return dt / ramp; }, [allCues, time]);
+    const ctx = { time, scene: currentScene, sceneTime, isCueTriggered, cueProgress, timeline };
+    return (
+      <NarrationContext.Provider value={ctx}>
+        <div style={{ position: 'relative', width, height, background, overflow: 'hidden', color: '#1a1a1a' }}>{children}</div>
+        {!recording && <audio ref={audioRef} src={audioSrc} preload="auto" onEnded={() => setPlaying(false)} />}
+        {!recording && controls && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', background: '#1a1a1a', color: '#ddd', fontFamily: 'monospace', fontSize: 13, width, boxSizing: 'border-box' }}>
+            <button onClick={() => { if (audioRef.current.paused) { audioRef.current.play(); setPlaying(true); } else { audioRef.current.pause(); setPlaying(false); } }} style={{ padding: '6px 14px', background: '#fff', color: '#000', border: 0, borderRadius: 4, cursor: 'pointer', fontWeight: 600 }}>{playing ? '❚❚ Pause' : '▶ Play'}</button>
+            <input type="range" min={0} max={timeline.totalDuration} step={0.01} value={time} onChange={e => { const t = parseFloat(e.target.value); audioRef.current.currentTime = t; setTime(t); }} style={{ flex: 1 }} />
+            <span style={{ minWidth: 130, textAlign: 'right' }}>{time.toFixed(2)} / {timeline.totalDuration.toFixed(2)}s</span>
+            <span style={{ padding: '4px 10px', background: '#2a2a2a', borderRadius: 4, minWidth: 130, textAlign: 'center' }}>{currentScene ? currentScene.id : '—'}</span>
+          </div>
+        )}
+      </NarrationContext.Provider>
+    );
+  }
+  function useNarration() { return React.useContext(NarrationContext); }
+  function useSceneFade(sceneId, fadeIn = 0.5, fadeOut = 0.5) {
+    const { time, timeline } = React.useContext(NarrationContext);
+    if (!timeline) return 0;
+    const s = timeline.scenes.find(x => x.id === sceneId);
+    if (!s) return 0;
+    const inT = (time - s.start) / fadeIn;
+    const outT = (s.end - time) / fadeOut;
+    return Math.max(0, Math.min(1, Math.min(inT, outT)));
+  }
+  function Cue({ id, ramp = 0.6, children }) {
+    const { isCueTriggered, cueProgress } = React.useContext(NarrationContext);
+    return children(isCueTriggered(id), cueProgress(id, ramp));
+  }
+  return { NarrationStage, Cue, useNarration, useSceneFade };
+})();
+const { NarrationStage, Cue, useNarration, useSceneFade } = NarrationStageLib;
+
+// ── 디자인 token ────────────────────────────────────────────
+const C = {
+  paper: '#f5f1e8', paperDeep: '#ebe5d4',
+  ink: '#1a1a1a', inkSoft: '#3a3a3a', inkMute: '#888',
+  md: '#1B4965', html: '#C04A1A', green: '#7BC47F',
+};
+const F = {
+  display: '"Source Serif 4", "Noto Serif SC", Georgia, serif',
+  body: '"Noto Sans SC", "Noto Serif SC", "Source Serif 4", sans-serif',
+  mono: '"JetBrains Mono", Menlo, monospace',
+};
+
+// ── easing & interpolate ──────────────────────────────────
+const expoOut = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+const lerp = (a, b, t) => a + (b - a) * t;
+const lerpC = (from, to, t) => ({
+  x: lerp(from.x, to.x, t), y: lerp(from.y, to.y, t),
+  scale: lerp(from.scale, to.scale, t),
+  opacity: lerp(from.opacity ?? 1, to.opacity ?? 1, t),
+});
+
+// ── HERO 상태표（v3：scale 축소로 오버플로우 방지, y는 자막 영역에 남김） ──
+// 자막 바는 y=88-100 영역을 차지하므로，hero y ≤ 70%
+const HERO_KEYS = {
+  opening:             { md: { x: 50, y: 28, scale: 1.0, opacity: 1 }, html: { x: 50, y: 55, scale: 1.0, opacity: 1 } },
+  'md-side':           { md: { x: 72, y: 48, scale: 1.4, opacity: 1 }, html: { x: 92, y: 12, scale: 0.3, opacity: 0.5 } },
+  'html-side':         { md: { x: 8,  y: 12, scale: 0.3, opacity: 0.5 }, html: { x: 28, y: 48, scale: 1.4, opacity: 1 } },
+  'the-real-question': { md: { x: 30, y: 30, scale: 0.85, opacity: 1 }, html: { x: 70, y: 30, scale: 0.85, opacity: 1 } },
+  'the-split':         { md: { x: 22, y: 60, scale: 1.15, opacity: 1 }, html: { x: 78, y: 60, scale: 1.15, opacity: 1 } },
+  'activity-proof':    { md: { x: 18, y: 18, scale: 0.5, opacity: 1 }, html: { x: 82, y: 18, scale: 0.5, opacity: 1 } },
+  closing:             { md: { x: 28, y: 50, scale: 1.3, opacity: 1 }, html: { x: 72, y: 50, scale: 1.3, opacity: 1 } },
+};
+const SCENE_ORDER = ['opening', 'md-side', 'html-side', 'the-real-question', 'the-split', 'activity-proof', 'closing'];
+
+// ── HeroAnchor: 장면 간 hero + 지속 미동（3s 정지 제거）──
+const HeroAnchor = () => {
+  const { time, scene } = useNarration();
+  if (!scene) return null;
+  const idx = SCENE_ORDER.indexOf(scene.id);
+  const prevId = idx > 0 ? SCENE_ORDER[idx - 1] : scene.id;
+  const fromPos = HERO_KEYS[prevId];
+  const toPos = HERO_KEYS[scene.id];
+  const transitionDur = Math.min(2.0, scene.duration * 0.45);
+  const t = expoOut(Math.min(1, Math.max(0, (time - scene.start) / transitionDur)));
+  const md = lerpC(fromPos.md, toPos.md, t);
+  const html = lerpC(fromPos.html, toPos.html, t);
+
+  // ── 지속 미동: scale 호흡 + figure-8 표류（임의의 3s마다 변화가 있도록 보장）──
+  const breath = 1 + Math.sin(time * 0.7) * 0.018;
+  const driftXm = Math.cos(time * 0.32) * 0.6;
+  const driftYm = Math.sin(time * 0.41) * 0.5;
+  const driftXh = Math.sin(time * 0.28) * 0.6;
+  const driftYh = Math.cos(time * 0.37) * 0.5;
+
+  const baseSize = 240; // 360에서 축소
+  const renderHero = (label, pos, color, dx, dy) => {
+    const px = (pos.x + dx) * 19.2;
+    const py = (pos.y + dy) * 10.8;
+    return (
+      <div key={label} style={{
+        position: 'absolute', left: px, top: py,
+        transform: `translate(-50%, -50%) scale(${pos.scale * breath})`,
+        opacity: pos.opacity,
+        fontSize: baseSize, fontFamily: F.display, fontWeight: 800,
+        color, lineHeight: 1, letterSpacing: '-0.02em',
+        willChange: 'transform, opacity', pointerEvents: 'none',
+      }}>{label}</div>
+    );
+  };
+  return (
+    <div style={{ position: 'absolute', inset: 0, perspective: '2400px' }}>
+      <div style={{ position: 'absolute', inset: 0, transformStyle: 'preserve-3d', transform: 'rotateX(2deg) rotateY(-1deg)' }}>
+        {renderHero('md', md, C.md, driftXm, driftYm)}
+        {renderHero('html', html, C.html, driftXh, driftYh)}
+      </div>
+    </div>
+  );
+};
+
+// ── BackgroundDrift ────────────────────────────────────────
+const BackgroundDrift = () => {
+  const { time } = useNarration();
+  const dx = Math.sin(time * 0.08) * 16;
+  const dy = Math.cos(time * 0.06) * 12;
+  return (
+    <div style={{
+      position: 'absolute', inset: -40,
+      background: `radial-gradient(ellipse 1400px 800px at ${50 + dx/4}% ${50 + dy/4}%, ${C.paperDeep} 0%, ${C.paper} 60%, ${C.paper} 100%)`,
+      pointerEvents: 'none',
+    }} />
+  );
+};
+
+// ── Subtitles: B 사이트 스타일 자막（흰 글씨 + 검은 외곽선, 배경 없음, 한 줄 ≤12자 문장 분단 금지）──
+// 각 chunk를 구두점에 따라 짧은 행으로 나누고, 글자 수 비율에 따라 chunk 시간창을 분배하여 표시함
+
+// 분할 알고리즘: 먼저 강한 구두점（。！？\n）으로 문장 분리, 각 문장은 약한 구두점（，、；：）으로 나누어 maxLen까지 병합
+// 중영 혼합: 영문자(알파벳)는 0.5자로 계산(시각적 너비 근사)
+function visualLen(s) {
+  let n = 0;
+  for (const ch of s) n += /[a-zA-Z0-9 .,'":;\-]/.test(ch) ? 0.5 : 1;
+  return n;
+}
+function splitChunkToLines(text, maxLen = 13) {
+  const lines = [];
+  // 1. 강한 구두점으로 문장 분리(구두점 유지)
+  const sentences = [];
+  let buf = '';
+  for (const ch of text) {
+    buf += ch;
+    if ('。！？\n'.includes(ch)) {
+      if (buf.trim()) sentences.push(buf.trim());
+      buf = '';
+    }
+  }
+  if (buf.trim()) sentences.push(buf.trim());
+
+  // 2. 각 문장을 약한 구두점으로 나누고 maxLen 이내로 병합(마침표 경계를 넘지 않음)
+  for (const sent of sentences) {
+    if (visualLen(sent) <= maxLen) { lines.push(sent); continue; }
+    // 약한 구두점으로 분할(구두점은 앞구절에 유지)
+    const parts = [];
+    let pbuf = '';
+    for (const ch of sent) {
+      pbuf += ch;
+      if ('，、；：'.includes(ch)) { parts.push(pbuf); pbuf = ''; }
+    }
+    if (pbuf) parts.push(pbuf);
+    // maxLen까지 병합
+    let merged = '';
+    for (const p of parts) {
+      if (visualLen(merged) + visualLen(p) <= maxLen) merged += p;
+      else { if (merged) lines.push(merged); merged = p; }
+    }
+    if (merged) {
+      if (visualLen(merged) <= maxLen) lines.push(merged);
+      else {
+        // 안전망 강제 분할(드물게: 단일 구두점 구간이 maxLen 초과)
+        let hbuf = '';
+        for (const ch of merged) {
+          hbuf += ch;
+          if (visualLen(hbuf) >= maxLen) { lines.push(hbuf); hbuf = ''; }
+        }
+        if (hbuf) lines.push(hbuf);
+      }
+    }
+  }
+  return lines.filter(l => l.trim());
+}
+
+const Subtitles = () => {
+  const { time, scene } = useNarration();
+  if (!scene || !scene.chunks) return null;
+  const active = scene.chunks.find(c => time >= c.absoluteStart && time < c.absoluteEnd);
+  if (!active) return null;
+  const lines = splitChunkToLines(active.text);
+  if (lines.length === 0) return null;
+  // 글자 수 비율에 따라 chunk 지속 시간을 각 줄에 분배
+  const totalLen = lines.reduce((s, l) => s + visualLen(l), 0);
+  const chunkDur = active.absoluteEnd - active.absoluteStart;
+  let acc = active.absoluteStart;
+  let activeLine = lines[lines.length - 1];
+  let lineStart = active.absoluteStart;
+  for (const line of lines) {
+    const dur = (visualLen(line) / totalLen) * chunkDur;
+    if (time < acc + dur) { activeLine = line; lineStart = acc; break; }
+    acc += dur;
+  }
+  // 행내 페이드인 0.15s
+  const lineProg = Math.min(1, (time - lineStart) / 0.15);
+  return (
+    <div style={{
+      position: 'absolute', left: 0, right: 0, bottom: 90,
+      display: 'flex', justifyContent: 'center', pointerEvents: 'none', zIndex: 50,
+    }}>
+      <div key={lineStart} style={{
+        fontFamily: '"PingFang SC", "Noto Sans SC", -apple-system, sans-serif',
+        fontSize: 32, fontWeight: 600, color: C.ink,
+        letterSpacing: '0.04em', lineHeight: 1.2, textAlign: 'center',
+        // 연한 종이색 배경: 진한 먹색 글씨 + 아주 얇은 흰 오라로 글씨가 배경 위에서 튀어나오되 과하지 않음
+        textShadow: '0 0 6px rgba(245,241,232,0.9), 0 0 12px rgba(245,241,232,0.7), 0 1px 2px rgba(255,255,255,0.5)',
+        opacity: lineProg, transform: `translateY(${(1 - lineProg) * 4}px)`,
+      }}>
+        {activeLine}
+      </div>
+    </div>
+  );
+};
+
+// ── 구간 레이블 ─────────────────────────────────────────────
+const SceneLabel = ({ sceneId, text }) => {
+  const op = useSceneFade(sceneId, 0.4, 0.4);
+  return (
+    <div style={{
+      position: 'absolute', top: 56, left: 80, fontFamily: F.mono, fontSize: 14,
+      color: C.inkMute, letterSpacing: '0.22em', textTransform: 'uppercase', opacity: op,
+    }}>{text}</div>
+  );
+};
+
+// ── 각 scene 보조 요소 ──────────────────────────────────
+const OpeningAux = () => {
+  const op = useSceneFade('opening', 0.6, 1.0);
+  return (
+    <>
+      <Cue id="thariq">{(t, p) => (
+        <div style={{ position: 'absolute', top: 110, left: 100, opacity: op * p, transform: `translateY(${(1-p)*20}px)`, maxWidth: 700 }}>
+          <div style={{ fontFamily: F.mono, fontSize: 14, color: C.inkMute, marginBottom: 10, letterSpacing: '0.12em' }}>2026.05.07 · @THARIQ · CLAUDE CODE</div>
+          <div style={{ fontSize: 56, fontFamily: F.display, fontWeight: 700, lineHeight: 1.05, color: C.ink, fontStyle: 'italic' }}>
+            HTML is the new<br/>markdown.
+          </div>
+        </div>
+      )}</Cue>
+      <Cue id="two-camps">{(t, p) => t && (
+        <div style={{ position: 'absolute', top: 110, right: 100, opacity: op * p, transform: `translateY(${(1-p)*16}px)`, fontFamily: F.mono, fontSize: 18, color: C.inkSoft, textAlign: 'right' }}>
+          <div style={{ fontSize: 38, fontWeight: 700, color: C.ink, letterSpacing: '-0.02em' }}>5,000,000</div>
+          <div style={{ fontSize: 13, color: C.inkMute, letterSpacing: '0.18em', marginTop: 4 }}>읽기 · &lt; 24H</div>
+        </div>
+      )}</Cue>
+    </>
+  );
+};
+
+const MdSideAux = () => {
+  const op = useSceneFade('md-side', 0.6, 0.8);
+  return (
+    <>
+      <Cue id="agents-md">{(t, p) => (
+        <div style={{ position: 'absolute', left: 80, top: 200, opacity: op * p, transform: `translateY(${(1-p)*16}px)` }}>
+          <div style={{ fontFamily: F.mono, fontSize: 13, color: C.inkMute, marginBottom: 6, letterSpacing: '0.12em' }}>AGENTS.md · OpenAI 2025</div>
+          <div style={{ fontSize: 76, fontFamily: F.display, fontWeight: 700, color: C.ink, lineHeight: 0.95 }}>60,000<span style={{ color: C.html }}>+</span></div>
+          <div style={{ fontSize: 18, color: C.inkSoft, marginTop: 4, fontFamily: F.body }}>오픈 소스 프로젝트 채택</div>
+          <div style={{ marginTop: 14, fontFamily: F.mono, fontSize: 12, color: C.inkMute, letterSpacing: '0.1em' }}>AWS · ANTHROPIC · GOOGLE · MICROSOFT · OPENAI</div>
+        </div>
+      )}</Cue>
+      <Cue id="agents-md">{(t, p) => (
+        <div style={{ position: 'absolute', left: 80, top: 460, opacity: op * Math.max(0, p - 0.25) * 1.33, transform: `translateY(${(1-p)*16}px)` }}>
+          <div style={{ fontFamily: F.mono, fontSize: 13, color: C.inkMute, marginBottom: 4, letterSpacing: '0.12em' }}>karpathy/llm-wiki · CLAUDE.md</div>
+          <div style={{ fontSize: 64, fontFamily: F.display, fontWeight: 700, color: C.ink, lineHeight: 0.95 }}>50,000<span style={{ color: C.html }}>★</span></div>
+        </div>
+      )}</Cue>
+      <Cue id="token-saving">{(t, p) => t && (
+        <div style={{ position: 'absolute', left: 80, top: 640, opacity: op * p, transform: `translateY(${(1-p)*14}px)`, padding: '28px 36px', background: C.ink, color: C.paper, minWidth: 540, fontFamily: F.mono }}>
+          <div style={{ fontSize: 11, color: '#999', letterSpacing: '0.2em', marginBottom: 14 }}>CLOUDFLARE 실측 · 같은 블로그</div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 20, marginBottom: 14 }}>
+            <div>
+              <div style={{ fontSize: 11, color: '#777', marginBottom: 2 }}>HTML</div>
+              <div style={{ fontSize: 50, fontWeight: 700, color: C.html, lineHeight: 1 }}>16,180</div>
+            </div>
+            <div style={{ fontSize: 32, color: '#555' }}>→</div>
+            <div>
+              <div style={{ fontSize: 11, color: '#777', marginBottom: 2 }}>md</div>
+              <div style={{ fontSize: 50, fontWeight: 700, color: C.green, lineHeight: 1 }}>3,150</div>
+            </div>
+          </div>
+          <div style={{ fontSize: 70, fontFamily: F.display, fontWeight: 700, color: C.html, lineHeight: 0.95, fontStyle: 'italic' }}>−80% token</div>
+        </div>
+      )}</Cue>
+    </>
+  );
+};
+
+const HtmlSideAux = () => {
+  const op = useSceneFade('html-side', 0.6, 0.8);
+  const items = [
+    { cue: 'spatial', label: '공간 정보', desc: 'diff · 호출 그래프 · 아키텍처 다이어그램', md: '한 줄 텍스트', html: '좌우 대조', topPx: 220 },
+    { cue: 'dynamic', label: '동적 경험', desc: '버튼 · easing · 애니메이션', md: '문자 설명', html: '직접 보기', topPx: 410 },
+    { cue: 'structured', label: '구조화된 읽기', desc: '접이식 · 탭 · 사이드바', md: '선형 나열', html: '실제로 읽힘', topPx: 600 },
+  ];
+  return (
+    <>
+      {items.map((it, i) => (
+        <Cue key={it.cue} id={it.cue}>{(t, p) => (
+          <div style={{ position: 'absolute', right: 80, top: it.topPx, opacity: op * p, transform: `translateX(${(1-p)*40}px)`, display: 'flex', alignItems: 'baseline', gap: 22, justifyContent: 'flex-end' }}>
+            <div style={{ fontFamily: F.mono, fontSize: 16, color: C.html, fontWeight: 700, letterSpacing: '0.18em' }}>0{i+1}</div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: 32, fontFamily: F.display, fontWeight: 600, color: C.ink }}>{it.label}</div>
+              <div style={{ fontSize: 16, color: C.inkMute, fontFamily: F.mono, marginTop: 3 }}>{it.desc}</div>
+              <div style={{ marginTop: 10, display: 'flex', alignItems: 'baseline', gap: 12, justifyContent: 'flex-end', fontFamily: F.body }}>
+                <span style={{ fontSize: 19, color: C.inkMute, textDecoration: 'line-through' }}>md: {it.md}</span>
+                <span style={{ fontSize: 16, color: C.html }}>→</span>
+                <span style={{ fontSize: 19, color: C.html, fontWeight: 600 }}>html: {it.html}</span>
+              </div>
+            </div>
+          </div>
+        )}</Cue>
+      ))}
+    </>
+  );
+};
+
+const RealQuestionAux = () => {
+  const op = useSceneFade('the-real-question', 0.4, 0.4);
+  return (
+    <>
+      <Cue id="reveal">{(t, p) => (
+        <div style={{ position: 'absolute', top: 480, left: 0, right: 0, textAlign: 'center', opacity: op * p }}>
+          <div style={{ fontSize: 26, fontFamily: F.body, color: C.inkMute, marginBottom: 14, fontWeight: 300 }}>이 둘은 근본적으로</div>
+          <div style={{ fontSize: 170, fontFamily: F.display, fontWeight: 800, color: C.html, lineHeight: 0.95, letterSpacing: '0.05em', fontStyle: 'italic' }}>어리석은 질문</div>
+        </div>
+      )}</Cue>
+      <Cue id="question-md">{(t, p) => (
+        <div style={{ position: 'absolute', top: 770, left: 200, opacity: op * p, transform: `translateX(${(1-p)*-20}px)`, fontFamily: F.body, fontSize: 32, color: C.ink, textAlign: 'right', maxWidth: 360 }}>
+          <div style={{ fontFamily: F.mono, fontSize: 13, color: C.md, letterSpacing: '0.18em', marginBottom: 8 }}>MD 진영의 대답</div>
+          우리는 무엇으로<span style={{ color: C.md, fontStyle: 'italic', fontWeight: 700 }}>작성</span>?
+        </div>
+      )}</Cue>
+      <div style={{ position: 'absolute', top: 800, left: 0, right: 0, fontSize: 48, color: C.inkMute, textAlign: 'center', fontFamily: F.mono, opacity: op * 0.6 }}>≠</div>
+      <Cue id="question-html">{(t, p) => (
+        <div style={{ position: 'absolute', top: 770, right: 200, opacity: op * p, transform: `translateX(${(1-p)*20}px)`, fontFamily: F.body, fontSize: 32, color: C.ink, maxWidth: 360 }}>
+          <div style={{ fontFamily: F.mono, fontSize: 13, color: C.html, letterSpacing: '0.18em', marginBottom: 8 }}>HTML 진영의 대답</div>
+          우리는 사람들에게 무엇을<span style={{ color: C.html, fontStyle: 'italic', fontWeight: 700 }}>보여줌</span>?
+        </div>
+      )}</Cue>
+    </>
+  );
+};
+
+const SplitAux = () => {
+  const op = useSceneFade('the-split', 0.4, 0.6);
+  return (
+    <>
+      <Cue id="split">{(t, p) => (
+        <div style={{ position: 'absolute', top: 110, left: 0, right: 0, textAlign: 'center', opacity: op * p, transform: `translateY(${(1-p)*15}px)` }}>
+          <div style={{ fontSize: 22, color: C.inkMute, fontFamily: F.body, marginBottom: 6 }}>md와 html은 대체가 아니라</div>
+          <div style={{ fontSize: 110, fontFamily: F.display, fontWeight: 800, color: C.ink, letterSpacing: '0.04em', lineHeight: 1 }}>
+            분업<span style={{ color: C.html }}>관계</span>
+          </div>
+        </div>
+      )}</Cue>
+      <Cue id="ai-changes">{(t, p) => t && (
+        <div style={{ position: 'absolute', top: 320, left: 0, right: 0, textAlign: 'center', opacity: op * p, fontFamily: F.body, fontSize: 20, color: C.inkSoft, lineHeight: 1.7, maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ maxWidth: 980, margin: '0 auto' }}>
+            예전에는 당신이 md를 쓰고 스스로도 md를 읽었기 때문에 타협했다.<br/>
+            AI가 등장한 후, 생산 비용은 AI가 흡수했고, 원래 타협해야 했던 요구<strong>는 양쪽의 극단적 최적화로 분해되었다.</strong>
+          </div>
+        </div>
+      )}</Cue>
+      {/* 생산 측 / 소비 측 레이블을 hero 위에 배치하여 가려지지 않게 함 */}
+      <Cue id="md-side-win">{(t, p) => (
+        <div style={{ position: 'absolute', top: 470, left: '22%', transform: `translateX(-50%) translateY(${(1-p)*30}px)`, opacity: op * p, textAlign: 'center' }}>
+          <div style={{ fontFamily: F.mono, fontSize: 13, color: C.md, letterSpacing: '0.22em', marginBottom: 6 }}>생산 측</div>
+          <div style={{ fontSize: 19, color: C.inkSoft, fontFamily: F.body }}>가볍고 · 빠르고 · 토큰 효율적</div>
+        </div>
+      )}</Cue>
+      <Cue id="html-side-win">{(t, p) => (
+        <div style={{ position: 'absolute', top: 470, left: '78%', transform: `translateX(-50%) translateY(${(1-p)*30}px)`, opacity: op * p, textAlign: 'center' }}>
+          <div style={{ fontFamily: F.mono, fontSize: 13, color: C.html, letterSpacing: '0.22em', marginBottom: 6 }}>소비 측</div>
+          <div style={{ fontSize: 19, color: C.inkSoft, fontFamily: F.body }}>풍부함 · 시각화 · 공유 용이</div>
+        </div>
+      )}</Cue>
+    </>
+  );
+};
+
+const ProofAux = () => {
+  const op = useSceneFade('activity-proof', 0.4, 0.5);
+  return (
+    <>
+      <div style={{ position: 'absolute', top: 320, left: 0, right: 0, textAlign: 'center', opacity: op, fontSize: 28, fontFamily: F.body, color: C.ink }}>
+        가장 명확한 사례는 <span style={{ color: C.html, fontFamily: F.mono, fontWeight: 700 }}>@thariq</span>
+      </div>
+      <Cue id="thariq-march">{(t, p) => (
+        <div style={{ position: 'absolute', top: 410, left: '50%', transform: `translateX(-50%) translateY(${(1-p)*16}px)`, opacity: op * p, display: 'flex', alignItems: 'center', gap: 22 }}>
+          <div style={{ fontFamily: F.mono, fontSize: 19, color: C.md, fontWeight: 700, minWidth: 90, textAlign: 'right' }}>2026.03</div>
+          <div style={{ width: 12, height: 12, borderRadius: 6, background: C.md }} />
+          <div style={{ fontSize: 23, fontFamily: F.body, color: C.ink, minWidth: 380 }}>'Skills 가이드' — <span style={{ color: C.md }}>핵심은 여전히 markdown</span></div>
+        </div>
+      )}</Cue>
+      <Cue id="same-person">{(t, p) => (
+        <div style={{ position: 'absolute', top: 480, left: '50%', transform: `translateX(-50%) translateY(${(1-p)*16}px)`, opacity: op * p, display: 'flex', alignItems: 'center', gap: 22 }}>
+          <div style={{ fontFamily: F.mono, fontSize: 19, color: C.html, fontWeight: 700, minWidth: 90, textAlign: 'right' }}>2026.05</div>
+          <div style={{ width: 12, height: 12, borderRadius: 6, background: C.html }} />
+          <div style={{ fontSize: 23, fontFamily: F.body, color: C.ink, minWidth: 380 }}>《HTML is the new markdown》</div>
+        </div>
+      )}</Cue>
+      <Cue id="same-person">{(t, p) => t && (
+        <div style={{ position: 'absolute', top: 580, left: 0, right: 0, textAlign: 'center', opacity: op * p, fontFamily: F.display, fontSize: 28, color: C.ink, fontStyle: 'italic' }}>
+          같은 사람 · 양쪽이 각각 정상에 오름 · 서로 충돌 없음
+        </div>
+      )}</Cue>
+      <Cue id="karpathy-lex">{(t, p) => t && (
+        <div style={{ position: 'absolute', top: 700, left: '50%', transform: `translateX(-50%) translateY(${(1-p)*14}px)`, opacity: op * p, padding: '18px 28px', background: C.ink, color: C.paper, display: 'flex', alignItems: 'center', gap: 30 }}>
+          <div style={{ fontFamily: F.mono, fontSize: 12, color: '#999', letterSpacing: '0.2em' }}>KARPATHY × LEX</div>
+          <div style={{ display: 'flex', gap: 20, alignItems: 'center', fontFamily: F.body }}>
+            <div>
+              <div style={{ fontSize: 10, color: '#999', fontFamily: F.mono, marginBottom: 2, letterSpacing: '0.12em' }}>핵심</div>
+              <div style={{ fontSize: 19, color: C.md, fontWeight: 600 }}>markdown wiki</div>
+            </div>
+            <div style={{ fontSize: 19, color: '#666' }}>+</div>
+            <div>
+              <div style={{ fontSize: 10, color: '#999', fontFamily: F.mono, marginBottom: 2, letterSpacing: '0.12em' }}>외형</div>
+              <div style={{ fontSize: 19, color: C.html, fontWeight: 600 }}>동적 HTML</div>
+            </div>
+          </div>
+        </div>
+      )}</Cue>
+    </>
+  );
+};
+
+const ClosingAux = () => {
+  const op = useSceneFade('closing', 0.3, 0.6);
+  return (
+    <>
+      <Cue id="final">{(t, p) => (
+        <div style={{ position: 'absolute', top: 110, left: 0, right: 0, textAlign: 'center', opacity: op * p, transform: `translateY(${(1-p)*12}px)` }}>
+          <div style={{ fontSize: 22, color: C.inkMute, fontFamily: F.body, marginBottom: 12 }}>다음에 싸우고 싶을 때, 먼저 스스로에게 물어라 ——</div>
+          <div style={{ fontSize: 68, fontFamily: F.display, fontWeight: 700, color: C.ink, lineHeight: 1.15 }}>
+            당신이 마주한 것은 '<span style={{ color: C.md }}>작성</span>',
+            아니면 '<span style={{ color: C.html }}>보기</span>'인가?
+          </div>
+        </div>
+      )}</Cue>
+      <Cue id="md-final">{(t, p) => (
+        <div style={{ position: 'absolute', top: 740, left: '28%', transform: `translateX(-50%) translateY(${(1-p)*16}px)`, opacity: op * p, textAlign: 'center' }}>
+          <div style={{ fontSize: 42, fontFamily: F.display, fontWeight: 600, color: C.md, letterSpacing: '0.04em' }}>작성</div>
+          <div style={{ fontSize: 22, color: C.inkMute, fontFamily: F.mono, marginTop: 4 }}>↓</div>
+        </div>
+      )}</Cue>
+      <Cue id="html-final">{(t, p) => (
+        <div style={{ position: 'absolute', top: 740, left: '72%', transform: `translateX(-50%) translateY(${(1-p)*16}px)`, opacity: op * p, textAlign: 'center' }}>
+          <div style={{ fontSize: 42, fontFamily: F.display, fontWeight: 600, color: C.html, letterSpacing: '0.04em' }}>보기</div>
+          <div style={{ fontSize: 22, color: C.inkMute, fontFamily: F.mono, marginTop: 4 }}>↓</div>
+        </div>
+      )}</Cue>
+    </>
+  );
+};
+
+// ── 메인 App ─────────────────────────────────────────
+const App = () => (
+  <NarrationStage timeline={TIMELINE} audioSrc="_narration/voiceover.mp3" width={1920} height={1080} background={C.paper}>
+    <BackgroundDrift />
+    <HeroAnchor />
+    <SceneLabel sceneId="opening" text="2026.05.07 · X" />
+    <SceneLabel sceneId="md-side" text="MD 진영의 증거" />
+    <SceneLabel sceneId="html-side" text="HTML 진영의 증거" />
+    <SceneLabel sceneId="the-real-question" text="진짜 문제" />
+    <SceneLabel sceneId="the-split" text="MD 생산 · HTML 소비" />
+    <SceneLabel sceneId="activity-proof" text="실제 사례" />
+    <SceneLabel sceneId="closing" text="맺음말" />
+    <OpeningAux />
+    <MdSideAux />
+    <HtmlSideAux />
+    <RealQuestionAux />
+    <SplitAux />
+    <ProofAux />
+    <ClosingAux />
+    {/* 자막 바는 최상위에 놓음(z-index는 DOM 순서상 자연히 마지막), 아래 내용을 덮는다 */}
+    <Subtitles />
+    <div style={{ position: 'absolute', bottom: 24, right: 36, fontSize: 11, color: 'rgba(26,26,26,0.35)', letterSpacing: '0.2em', fontFamily: F.mono, pointerEvents: 'none' }}>
+      Created by 디자인 스튜디오
+    </div>
+  </NarrationStage>
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<script>
+  // ── Fit 1920 stage to viewport ─────────────────────────────────
+  // ≥1920(녹화용 1920×1080 포함)은 1:1 원래 크기 유지, 축소하지 않음；
+  // 1920보다 좁을 때만 축소하며, 40을 뺀 것은 body 좌우 각 20px 패딩 때문
+  (function () {
+    var root = document.getElementById('root');
+    function rescale() {
+      var cw = document.documentElement.clientWidth;
+      root.style.zoom = cw >= 1920 ? 1 : (cw - 40) / 1920;
+    }
+    rescale();
+    window.addEventListener('resize', rescale);
+  })();
+</script>
+</body>
+</html>
