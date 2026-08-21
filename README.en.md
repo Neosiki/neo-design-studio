@@ -339,3 +339,6 @@ Huasheng is an AI-native coder, independent developer, and AI content creator. N
 | Developer Hub | bookai.top | https://bookai.top |
 
 For collaborations or sponsored content, DM on any of the above.
+
+
+<!-- 파일 역할: 프로젝트 영문 개요와 실행 안내 -->
