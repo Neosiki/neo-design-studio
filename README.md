@@ -47,3 +47,8 @@ curl http://127.0.0.1:7801/ops
 ## GitHub 자동화 스킬
 
 자동화 트리거, 품질 게이트, 실제 영상·이미지·실행 샘플은 [GitHub 자동화 README](.github/README.md)에서 확인할 수 있습니다.
+
+
+## 미디어 바로 보기
+
+GIF·PNG 미리보기와 MP4 원본은 [GitHub 자동화 README](.github/README.md)에서 바로 확인할 수 있습니다.

@@ -89,3 +89,23 @@ curl http://127.0.0.1:7801/ops
 ![3D 영어 학습 앱 미리보기](../assets/readme/korean-3d-learning-app.png)
 
 지진 데이터 콘텐츠는 지역·기간·단위·출처·해석 한계를 명시하고 지도·차트·기사 서술의 범위를 일치시키는 방식으로 검수합니다.
+
+## 바로 보는 이미지와 영상
+
+### 기능 개요 애니메이션
+
+![Neo Design Studio 기능 개요 애니메이션](../assets/feature-overview/design_studio_feature_overview.gif)
+
+위 GIF는 GitHub 페이지에서 별도 조작 없이 자동 재생되는 미리보기입니다. 고화질 영상은 [MP4 원본 바로 열기](https://github.com/Neosiki/neo-design-studio/raw/refs/heads/master/assets/feature-overview/design_studio_feature_overview.mp4)를 선택하면 GitHub 영상 플레이어에서 확인할 수 있습니다.
+
+### 3D 영어 학습 앱 이미지
+
+![3D 영어 학습 앱 미리보기](../assets/readme/korean-3d-learning-app.png)
+
+관련 온라인 데모: [English Explorer](https://neosiki.github.io/english-explorer/) · [3D 영어 학습 소개](https://neosiki.github.io/english-learning.html)
+
+### 지진 디지털저널리즘 결과물
+
+![지진 디지털저널리즘용 인포그래픽 샘플](../assets/showcases/infographic/infographic-build.png)
+
+관련 사례: [지진 디지털저널리즘 문서](../docs/examples/data-journalism-korean-earthquake.md) · [관련 저장소](https://github.com/Neosiki/korean-earthquake-data-journalism)
