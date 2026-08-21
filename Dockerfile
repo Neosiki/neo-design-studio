@@ -52,4 +52,5 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
 CMD ["sh", "-c", "node scripts/design/serve.mjs --host \"$DESIGN_HOST\" --port \"$DESIGN_PORT\" ${DESIGN_TOKEN:+--token \"$DESIGN_TOKEN\"}"]
 
 
-<!-- 파일 역할: 컨테이너 실행 환경 정의 -->
+# 파일 역할: 컨테이너 실행 환경 정의
+
