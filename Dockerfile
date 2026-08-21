@@ -50,3 +50,6 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
   CMD node -e "fetch('http://127.0.0.1:'+(process.env.DESIGN_PORT||7801)+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 
 CMD ["sh", "-c", "node scripts/design/serve.mjs --host \"$DESIGN_HOST\" --port \"$DESIGN_PORT\" ${DESIGN_TOKEN:+--token \"$DESIGN_TOKEN\"}"]
+
+
+<!-- 파일 역할: 컨테이너 실행 환경 정의 -->
