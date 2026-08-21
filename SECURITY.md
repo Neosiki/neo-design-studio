@@ -50,3 +50,6 @@ Mainstream registry packages only (`playwright`, `sharp`, `pptxgenjs`, `pdf-lib`
 ## Reporting
 
 Found something that contradicts this document? Please open an issue — a mismatch between this file and the code is treated as a bug.
+
+
+<!-- 파일 역할: 보안 원칙과 데이터 흐름 -->
