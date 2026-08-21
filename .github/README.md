@@ -75,3 +75,17 @@ curl http://127.0.0.1:7801/ops
 - [`DESIGN_CLI_KO.md`](../docs/DESIGN_CLI_KO.md) — CLI 사용법
 - [`MCP_API_KO.md`](../docs/MCP_API_KO.md) — MCP·REST 연동
 - [`SECURITY.md`](../SECURITY.md) — 보안 원칙과 데이터 흐름
+
+
+## 교육·공공 데이터 사례
+
+자동화 스킬은 제작형 교육 콘텐츠와 공공 데이터 콘텐츠에도 적용됩니다. [실제 사례 샘플 안내](../docs/examples/README.md)에서 영어 학습 앱과 지진 디지털저널리즘의 입력·구조화·제작·검수·산출물을 비교할 수 있습니다.
+
+- [3D 생활영어 학습 앱 사례](../docs/examples/3d-learning-app-korean.md)
+- [지진 디지털저널리즘 사례](../docs/examples/data-journalism-korean-earthquake.md)
+- [English Explorer 온라인 데모](https://neosiki.github.io/english-explorer/)
+- [3D 영어 학습 소개 페이지](https://neosiki.github.io/english-learning.html)
+
+![3D 영어 학습 앱 미리보기](../assets/readme/korean-3d-learning-app.png)
+
+지진 데이터 콘텐츠는 지역·기간·단위·출처·해석 한계를 명시하고 지도·차트·기사 서술의 범위를 일치시키는 방식으로 검수합니다.
