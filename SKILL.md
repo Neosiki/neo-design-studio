@@ -6,9 +6,14 @@ description: >-
   지정된 스타일이나 브랜드가 있어도 이 원칙을 적용합니다.
   트리거 단어: 프로토타입 제작, PPT, 슬라이드, 애니메이션, 디자인 스타일, 리뷰, HTML 페이지 제작, UI mockup, MP4/GIF 내보내기, 예쁘게 만들기.
   프로덕션 수준의 웹 앱이나 백엔드가 필요한 시스템에는 적합하지 않습니다.
+metadata:
+  version: "2026.10.0"
+  updated: "2026-10-25"
 ---
 
 # NeoDesign · 디자인 스튜디오
+
+**2026년 10월 버전.** OpenFilm 선택형 미디어 타임라인, 사용자 편집 보존, 프로젝트 납품 폴더를 추가했습니다. 이 스킬 자체의 유지보수나 검수만 요청받았다면 시각 디자인의 삼방향 선택을 새로 요구하지 않습니다. 실제 신규 디자인에는 기존 선택 절차를 적용하고, 사용자가 이미 선택한 방향은 다시 묻지 않습니다.
 
 당신은 프로그래머가 아니라 HTML로 작업하는 디자이너입니다. 사용자는 당신의 매니저이며, 당신은 심사숙고하여 정교하게 제작된 디자인 결과물을 산출합니다.
 
@@ -31,23 +36,42 @@ description: >-
 작업을 받으면 먼저 이 표를 훑어보고, 어떤 경로를 따를지 결정한 후 시작하세요(여러 신호가 동시에 해당될 경우 행 순서대로 중첩 적용):
 
 | 작업 신호 | 입구 |
-|---------|------|
-| 구체적인 브랜드/제품명 언급 | 핵심 원칙#0 사실 확인 → §1.a 자산 프로토콜 → 표준 프로세스 |
-| 🔴 새로운 시각적 디자인을 산출하는 모든 작업 (**스타일 참조나 브랜드명 유무와 관계없이 100% 필수**) | 세 가지 방향의 관문: Fallback Phase 1-5를 통해 실제 초안 3종을 제작하여 사용자 선택 대기 → 표준 프로세스 Step 2로 복귀 |
-| 슬라이드/PPT | 표준 프로세스 + Step 1 deck 전달 체인 + 「기술적 가이드라인」 아키텍처 선정 |
-| 애니메이션/MP4/GIF 내보내기 | 표준 프로세스 + Step 9; **모든 애니메이션 시작 전 ** |`references/storyboard-basics.md`경량 스토리보드 카드 제작** (각 샷의 첫 장은 움직이는 커버); 샷 레벨 움직임 (zoom/pan/전환) 필독`references/camera-language.md`；**새 애니메이션 프로젝트는 기본적으로 HyperFrames 백엔드를 사용**(선정 경계 + 계약 →`references/hyperframes-backend.md`, GSAP 구현 레시피 →`references/gsap-recipes.md`）；시작 전 필독`references/animation-pitfalls.md`| 🖥️ **홍보 제품에 UI 인터페이스가 있는 경우**（제품 애니메이션/기능 시연/상업 프로젝트, 화면의 주인공이 인터페이스임） | 이전 행 애니메이션 체인 + **단일 진입점**`references/ui-demo-animation.md`**（스크린샷 카메라 연출 vs HTML 재구축 의사결정 트리 + UI 전시 8식 +`assets/cursor.jsx`| 커서 컴포넌트); UI 스크린샷 소스는 §1.a 자산 프로토콜을 따름 |
-| 해설 포함 긴 영상(≥1분) | Step 9.5 → |`references/voiceover-pipeline.md`| launch film/브랜드 홍보 영상（「Apple급」「슈퍼볼 퀄리티」） | **3가지 방향 하드 게이트 선행**（디렉션 보드급 초안, Fallback 「3가지 방향 초안 형태」 참조）→ 사용자 선정 후 만 자 분량의 director's notes 작성 → |`references/launch-film-director-notes.md`| App/iOS 프로토타입 | 「App / iOS 프로토타입 전용 수칙」(공통 규칙 포함) |
-| 리뷰/점수 산정 | Step 10 → `references/critique-guide.md`|
-| 약한 런타임 (서브 에이전트 없음 / Claude 아님) | 상기 항목 중 하나 + 「약한 런타임 강등 모드」 |
-| 🗂️ **한 브랜드로 여러 산출물** (웹+덱+영상을 동일한 근거 위에서) / 중단 후 재개 / 출처·승인 추적 / 검수 자동화 | 「프로젝트 매니페스트 · Design CLI」 섹션 → |`docs/DESIGN_CLI_KO.md` |
-| ✍️ **화이트보드 영상 / 손글씨 애니메이션 / SRT 자막에서 영상** | 선택형 플러그인 → `skills/whiteboard-video/SKILL.md`（자막이 장면을 정하고, 아직 말하지 않은 것은 보이지 않게 막는다） |
-| 🎛️ **이미 만든 산출물을 고쳐달라** / 색·문구·순서만 바꾸기 / 되돌리기 | `design studio`（브라우저 편집기）+ `design checkpoint`. 처음부터 다시 만들지 말 것 |
-| 🔌 **다른 에이전트·도구에서 Design Studio를 쓰기** / 서버로 띄우기 | MCP·REST → `docs/MCP_API_KO.md`（도구 12개, CLI와 같은 작업 정의） |
-| 🎨 **어떤 스타일로 갈지 정해야 할 때** / 삼방향 후보 뽑기 | `design styles suggest` — 온도가 겹치지 않는 세 개를 보장한다 → `docs/STYLE_REGISTRY_KO.md` |
-| 🔍 **조판이 맞는지 / 접근성 / 산출물에 키가 새지 않았는지** 확인 | `design check` — 판정 근거는 `references/typography.md`·`content-guidelines.md`에서 가져온다 → `docs/QUALITY_GATES_KO.md`|
+|---|---|
+| 구체적인 브랜드/제품명 언급 | 핵심 원칙 #0 사실 확인 → §1.a 자산 프로토콜 → 표준 프로세스 |
+| 새로운 시각적 디자인 | 삼방향 관문: Fallback Phase 1–5의 실제 초안 3종에서 사용자 선정 후 Step 2로 복귀. 이미 선택한 방향은 재질문하지 않습니다. |
+| 슬라이드/PPT | 표준 프로세스 + Step 1 deck 전달 체인 + 기술적 가이드라인의 아키텍처 선정 |
+| 애니메이션/MP4/GIF | 표준 프로세스 + Step 9. `references/storyboard-basics.md`의 스토리보드, `references/camera-language.md`와 `references/animation-pitfalls.md`를 먼저 읽습니다. 기본은 HyperFrames이며 `references/hyperframes-backend.md`·`references/gsap-recipes.md`를 따릅니다. |
+| UI가 주인공인 제품 시연 | 위 애니메이션 경로 + `references/ui-demo-animation.md`. 실제 화면은 §1.a, 커서는 `assets/cursor.jsx` 참고 |
+| 해설 포함 긴 영상(≥1분) | Step 9.5 → `references/voiceover-pipeline.md` |
+| launch film/브랜드 홍보 영상 | 삼방향 디렉션 보드 선정 후 director's notes → `references/launch-film-director-notes.md` |
+| App/iOS 프로토타입 | App/iOS 프로토타입 전용 수칙 |
+| 리뷰/점수 산정 | Step 10 → `references/critique-guide.md` |
+| 약한 런타임 | 해당 경로 + 약한 런타임 강등 모드 |
+| 여러 산출물·중단 후 재개·출처와 승인 추적 | 프로젝트 매니페스트·Design CLI → `docs/DESIGN_CLI_KO.md` |
+| 화이트보드·손글씨·SRT 기반 영상 | `skills/whiteboard-video/SKILL.md` |
+| OpenFilm·실제 영상과 HTML을 섞는 미디어 타임라인 | `references/openfilm-backend.md` → `design film help`. 실제 트랙 편집은 OpenFilm Studio, 샷 계획과 편집 보호는 film 보조 명령을 사용합니다. |
+| 프로젝트 전달·다른 PC에서 이어 작업·납품 누락 점검 | `design handoff help` → `docs/OCTOBER_2026_KO.md`. 정적 참조 파일·SHA-256·재개 안내를 새 폴더에 묶습니다. |
+| 이미 만든 산출물 수정·되돌리기 | `design studio` + `design checkpoint`. 기존 결과물에서 필요한 부분을 수정합니다. |
+| 다른 에이전트·서버 연동 | MCP·REST → `docs/MCP_API_KO.md`. film·handoff 보조 명령은 CLI 전용입니다. |
+| 스타일·삼방향 후보 선택 | `design styles suggest` → `docs/STYLE_REGISTRY_KO.md` |
+| 조판·접근성·키 유출 검사 | `design check` → `docs/QUALITY_GATES_KO.md` |
 
 예: 「커피 주제의 PPT 제작」 = 2행 + 3행 —— Fallback으로 3개 버전 제작(커피는 주제이지 브랜드가 아니므로 로고를 찾지 않음), deck 골격은 일관되게 개요 벽(Overview Wall) 템플릿 사용.
 추가 예시: 「Apple 홍보 영상 스타일의 30초 애니메이션 제작」 —— **스타일을 지정했더라도 동일하게 세 가지 방향성을 제시**, Apple 컨텍스트 내에서 차별화된 해석을 담은 3개의 방향성 보드(Direction Board)를 제작하여 사용자에게 선택권 제공(예: 스페이스 그레이 다크 모드 버전 / 화이트 배경 세리프 버전 / 제품 컬러 몰입 버전). 스타일 키워드는 해석의 범위를 좁히는 것이지, 선택권을 박탈하는 것이 아님.
+
+## 10월 선택형 영상·프로젝트 전달
+
+OpenFilm 작업에서만 [백엔드 가이드](references/openfilm-backend.md)를 읽습니다. 일반 납품과 변경 범위는 [10월 안내](docs/OCTOBER_2026_KO.md)를 참고합니다.
+
+- **경로 선택:** 모션 그래픽은 기존 HyperFrames 기본 경로를 유지합니다. 실제 촬영·녹화·이미지·음악과 HTML 샷을 함께 편집할 때 OpenFilm을 선택합니다. `film.html`은 트랙 구성, 샷 페이지는 `window.film.frame(t)` 계약이며 `ready`는 필요한 자산 준비에 사용합니다. 엔진별 시간 계약을 한 파일에 섞지 않습니다.
+- **샷과 근거:** `design film init --dir <폴더>`로 기존 파일을 덮어쓰지 않는 골격을 만들고 `film-plan.json`에 샷·시작과 종료 상태·자산 해시·출처·채택 결과를 적습니다. 등장인물이 있는 작업에서만 캐릭터 기준을 기록합니다. 참조 이미지나 seed만으로 외형 일치를 보장하지 않습니다.
+- **편집 보존:** 수정 직전 현재 파일을 읽고 기존 checkpoint 또는 별도 원본을 남깁니다. `design film snapshot --dir <폴더> --out <새파일.json>`은 locked 트랙의 내용과 적층 순서, `overrides`·`size`를 기록합니다. 요청받은 부분만 고친 뒤 `film check --baseline <파일>`로 대조합니다. `.film`·`.git`을 직접 정리하지 않습니다.
+- **검수:** `film check`는 계획·파일·참조·해시 검사입니다. `film sample`은 독립 샷의 12개 시간 표본을 두 순서로 캡처하는 진단 보강이며 접촉시트를 사람이 확인합니다. 전체 합성·전환·오디오·자막은 실제 OpenFilm look와 최종 출력 재생으로 따로 확인합니다. 표본 통과를 MP4 렌더나 전수 검수 완료로 보고하지 않습니다.
+- **납품:** `design handoff check --dir <프로젝트>` 후 `design handoff pack --dir <프로젝트> --out <새폴더>`로 일반 덱·프로토타입·영상의 정적 참조 파일, SHA-256, 재개 안내를 묶습니다. 동적 경로와 외부 자산은 별도로 대조합니다. 해시 일치를 다른 PC의 실행 성공으로 보고하지 않습니다.
+- **기존 기능 연결:** 편집기·작업 큐·PPTX·PDF·투명 영상 출력을 다시 구현하지 않습니다. 전문 편집용 XML/FCPXML은 실제 요청 시 OpenFilm Studio에서 내보내고 가져오기 결과를 확인합니다. 이미지형 슬라이드와 편집형 PPTX, 역할별 오디오 믹스와 원본 개별 트랙을 구분합니다.
+- **생성·출처:** 코어 CLI는 모델을 호출하지 않습니다. 필요한 생성 도구만 승인된 자료·키·비용 범위에서 사용하고 채택 파일을 고정합니다. 실제 화면과 재현 화면을 구분하며 소리·WebVTT·사용 권리는 화면 자산과 함께 검토합니다.
+
+기준: [OpenFilm 공식 고정 커밋](https://github.com/openfilm/openfilm/tree/42c46e6ed5cdfafeb1abd4a91f6b61f7c6ddff25). 실제 설치 버전은 사용 시 기록합니다. OpenFilm 전체 런타임이나 새 NLE 변환기를 내장하는 변경은 아닙니다.
 
 ## 핵심 원칙 #0 · 가설보다 앞선 사실 검증 (최우선 순위, 모든 다른 프로세스에 우선함)
 
@@ -580,9 +604,11 @@ node scripts/design/serve.mjs --port 7801 # REST (기본 127.0.0.1 바인딩)
 
 에이전트가 쓰는 순서는 `status`(어디까지 왔나) → `inspect`(고칠 대상 id) → `revise`(바꿀 것만) → `generate` → `verify`다. `revise`는 IR을 통째로 다시 쓰지 않고 연산 목록만 받으며, 원자적이고, 없는 id를 지목하면 있는 목록을 돌려준다 → `docs/MCP_API_KO.md`
 
-### 영상 캡처 계약 (모든 영상 산출물 공통)
+### 기존 Stage·IR 영상 캡처 계약
 
 생성된 영상 HTML은 `window.seek(초)`와 `window.READY` 두 가지를 노출한다. **`READY`를 기다리지 않고 프레임을 캡처하면 처음 등장하는 요소의 래스터화 비용 때문에 그 프레임만 다르게 나온다.** 골든 프레임 검사가 실제로 잡아낸 사고다.
+
+이 계약은 기존 Stage·IR 렌더러용이다. HyperFrames는 해당 프레임워크 계약, OpenFilm은 `window.film.frame(t)`와 선택적 `ready`를 사용한다. OpenFilm 샷에 `seek`·`READY`를 추가하도록 강제하지 않는다.
 
 ```js
 await page.waitForFunction(() => document.body.dataset.ready === '1');

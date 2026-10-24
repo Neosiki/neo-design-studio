@@ -33,8 +33,10 @@ import { getArtifactFreshness as getArtifactFreshnessFn } from './lib/project.mj
 import { createJob, loadJob, updateJob, startJob, setJobProgress, isJobCancelled, cancelJob, retryJob, listJobs } from './lib/jobs.mjs';
 import { buildSuggestions, previewSuggestion, applySuggestion } from './lib/suggestions.mjs';
 import { stylesCommand } from './lib/styles/cli.mjs';
+import { filmCommand } from './lib/film/cli.mjs';
+import { handoffCommand } from './lib/handoff.mjs';
 
-const VERSION = '1.0.0';
+const VERSION = '2026.10.0';
 
 /* ── 인자 파싱 ─────────────────────────────────────────────────── */
 
@@ -576,6 +578,10 @@ ${c.bold('에이전트 · 서버')}
                 두 표면 모두 같은 작업 정의를 쓴다 (lib/api/operations.mjs)
 
 ${c.bold('선택형 플러그인')}
+  handoff     프로젝트 전달 — check/pack (새 폴더·정적 참조·SHA-256·재개 안내)
+                자세히: design handoff help
+  film        OpenFilm 제작 준비 — init/check/snapshot/sample
+                샷별 페이지·출처·편집 보존·두 순서 표본 검수. design film help
   whiteboard  SRT 기반 화이트보드 영상 — plan/annotate/preview/render/verify
                 자세히: design whiteboard help
 
@@ -605,9 +611,11 @@ const COMMANDS = {
   jobs: cmdJobs, cache: cmdCache, suggest: cmdSuggest,
   styles: stylesCommand,
   whiteboard: whiteboardCommand,
+  film: filmCommand,
+  handoff: handoffCommand,
 };
 
-function main() {
+async function main() {
   const [, , cmd, ...rest] = process.argv;
   if (!cmd || cmd === '--help' || cmd === '-h') return cmdHelp();
   if (cmd === '--version' || cmd === '-v') { console.log(VERSION); return EXIT.OK; }
@@ -620,7 +628,7 @@ function main() {
   }
 
   try {
-    return handler(parseArgs(rest));
+    return await handler(parseArgs(rest));
   } catch (err) {
     log.error(err.message);
     if (process.env.DESIGN_DEBUG) console.error(err.stack);
@@ -628,4 +636,4 @@ function main() {
   }
 }
 
-process.exit(main());
+process.exit(await main());

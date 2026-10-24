@@ -1,5 +1,8 @@
 <sub>🌐 <a href="README.md">한국어</a> · <b>English</b></sub>
 
+October release **2026.10.0** adds an optional OpenFilm workflow, protection for manual timeline edits, and delivery folders with reference checks and SHA-256 manifests. Existing HyperFrames and editable slide exporters remain available. See [the October guide](docs/OCTOBER_2026_KO.md). New `film` and `handoff` helpers are CLI-only; OpenFilm Studio is a separate runtime.
+
+
 <div align="center">
 
 # 디자인 스튜디오

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1920, initial-scale=1">
+  <title>NeoDesign · title scene</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #101a22; }
+    body { font-family: "Segoe UI", "Malgun Gothic", sans-serif; color: #f1f2ec; }
+    #stage { width: 1920px; height: 1080px; position: relative; overflow: hidden; }
+    #accent { position: absolute; left: 1420px; top: 294px; width: 264px; height: 264px; border: 3px solid #ffad77; border-radius: 50%; transform-origin: center; }
+    #label { position: absolute; left: 156px; top: 268px; font-size: 29px; font-weight: 600; letter-spacing: 0.12em; }
+    #title { position: absolute; left: 150px; top: 355px; margin: 0; font-size: 104px; line-height: 1.22; font-weight: 700; letter-spacing: 0; }
+    #rule { position: absolute; left: 156px; top: 686px; height: 4px; width: 116px; background: #ffad77; transform-origin: left center; }
+    #caption { position: absolute; left: 156px; top: 744px; margin: 0; font-size: 31px; line-height: 1.6; color: #c5cdd2; }
+  </style>
+</head>
+<body>
+  <main id="stage" aria-label="NeoDesign motion sample">
+    <div id="accent" aria-hidden="true"></div>
+    <div id="label">NEODESIGN</div>
+    <h1 id="title">하나의 생각,<br>하나의 장면.</h1>
+    <div id="rule" aria-hidden="true"></div>
+    <p id="caption">로컬에서 재생하는 4초 모션 샘플</p>
+  </main>
+  <script>
+    (() => {
+      const duration = 4;
+      const elements = Object.fromEntries(['accent', 'label', 'title', 'rule', 'caption'].map((id) => [id, document.getElementById(id)]));
+      const clamp = (value) => Math.max(0, Math.min(1, value));
+      const ease = (value) => 1 - Math.pow(1 - clamp(value), 3);
+      function frame(seconds) {
+        const time = Number.isFinite(seconds) ? Math.max(0, Math.min(duration, seconds)) : 0;
+        const reveal = ease((time - 0.12) / 0.85);
+        const detail = ease((time - 0.42) / 0.85);
+        elements.label.style.opacity = String(reveal);
+        elements.title.style.opacity = String(reveal);
+        elements.title.style.transform = `translateY(${(1 - reveal) * 42}px)`;
+        elements.rule.style.transform = `scaleX(${detail})`;
+        elements.caption.style.opacity = String(detail);
+        elements.caption.style.transform = `translateY(${(1 - detail) * 20}px)`;
+        elements.accent.style.opacity = String(0.3 + 0.7 * reveal);
+        elements.accent.style.transform = `translate(${(1 - reveal) * 90 - time * 7}px, ${-time * 5}px) scale(${0.82 + reveal * 0.18})`;
+      }
+      frame(0);
+      window.film = { duration, frame, ready: Promise.resolve() };
+    })();
+  </script>
+</body>
+</html>

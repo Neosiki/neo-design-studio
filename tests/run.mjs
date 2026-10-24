@@ -27,6 +27,9 @@ import { run as apiTests, runAsync as apiAsyncTests } from './api.mjs';
 import { run as stylesTests } from './styles.mjs';
 import { run as qualityTests } from './quality.mjs';
 import { run as p0Tests } from './p0.mjs';
+import { run as filmTests } from './film-plan.mjs';
+import { run as filmBrowserUnitTests } from './film-browser.mjs';
+import { run as handoffTests } from './handoff.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CLI = path.join(ROOT, 'scripts', 'design', 'cli.mjs');
@@ -427,6 +430,11 @@ console.log('\n스타일 레지스트리');
 stylesTests(test, assert, design);
 
 p0Tests(test, assert);
+
+console.log('\nOpenFilm 선택형 제작 준비');
+filmTests(test, assert);
+filmBrowserUnitTests(test, assert);
+handoffTests(test, assert);
 
 console.log('\nMCP · REST · revise 연산');
 apiTests(test, assert);

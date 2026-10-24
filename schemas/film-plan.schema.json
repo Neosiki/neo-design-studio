@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NeoDesign optional film plan",
+  "description": "Independent sidecar for shots, character continuity, frozen assets and generation selections. Durations are seconds. No provider is called by this schema or checker.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "title", "canvas", "shots", "characters", "assets", "generationAttempts", "visualReview"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": "1.0" },
+    "id": { "$ref": "#/$defs/id" },
+    "title": { "type": "string", "minLength": 1 },
+    "canvas": {
+      "type": "object",
+      "required": ["width", "height", "fps"],
+      "additionalProperties": false,
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "fps": { "type": "number", "minimum": 1 }
+      }
+    },
+    "shots": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/shot" } },
+    "characters": { "type": "array", "items": { "$ref": "#/$defs/character" } },
+    "assets": { "type": "array", "items": { "$ref": "#/$defs/asset" } },
+    "generationAttempts": { "type": "array", "items": { "$ref": "#/$defs/attempt" } },
+    "visualReview": { "$ref": "#/$defs/review" }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+    "refs": { "type": "array", "items": { "$ref": "#/$defs/id" } },
+    "review": {
+      "type": "object",
+      "required": ["status"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "enum": ["pending", "passed", "failed"] },
+        "notes": { "type": "string" },
+        "reviewer": { "type": "string", "minLength": 1 },
+        "reviewedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "shot": {
+      "type": "object",
+      "required": ["id", "page", "duration", "characterIds", "startState", "endState", "visualReview"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "page": { "type": "string", "minLength": 1 },
+        "duration": { "type": "number", "minimum": 0, "description": "Seconds; the checker also rejects zero and non-finite values." },
+        "characterIds": { "$ref": "#/$defs/refs" },
+        "startState": { "type": "string", "minLength": 1 },
+        "endState": { "type": "string", "minLength": 1 },
+        "visualReview": { "$ref": "#/$defs/review" }
+      }
+    },
+    "character": {
+      "type": "object",
+      "required": ["id", "referenceAssetIds", "invariants"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "referenceAssetIds": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } },
+        "invariants": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "required": ["id", "path", "sha256", "provenance"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "provenance": {
+          "type": "object",
+          "required": ["origin", "source", "license"],
+          "additionalProperties": false,
+          "properties": {
+            "origin": { "enum": ["official", "user-supplied", "generated", "stock", "unknown"] },
+            "source": { "type": "string", "minLength": 1 },
+            "license": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "required": ["id", "shotId", "provider", "model", "promptVersion", "referenceAssetIds", "selected"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "shotId": { "$ref": "#/$defs/id" },
+        "provider": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "promptVersion": { "type": "string", "minLength": 1 },
+        "seed": { "type": ["string", "integer"] },
+        "referenceAssetIds": { "$ref": "#/$defs/refs" },
+        "outputAssetId": { "$ref": "#/$defs/id" },
+        "selected": { "type": "boolean" },
+        "notes": { "type": "string" }
+      },
+      "if": { "properties": { "selected": { "const": true } }, "required": ["selected"] },
+      "then": { "required": ["outputAssetId"] }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "id": "local-title-film",
+  "title": "NeoDesign local motion sample",
+  "canvas": { "width": 1920, "height": 1080, "fps": 30 },
+  "shots": [
+    {
+      "id": "title",
+      "page": "scenes/title.html",
+      "duration": 4,
+      "characterIds": [],
+      "startState": "Dark canvas; the title and accent are at their first-frame positions.",
+      "endState": "The title is fully readable and the accent rests beside it.",
+      "visualReview": { "status": "pending", "notes": "Review the opening, middle and final frames before export." }
+    }
+  ],
+  "characters": [],
+  "assets": [],
+  "generationAttempts": [],
+  "visualReview": { "status": "pending", "notes": "Local sample only. No generated media or provider calls." }
+}

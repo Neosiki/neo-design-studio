@@ -3,7 +3,8 @@
     "test": "node tests/run.mjs",
     "design": "node scripts/design/cli.mjs",
     "mcp": "node scripts/design/mcp.mjs",
-    "serve": "node scripts/design/serve.mjs"
+    "serve": "node scripts/design/serve.mjs",
+    "test:film-browser": "node tests/film-browser.mjs"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",
@@ -11,5 +12,6 @@
     "pptxgenjs": "^4.0.1",
     "sharp": "^0.34.5"
   },
-  "name": "design-studio"
+  "name": "design-studio",
+  "version": "2026.10.0"
 }
