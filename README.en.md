@@ -1,6 +1,6 @@
 <sub>🌐 <a href="README.md">한국어</a> · <b>English</b></sub>
 
-October release **2026.10.0** adds an optional OpenFilm workflow, protection for manual timeline edits, and delivery folders with reference checks and SHA-256 manifests. Existing HyperFrames and editable slide exporters remain available. See [the October guide](docs/OCTOBER_2026_KO.md). New `film` and `handoff` helpers are CLI-only; OpenFilm Studio is a separate runtime.
+November release **2026.11.0** adds local reference-video inspection, timestamp-aware source/render comparison, and editable OpenFilm shot drafts with SRT cues. Run `node scripts/design/cli.mjs reference help` for the commands. FFmpeg and FFprobe are required. See [the reference-video guide](references/reference-video.md) and [the October OpenFilm guide](docs/OCTOBER_2026_KO.md). The `reference`, `film`, and `handoff` helpers are CLI-only. OpenFilm Studio is a separate runtime.
 
 
 <div align="center">

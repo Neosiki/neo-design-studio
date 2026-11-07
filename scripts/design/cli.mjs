@@ -35,8 +35,9 @@ import { buildSuggestions, previewSuggestion, applySuggestion } from './lib/sugg
 import { stylesCommand } from './lib/styles/cli.mjs';
 import { filmCommand } from './lib/film/cli.mjs';
 import { handoffCommand } from './lib/handoff.mjs';
+import { referenceCommand } from './lib/reference/cli.mjs';
 
-const VERSION = '2026.10.0';
+const VERSION = '2026.11.0';
 
 /* ── 인자 파싱 ─────────────────────────────────────────────────── */
 
@@ -46,7 +47,9 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg.startsWith('--')) {
-      const [key, inline] = arg.slice(2).split('=');
+      const separator = arg.indexOf('=');
+      const key = separator < 0 ? arg.slice(2) : arg.slice(2, separator);
+      const inline = separator < 0 ? undefined : arg.slice(separator + 1);
       if (inline !== undefined) flags[key] = inline;
       else if (argv[i + 1] && !argv[i + 1].startsWith('--')) { flags[key] = argv[i + 1]; i += 1; }
       else flags[key] = true;
@@ -578,6 +581,8 @@ ${c.bold('에이전트 · 서버')}
                 두 표면 모두 같은 작업 정의를 쓴다 (lib/api/operations.mjs)
 
 ${c.bold('선택형 플러그인')}
+  reference   참조 영상 분석·렌더 대조·샷 계획 — inspect/compare/plan
+                자세히: design reference help
   handoff     프로젝트 전달 — check/pack (새 폴더·정적 참조·SHA-256·재개 안내)
                 자세히: design handoff help
   film        OpenFilm 제작 준비 — init/check/snapshot/sample
@@ -613,6 +618,7 @@ const COMMANDS = {
   whiteboard: whiteboardCommand,
   film: filmCommand,
   handoff: handoffCommand,
+  reference: referenceCommand,
 };
 
 async function main() {

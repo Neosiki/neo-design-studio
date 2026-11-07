@@ -52,6 +52,7 @@ examples/**/mix.sh
 
 # API 서버 로그
 *.pid
+tests/reference-result.json
 
 
 

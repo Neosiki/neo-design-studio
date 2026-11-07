@@ -4,7 +4,9 @@
     "design": "node scripts/design/cli.mjs",
     "mcp": "node scripts/design/mcp.mjs",
     "serve": "node scripts/design/serve.mjs",
-    "test:film-browser": "node tests/film-browser.mjs"
+    "test:film-browser": "node tests/film-browser.mjs",
+    "test:reference": "node tests/reference.mjs",
+    "test:reference-browser": "node tests/reference-browser.mjs"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",
@@ -13,5 +15,5 @@
     "sharp": "^0.34.5"
   },
   "name": "design-studio",
-  "version": "2026.10.0"
+  "version": "2026.11.0"
 }
