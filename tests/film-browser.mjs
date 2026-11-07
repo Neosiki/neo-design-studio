@@ -7,7 +7,7 @@ import { scaffoldFilm } from '../scripts/design/lib/film/plan.mjs';
 import { inspectFilm, compareProtection, compareTimeline, comparePixels, sampleTimes, shuffledIndices, localFile, sampleFilm } from '../scripts/design/lib/film/browser.mjs';
 
 function cleanup(dir) {
-  const tmp = fs.realpathSync(os.tmpdir()), absolute = path.resolve(dir);
+  const tmp = fs.realpathSync(os.tmpdir()), absolute = fs.realpathSync(dir);
   if (!absolute.startsWith(tmp + path.sep) || !path.basename(dir).startsWith('neodesign-film-')) throw new Error('Refusing cleanup outside the test fixture.');
   fs.rmSync(absolute,{recursive:true,force:true});
 }
