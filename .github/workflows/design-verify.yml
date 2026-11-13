@@ -55,6 +55,9 @@ jobs:
       - name: 회귀 테스트 (의존성 없음)
         run: node tests/run.mjs
 
+      - name: 선화 선택 기능 입력·경로·라이선스 회귀
+        run: node --test tests/line-art.mjs
+
       - name: 예제 프로젝트 스키마 검증
         working-directory: examples/design-studio-intro
         run: node ../../scripts/design/cli.mjs validate
