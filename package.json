@@ -6,7 +6,8 @@
     "serve": "node scripts/design/serve.mjs",
     "test:film-browser": "node tests/film-browser.mjs",
     "test:reference": "node tests/reference.mjs",
-    "test:reference-browser": "node tests/reference-browser.mjs"
+    "test:reference-browser": "node tests/reference-browser.mjs",
+    "test:line-art": "node --test tests/line-art.mjs"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",
@@ -15,5 +16,5 @@
     "sharp": "^0.34.5"
   },
   "name": "design-studio",
-  "version": "2026.11.0"
+  "version": "2026.11.1"
 }

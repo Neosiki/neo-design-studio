@@ -1,6 +1,8 @@
+Optional [line-art animation](skills/line-art-animation/SKILL.md) adds SVG scenes, Windows capture support, and standalone MP4 output. It preserves the default HyperFrames and optional OpenFilm workflows. Run `npm run test:line-art` for the ten launcher regression tests. See the [runtime guide](skills/line-art-animation/references/runtime.md).
+
 <sub>🌐 <a href="README.md">한국어</a> · <b>English</b></sub>
 
-November release **2026.11.0** adds local reference-video inspection, timestamp-aware source/render comparison, and editable OpenFilm shot drafts with SRT cues. Run `node scripts/design/cli.mjs reference help` for the commands. FFmpeg and FFprobe are required. See [the reference-video guide](references/reference-video.md) and [the October OpenFilm guide](docs/OCTOBER_2026_KO.md). The `reference`, `film`, and `handoff` helpers are CLI-only. OpenFilm Studio is a separate runtime.
+November release **2026.11.1** adds local reference-video inspection, timestamp-aware source/render comparison, and editable OpenFilm shot drafts with SRT cues. Run `node scripts/design/cli.mjs reference help` for the commands. FFmpeg and FFprobe are required. See [the reference-video guide](references/reference-video.md) and [the October OpenFilm guide](docs/OCTOBER_2026_KO.md). The `reference`, `film`, and `handoff` helpers are CLI-only. OpenFilm Studio is a separate runtime.
 
 
 <div align="center">
@@ -27,7 +29,7 @@ Not "decent for AI" quality — it looks like a real design team made it. Give t
 **Every animation in this README was made by design-studio itself.** No Figma, no After Effects — just a sentence + skill run. Next product launch needs a promo video? You can make it too.
 
 ```
-npx skills add Neosiki/design-studio
+npx skills add Neosiki/neo-design-studio
 ```
 
 > 📣 **Now MIT-licensed.** As of 2026-05-14 this skill is fully open-source under the [MIT License](LICENSE) — free for personal **and** commercial use, no authorization required. ([what changed](#license))
@@ -43,31 +45,31 @@ npx skills add Neosiki/design-studio
 ---
 
 <p align="center">
-  <video src="https://github.com/Neosiki/design-studio/releases/download/v2.0/hero-animation-v10-en.mp4" autoplay muted loop playsinline width="100%">
-    Your browser doesn't support inline video. <a href="https://github.com/Neosiki/design-studio/releases/download/v2.0/hero-animation-v10-en.mp4">Download MP4</a>.
+  <video src="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/hero-animation-v10-en.mp4" autoplay muted loop playsinline width="100%">
+    Your browser doesn't support inline video. <a href="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/hero-animation-v10-en.mp4">Download MP4</a>.
   </video>
 </p>
 
-<p align="center"><sub>▲ 10-second hero animation showing what design-studio does (<a href="https://github.com/Neosiki/design-studio/releases/download/v2.0/hero-animation-v10-en.mp4">download MP4</a> if autoplay doesn't work)</sub></p>
+<p align="center"><sub>▲ 10-second hero animation showing what design-studio does (<a href="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/hero-animation-v10-en.mp4">download MP4</a> if autoplay doesn't work)</sub></p>
 
 ---
 
 ## Install
 
 ```bash
-npx skills add Neosiki/design-studio
+npx skills add Neosiki/neo-design-studio
 ```
 
 > **Verify after install**: this skill is more than a single SKILL.md — the `references/`, `assets/`, `scripts/`, and `demos/` subdirectories hold 99 referenced recipes, scripts, and assets that the skill depends on. After installing, check the install path (e.g. `~/.claude/skills/design-studio/`); if you only see SKILL.md and none of those subdirectories, your `skills` CLI is too old (≤1.5.15 had a bug that synced only the single file, fixed in 1.5.19). Upgrade and reinstall:
 >
 > ```bash
-> npm i -g skills@latest        # or npx skills@latest add Neosiki/design-studio
+> npm i -g skills@latest        # or npx skills@latest add Neosiki/neo-design-studio
 > ```
 >
 > If it's still wrong after upgrading, fall back to a `git clone` install — clone the repo into any skills directory:
 >
 > ```bash
-> git clone https://github.com/Neosiki/design-studio.git ~/.claude/skills/design-studio
+> git clone https://github.com/Neosiki/neo-design-studio.git ~/.claude/skills/design-studio
 > ```
 
 Then just talk to Claude Code:
@@ -86,8 +88,8 @@ No buttons, no panels, no Figma plugin. Agent-agnostic — drops into Claude Cod
 ## Star History
 
 <p align="center">
-  <a href="https://star-history.com/#Neosiki/design-studio&Date">
-    <img src="https://api.star-history.com/svg?repos=Neosiki/design-studio&type=Date" alt="design-studio Star History" width="80%">
+  <a href="https://star-history.com/#Neosiki/neo-design-studio&Date">
+    <img src="https://api.star-history.com/svg?repos=Neosiki/neo-design-studio&type=Date" alt="design-studio Star History" width="80%">
   </a>
 </p>
 
@@ -115,55 +117,55 @@ No buttons, no panels, no Figma plugin. Agent-agnostic — drops into Claude Cod
 
 The fallback for vague briefs: pick 3 differentiated directions from 5 schools × 20 philosophies, generate all 3 demos in parallel, let the user choose.
 
-<p align="center"><img src="https://github.com/Neosiki/design-studio/releases/download/v2.0/w3-fallback-advisor-en.gif" width="100%"></p>
+<p align="center"><img src="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/w3-fallback-advisor-en.gif" width="100%"></p>
 
 ### iOS App Prototype
 
 Pixel-accurate iPhone 15 Pro body (Dynamic Island / status bar / Home Indicator) · state-driven multi-screen navigation · real images pulled from Wikimedia/Met/Unsplash · Playwright click tests before delivery.
 
-<p align="center"><img src="https://github.com/Neosiki/design-studio/releases/download/v2.0/c1-ios-prototype-en.gif" width="100%"></p>
+<p align="center"><img src="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/c1-ios-prototype-en.gif" width="100%"></p>
 
 ### Motion Design Engine
 
 Stage + Sprite time-slice model · `useTime` / `useSprite` / `interpolate` / `Easing` — four APIs cover every animation need · one command exports MP4 / GIF / 60fps-interpolated / BGM-scored finals.
 
-<p align="center"><img src="https://github.com/Neosiki/design-studio/releases/download/v2.0/c3-motion-design-en.gif" width="100%"></p>
+<p align="center"><img src="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/c3-motion-design-en.gif" width="100%"></p>
 
 ### HTML Slides → Editable PPTX
 
 HTML decks for browser presentation · `html2pptx.js` reads DOM computed styles and translates each element into real PowerPoint objects · exports are **actual text frames**, not image-bed fakes.
 
-<p align="center"><img src="https://github.com/Neosiki/design-studio/releases/download/v2.0/c2-slides-pptx-en.gif" width="100%"></p>
+<p align="center"><img src="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/c2-slides-pptx-en.gif" width="100%"></p>
 
 ### Tweaks · Live Variation Switching
 
 Colors / typography / information density parameterized · side panel toggle · pure-frontend + `localStorage` persistence · survives reload.
 
-<p align="center"><img src="https://github.com/Neosiki/design-studio/releases/download/v2.0/c4-tweaks-en.gif" width="100%"></p>
+<p align="center"><img src="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/c4-tweaks-en.gif" width="100%"></p>
 
 ### Infographic / Data Viz
 
 Magazine-grade typography · precise CSS Grid columns · `text-wrap: pretty` typographic details · driven by real data · exports to vector PDF / 300dpi PNG / SVG.
 
-<p align="center"><img src="https://github.com/Neosiki/design-studio/releases/download/v2.0/c5-infographic-en.gif" width="100%"></p>
+<p align="center"><img src="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/c5-infographic-en.gif" width="100%"></p>
 
 ### 5-Dimension Expert Critique
 
 Philosophical coherence · visual hierarchy · execution craft · functionality · innovation — each scored 0–10 · radar-chart visualization · outputs Keep / Fix / Quick Wins punch list.
 
-<p align="center"><img src="https://github.com/Neosiki/design-studio/releases/download/v2.0/c6-expert-review-en.gif" width="100%"></p>
+<p align="center"><img src="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/c6-expert-review-en.gif" width="100%"></p>
 
 ### Junior Designer Workflow
 
 No heroic one-shot attempts: start with assumptions + placeholders + reasoning, show it to the user early, then iterate. Fixing a misunderstanding early is 100× cheaper than fixing it late.
 
-<p align="center"><img src="https://github.com/Neosiki/design-studio/releases/download/v2.0/w2-junior-designer-en.gif" width="100%"></p>
+<p align="center"><img src="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/w2-junior-designer-en.gif" width="100%"></p>
 
 ### Core Asset Protocol · 5-step hard process
 
 Mandatory whenever the task involves a specific brand: ask → search → download (three fallback paths) → verify + extract → write `brand-spec.md` covering **logo, product shots, UI screenshots, colors, fonts** — all required assets, not just colors.
 
-<p align="center"><img src="https://github.com/Neosiki/design-studio/releases/download/v2.0/w1-brand-protocol-en.gif" width="100%"></p>
+<p align="center"><img src="https://github.com/Neosiki/neo-design-studio/releases/download/v2.0/w1-brand-protocol-en.gif" width="100%"></p>
 
 ---
 

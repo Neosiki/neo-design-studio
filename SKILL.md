@@ -4,11 +4,11 @@ description: >-
   NeoDesign은 HTML을 사용하여 고충실도 프로토타입, 슬라이드, 애니메이션, 시각화 및 전문가 리뷰를 제작합니다.
   새로운 디자인은 먼저 세 가지 방향의 초안을 제안하고 사용자가 선택한 후 실행합니다.
   지정된 스타일이나 브랜드가 있어도 이 원칙을 적용합니다.
-  트리거 단어: 프로토타입 제작, PPT, 슬라이드, 애니메이션, 디자인 스타일, 리뷰, HTML 페이지 제작, UI mockup, MP4/GIF 내보내기, 참조 영상 분석·렌더 대조, 예쁘게 만들기.
+  트리거 단어: 프로토타입 제작, PPT, 슬라이드, 애니메이션, 디자인 스타일, 리뷰, HTML 페이지 제작, UI mockup, MP4/GIF 내보내기, 참조 영상 분석·렌더 대조, 선화·펜화 애니메이션, 예쁘게 만들기.
   프로덕션 수준의 웹 앱이나 백엔드가 필요한 시스템에는 적합하지 않습니다.
 metadata:
-  version: "2026.11.0"
-  updated: "2026-11-07"
+  version: "2026.11.1"
+  updated: "2026-11-14"
 ---
 
 # NeoDesign · 디자인 스튜디오
@@ -48,6 +48,7 @@ metadata:
 | 리뷰/점수 산정 | Step 10 → `references/critique-guide.md` |
 | 약한 런타임 | 해당 경로 + 약한 런타임 강등 모드 |
 | 여러 산출물·중단 후 재개·출처와 승인 추적 | 프로젝트 매니페스트·Design CLI → `docs/DESIGN_CLI_KO.md` |
+| 선화·펜화·잉크풍 인물/동물·낮밤 장면 | 선택형 `skills/line-art-animation/SKILL.md`. SVG 상호작용/동작 검수/정해진 간격 캡처를 이 경로에서 처리합니다. 일반 영상 경로를 바꾸지 않습니다. |
 | 화이트보드·손글씨·SRT 기반 영상 | `skills/whiteboard-video/SKILL.md` |
 | 기존 영상의 컷·자막 시점 분석, 원본과 렌더 대조, 영상 재구성 준비 | [참조 영상 가이드](references/reference-video.md) → `design reference inspect/compare/plan`. 로컬 FFmpeg·FFprobe로 프레임을 측정합니다. |
 | OpenFilm·실제 영상과 HTML을 섞는 미디어 타임라인 | `references/openfilm-backend.md` → `design film help`. 실제 트랙 편집은 OpenFilm Studio, 샷 계획과 편집 보호는 film 보조 명령을 사용합니다. |
@@ -561,6 +562,10 @@ node scripts/design/cli.mjs resume        # 중단했다 돌아왔을 때
 그래서 매니페스트를 쓰는 프로젝트에서는 행간·자간을 손으로 적지 않아도 된다. 적으면 그 값이 이기고, 문서가 정한 구간 밖이면 경고가 붙는다.
 
 접근성과 유출도 같은 자리에서 본다. 보이스오버가 있는데 자막이 없으면 오류, 선언한 `lang`과 실제 글자가 다르면 경고, 산출물 HTML 안에 API 키 형태의 값이 있으면 오류다 → `docs/QUALITY_GATES_KO.md`
+
+### 선택형 기능 · line-art-animation
+
+펜으로 그린 듯한 SVG 인물·동물·상점·낮밤 장면을 요청하면 [선화 경로](skills/line-art-animation/SKILL.md)를 읽습니다. 선택한 장면의 동작은 원본 선화 런타임으로 만들고, 단독 웹/MP4는 이 경로의 캡처 도우미를 씁니다. 일반 영상은 HyperFrames 기본값을 유지하며 SRT 손글씨 설명 영상과 구분합니다. 새 디자인의 세 방향 선택과 인물 한 개 선검토를 같은 검토 단계로 묶어 불필요하게 재질문하지 않습니다.
 
 ### 선택형 플러그인 · whiteboard-video
 
