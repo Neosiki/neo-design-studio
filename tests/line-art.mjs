@@ -19,4 +19,17 @@ test('init preserves upstream license and examples without replacing files',()=>
  try{const dest=initProject(path.join(tmp,'한글 project'));assert.ok(fs.existsSync(path.join(dest,'lib/gait.ts')));assert.ok(fs.existsSync(path.join(dest,'examples/walker/walker.ts')));assert.match(fs.readFileSync(path.join(dest,'LICENSE'),'utf8'),/JDhruv14/);assert.throws(()=>initProject(dest),/기존/);}finally{fs.rmSync(tmp,{recursive:true,force:true});}
 });
 test('optional routing retains other backends',()=>{const s=fs.readFileSync(path.join(root,'SKILL.md'),'utf8');for(const x of ['skills/line-art-animation/SKILL.md','HyperFrames','OpenFilm','whiteboard-video'])assert.ok(s.includes(x));});
+test('init copies every vendor file byte-for-byte to a nested Unicode path',()=>{
+  const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'neo-line-art-copy-'));
+  try{
+    const parent=path.join(tmp,'한글 상위');fs.mkdirSync(parent);
+    const dest=initProject(path.join(parent,'새 장면'));
+    const source=path.join(root,'skills/line-art-animation/vendor');
+    function compare(from,to){for(const entry of fs.readdirSync(from,{withFileTypes:true})){
+      const a=path.join(from,entry.name),b=path.join(to,entry.name);
+      if(entry.isDirectory())compare(a,b);else assert.deepEqual(fs.readFileSync(b),fs.readFileSync(a),entry.name);
+    }}
+    compare(source,dest);
+  }finally{fs.rmSync(tmp,{recursive:true,force:true});}
+});
 test('line-art metadata is scoped and source commit pinned',()=>{const d=JSON.parse(fs.readFileSync(path.join(root,'skills/line-art-animation/vendor/provenance.json'),'utf8'));assert.equal(d.commit,'c43d698913cf0ad44f984c7ae14c5348010594d3');assert.equal(d.license,'MIT');for(const [file,expected] of Object.entries(d.upstream_sha256)){let text=fs.readFileSync(path.join(root,'skills/line-art-animation/vendor',file),'utf8').replace(/\r\n/g,'\n');if(file==='scripts/capture.ts')text=text.replace("{ stdio: 'ignore', windowsHide: true }","{ stdio: 'ignore' }");assert.equal(crypto.createHash('sha256').update(text).digest('hex'),expected,file);}assert.ok(main(['--help']).includes('capture'));assert.throws(()=>main(['unknown']));});
