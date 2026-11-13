@@ -38,7 +38,18 @@ export function initProject(dir){
   if(!dir)throw new Error('새 프로젝트 폴더를 지정하세요.');
   const dest=path.resolve(dir);
   if(fs.existsSync(dest))throw new Error('기존 폴더에는 쓰지 않습니다. 새 경로를 지정하세요.');
-  fs.cpSync(VENDOR,dest,{recursive:true,errorOnExist:true,force:false});
+  // Copy explicit directory entries: keep Unicode paths intact on Windows
+  // across supported Node versions, and never follow unexpected symlinks.
+  function copyDirectory(source,target){
+    fs.mkdirSync(target);
+    for(const entry of fs.readdirSync(source,{withFileTypes:true})){
+      const from=path.join(source,entry.name),to=path.join(target,entry.name);
+      if(entry.isDirectory())copyDirectory(from,to);
+      else if(entry.isFile())fs.copyFileSync(from,to,fs.constants.COPYFILE_EXCL);
+      else throw new Error(`지원하지 않는 프로젝트 항목: ${entry.name}`);
+    }
+  }
+  copyDirectory(VENDOR,dest);
   return dest;
 }
 function run(exe,args,options={}){
