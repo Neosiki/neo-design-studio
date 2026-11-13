@@ -1,4 +1,4 @@
-Optional [line-art animation](skills/line-art-animation/SKILL.md) adds SVG scenes, Windows capture support, and standalone MP4 output. It preserves the default HyperFrames and optional OpenFilm workflows. Run `npm run test:line-art` for the ten launcher regression tests. See the [runtime guide](skills/line-art-animation/references/runtime.md).
+Optional [line-art animation](skills/line-art-animation/SKILL.md) adds SVG scenes, Windows capture support, and standalone MP4 output. It preserves the default HyperFrames and optional OpenFilm workflows. Run `npm run test:line-art` for the launcher regression tests. See the [runtime guide](skills/line-art-animation/references/runtime.md).
 
 <sub>🌐 <a href="README.md">한국어</a> · <b>English</b></sub>
 
