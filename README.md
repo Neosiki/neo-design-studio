@@ -40,6 +40,17 @@ AI 기반 비주얼 디자인·애니메이션 제작 운영 시스템입니다.
 
 Codex 수동 설치 예: `git clone https://github.com/Neosiki/neo-design-studio.git ~/.agents/skills/design-studio`.
 
+## 쇼츠 · 한국어 음성 선택 기능
+
+15~45초 세로(9:16) 홍보 영상은 [쇼츠 스킬](skills/shorts-studio/SKILL.md)을 선택합니다. 일반 영상 경로와 삼방향 선택 절차는 유지합니다.
+
+- 대본 → 한국어 음성 → 카라오케·팝·박스 자막(ASS) → BGM 자동 낮춤 합성 → CSV 일괄 제작을 제공합니다.
+- 리허설(`--provider silent`)은 네트워크를 쓰지 않습니다. 한국어 무료 음성(`--provider edge`)은 대본 텍스트를 Microsoft Edge 읽어주기 서버로 보내므로 `--yes` 승인이 있어야 실행됩니다. 비공식 클라이언트(edge-tts)라 상업 납품에는 공식 Azure Speech를 권합니다.
+- 단어 타이밍은 문장 경계 안에서 글자 수로 추정한 값입니다. Node 18 이상과 FFmpeg(libass)이 필요합니다.
+- 유튜브 업로드·예약 발행은 범위 밖입니다.
+
+[쇼츠 레시피](skills/shorts-studio/references/shorts-9x16.md)
+
 ## 저장소 구조
 `자산`은 제작 자산, `문서`는 설계·운영 문서, `예시`는 샘플, `스키마`는 데이터 계약을 담습니다. `스크립트`에는 CLI·REST·MCP·렌더링 코드가 있으며 `스타일`과 `테스트`에는 디자인 규칙과 자동 검증 자료가 있습니다. `.github/워크플로우`는 GitHub Actions 설정을 담습니다.
 

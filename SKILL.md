@@ -4,7 +4,7 @@ description: >-
   NeoDesign은 HTML을 사용하여 고충실도 프로토타입, 슬라이드, 애니메이션, 시각화 및 전문가 리뷰를 제작합니다.
   새로운 디자인은 먼저 세 가지 방향의 초안을 제안하고 사용자가 선택한 후 실행합니다.
   지정된 스타일이나 브랜드가 있어도 이 원칙을 적용합니다.
-  트리거 단어: 프로토타입 제작, PPT, 슬라이드, 애니메이션, 디자인 스타일, 리뷰, HTML 페이지 제작, UI mockup, MP4/GIF 내보내기, 참조 영상 분석·렌더 대조, 선화·펜화 애니메이션, 예쁘게 만들기.
+  트리거 단어: 프로토타입 제작, PPT, 슬라이드, 애니메이션, 디자인 스타일, 리뷰, HTML 페이지 제작, UI mockup, MP4/GIF 내보내기, 참조 영상 분석·렌더 대조, 선화·펜화 애니메이션, 쇼츠·릴스·세로 영상(9:16), 한국어 음성·자막 영상, 예쁘게 만들기.
   프로덕션 수준의 웹 앱이나 백엔드가 필요한 시스템에는 적합하지 않습니다.
 metadata:
   version: "2026.11.1"
@@ -50,6 +50,7 @@ metadata:
 | 여러 산출물·중단 후 재개·출처와 승인 추적 | 프로젝트 매니페스트·Design CLI → `docs/DESIGN_CLI_KO.md` |
 | 선화·펜화·잉크풍 인물/동물·낮밤 장면 | 선택형 `skills/line-art-animation/SKILL.md`. SVG 상호작용/동작 검수/정해진 간격 캡처를 이 경로에서 처리합니다. 일반 영상 경로를 바꾸지 않습니다. |
 | 화이트보드·손글씨·SRT 기반 영상 | `skills/whiteboard-video/SKILL.md` |
+| 쇼츠·릴스·세로(9:16) 영상, 한국어 음성+자막, 같은 형식 여러 편 일괄 제작 | 선택형 `skills/shorts-studio/SKILL.md`. 삼방향 선택을 거친 뒤 대본→음성→자막→합성을 이 경로에서 처리합니다. 일반 영상 경로를 바꾸지 않습니다. |
 | 기존 영상의 컷·자막 시점 분석, 원본과 렌더 대조, 영상 재구성 준비 | [참조 영상 가이드](references/reference-video.md) → `design reference inspect/compare/plan`. 로컬 FFmpeg·FFprobe로 프레임을 측정합니다. |
 | OpenFilm·실제 영상과 HTML을 섞는 미디어 타임라인 | `references/openfilm-backend.md` → `design film help`. 실제 트랙 편집은 OpenFilm Studio, 샷 계획과 편집 보호는 film 보조 명령을 사용합니다. |
 | 프로젝트 전달·다른 PC에서 이어 작업·납품 누락 점검 | `design handoff help` → `docs/OCTOBER_2026_KO.md`. 정적 참조 파일·SHA-256·재개 안내를 새 폴더에 묶습니다. |
@@ -566,6 +567,10 @@ node scripts/design/cli.mjs resume        # 중단했다 돌아왔을 때
 ### 선택형 기능 · line-art-animation
 
 펜으로 그린 듯한 SVG 인물·동물·상점·낮밤 장면을 요청하면 [선화 경로](skills/line-art-animation/SKILL.md)를 읽습니다. 선택한 장면의 동작은 원본 선화 런타임으로 만들고, 단독 웹/MP4는 이 경로의 캡처 도우미를 씁니다. 일반 영상은 HyperFrames 기본값을 유지하며 SRT 손글씨 설명 영상과 구분합니다. 새 디자인의 세 방향 선택과 인물 한 개 선검토를 같은 검토 단계로 묶어 불필요하게 재질문하지 않습니다.
+
+### 선택형 기능 · shorts-studio
+
+15~45초 세로 쇼츠·릴스를 요청하면 [쇼츠 경로](skills/shorts-studio/SKILL.md)를 읽습니다. 한 문장 한 장면의 대본 규칙, 한국어 무료 음성(Edge 읽어주기, **텍스트가 외부 서버로 전송되므로 승인 필요**), 카라오케·팝·박스 자막, BGM 자동 낮춤 합성, CSV 일괄 제작을 제공합니다. 단어 타이밍은 글자 수로 추정한 근사값입니다. 유튜브 업로드는 범위 밖입니다. 일반 영상 기본 엔진과 삼방향 절차는 바꾸지 않습니다.
 
 ### 선택형 플러그인 · whiteboard-video
 

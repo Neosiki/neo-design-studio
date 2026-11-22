@@ -1,5 +1,7 @@
 Optional [line-art animation](skills/line-art-animation/SKILL.md) adds SVG scenes, Windows capture support, and standalone MP4 output. It preserves the default HyperFrames and optional OpenFilm workflows. Run `npm run test:line-art` for the launcher regression tests. See the [runtime guide](skills/line-art-animation/references/runtime.md).
 
+Optional [shorts studio](skills/shorts-studio/SKILL.md) makes 9:16 Korean shorts from a script: voice, karaoke/pop/box captions (ASS), BGM ducking, and CSV batch production. The free Korean voice option sends the script text to Microsoft's Edge read-aloud service through the unofficial `edge-tts` client, so it runs only after an explicit `--yes`. Word timings are estimates. YouTube upload is out of scope. See the [recipe](skills/shorts-studio/references/shorts-9x16.md).
+
 <sub>🌐 <a href="README.md">한국어</a> · <b>English</b></sub>
 
 November release **2026.11.1** adds local reference-video inspection, timestamp-aware source/render comparison, and editable OpenFilm shot drafts with SRT cues. Run `node scripts/design/cli.mjs reference help` for the commands. FFmpeg and FFprobe are required. See [the reference-video guide](references/reference-video.md) and [the October OpenFilm guide](docs/OCTOBER_2026_KO.md). The `reference`, `film`, and `handoff` helpers are CLI-only. OpenFilm Studio is a separate runtime.
