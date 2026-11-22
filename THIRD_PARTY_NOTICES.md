@@ -62,3 +62,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+# Optional shorts-studio (not bundled)
+
+skills/shorts-studio can call the user-installed Python package `edge-tts`
+(https://github.com/rany2/edge-tts, install with `pip install edge-tts`) as a separate process.
+No edge-tts code is included in this repository; its license and the terms of the
+service it connects to are the user's responsibility. Not endorsed by Microsoft or the edge-tts authors.

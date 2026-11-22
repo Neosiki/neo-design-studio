@@ -2,7 +2,7 @@
 
 This document exhaustively declares every network destination, credential touchpoint, subprocess, and deletion this skill can perform, so that users and automated security reviewers can verify the claims against the code.
 
-**TL;DR: the core pipeline (HTML design → render → MP4/PDF/PPTX export) runs 100% locally with zero network calls and zero API keys. All cloud-touching code is isolated in `scripts/cloud/`, is strictly optional, uses only keys you supply, sends data only to the corresponding vendor's official API, and refuses to run without explicit consent (`--yes` flag or `DESIGN_CLOUD_OK=1`). There is no telemetry. No data is ever sent to any server controlled by the skill author.**
+**TL;DR: the core pipeline (HTML design → render → MP4/PDF/PPTX export) runs 100% locally with zero network calls and zero API keys. All cloud-touching code is isolated in `scripts/cloud/` (and `skills/shorts-studio/scripts/cloud/` for the optional shorts skill), is strictly optional, uses only keys you supply, sends data only to the corresponding vendor's official API, and refuses to run without explicit consent (`--yes` flag or `DESIGN_CLOUD_OK=1`). There is no telemetry. No data is ever sent to any server controlled by the skill author.**
 
 ## Complete list of network destinations
 
@@ -10,6 +10,7 @@ This document exhaustively declares every network destination, credential touchp
 |---|---|---|---|
 | `ark.cn-beijing.volces.com` (Volcengine Ark, ByteDance official API) | `scripts/cloud/ai-review-video.py` | Compressed segments of **your own rendered video**, for AI quality review, authenticated with **your own** `ARK_API_KEY` | Only when you run it, and only after the consent gate |
 | `openspeech.bytedance.com` (ByteDance official TTS API) | `scripts/cloud/tts-doubao.mjs` (also invoked by `scripts/narrate-pipeline.mjs`) | The narration text you want synthesized, with **your own** key. The endpoint is validated against a hardcoded hostname allowlist (`*.bytedance.com` / `*.volces.com`) — a tampered `.env` cannot redirect your key or text elsewhere | Only when you run it, and only after the consent gate |
+| `speech.platform.bing.com` (Microsoft Edge read-aloud service, reached through the unofficial open-source client `edge-tts`) | `skills/shorts-studio/scripts/cloud/tts-edge.mjs` (also invoked by `shorts-pipeline.mjs --provider edge` and `shorts-batch.mjs --provider edge`) | The script text you want synthesized. **No API key.** edge-tts is not a Microsoft SDK; availability and terms follow Microsoft policy, so prefer the official Azure Speech service for commercial delivery | Only when you run it, and only after the consent gate |
 | `commons.wikimedia.org` (official Wikimedia API) | `scripts/fetch_images.py` | Image search keywords; downloads CC/public-domain images with license info printed for review | Only when the agent fetches stock imagery for a content design |
 | Brand official websites, `simpleicons.org`, Google favicon service | `references/brand-asset-protocol.md` (instructions, no script) | Plain GET requests to download publicly served logos/brand assets | Only when you ask for a brand-specific design |
 | `fonts.googleapis.com`, `unpkg.com` and similar CDNs | Static `<link>`/`<script>` tags inside demo/output HTML | Standard browser font/library fetches when *you* open a generated HTML file | Browser-side only; render scripts work offline-first |
@@ -25,7 +26,7 @@ That is the entire list. `grep -rn "https://" --include="*.py" --include="*.mjs"
 
 ## Explicit consent gate
 
-Both cloud scripts print exactly what will be sent to which host and exit before any network call unless you pass `--yes` or set `DESIGN_CLOUD_OK=1`. Everything else in this skill never needs the gate because it never leaves your machine.
+All cloud scripts print exactly what will be sent to which host and exit before any network call unless you pass `--yes` or set `DESIGN_CLOUD_OK=1`. Everything else in this skill never needs the gate because it never leaves your machine.
 
 ## Subprocesses
 
