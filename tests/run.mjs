@@ -31,6 +31,7 @@ import { run as filmTests } from './film-plan.mjs';
 import { run as filmBrowserUnitTests } from './film-browser.mjs';
 import { run as handoffTests } from './handoff.mjs';
 import { run as shortsTests } from './shorts.mjs';
+import { run as webtoonTests } from './webtoon.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CLI = path.join(ROOT, 'scripts', 'design', 'cli.mjs');
@@ -437,6 +438,7 @@ filmTests(test, assert);
 filmBrowserUnitTests(test, assert);
 handoffTests(test, assert);
 shortsTests(test, assert);
+webtoonTests(test, assert);
 
 console.log('\nMCP · REST · revise 연산');
 apiTests(test, assert);

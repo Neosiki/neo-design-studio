@@ -69,3 +69,13 @@ skills/shorts-studio can call the user-installed Python package `edge-tts`
 (https://github.com/rany2/edge-tts, install with `pip install edge-tts`) as a separate process.
 No edge-tts code is included in this repository; its license and the terms of the
 service it connects to are the user's responsibility. Not endorsed by Microsoft or the edge-tts authors.
+
+# Optional webtoon-studio (concept reference only)
+
+The optional webtoon workflow in skills/webtoon-studio was designed after reading the public description of the
+webtoon-making steps in [methylo/my-character-skills](https://github.com/methylo/my-character-skills)
+(© 2026 HONGS LAB 홍순성, CC BY-NC 4.0). Only the general idea-level sequence
+(choose story, choose style and ratio, compose scenes and lines, prepare image prompts, review) informed the design.
+No text, prompts, templates, code, images or other files from that repository are copied or bundled.
+The guide, recipes, prompt templates and webtoon-studio.mjs are original implementations released under this repository's MIT license.
+This reference does not imply endorsement by the original author.
