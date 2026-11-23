@@ -67,7 +67,7 @@ for (const it of items) {
     if (it.video) comp.push(/\.(png|jpe?g|webp)$/i.test(it.video) ? '--image' : '--video', it.video);
     const bgm = path.join(a.assets, p.bgm); if (fs.existsSync(bgm)) comp.push('--bgm', bgm);
     if (a.fontsdir) comp.push('--fontsdir', a.fontsdir);
-    execFileSync('bash', [path.join(HERE, 'shorts-compose.sh'), ...comp], { stdio: 'pipe' });
+    execFileSync(node, [path.join(HERE, 'shorts-compose.mjs'), ...comp], { stdio: 'pipe' });
     report.push([id, warns.length ? 'warn' : 'ok', warns.join(' | ')]);
     console.log(`${warns.length ? '⚠️ ' : '✅'} ${id}${warns.length ? ' · ' + warns.join(' | ') : ''}`);
   } catch (e) {

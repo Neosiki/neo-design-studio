@@ -1,6 +1,6 @@
 Optional [line-art animation](skills/line-art-animation/SKILL.md) adds SVG scenes, Windows capture support, and standalone MP4 output. It preserves the default HyperFrames and optional OpenFilm workflows. Run `npm run test:line-art` for the launcher regression tests. See the [runtime guide](skills/line-art-animation/references/runtime.md).
 
-Optional [shorts studio](skills/shorts-studio/SKILL.md) makes 9:16 Korean shorts from a script: voice, karaoke/pop/box captions (ASS), BGM ducking, and CSV batch production. The free Korean voice option sends the script text to Microsoft's Edge read-aloud service through the unofficial `edge-tts` client, so it runs only after an explicit `--yes`. Word timings are estimates. YouTube upload is out of scope. See the [recipe](skills/shorts-studio/references/shorts-9x16.md).
+Optional [shorts studio](skills/shorts-studio/SKILL.md) makes 9:16 Korean shorts from a script: voice, karaoke/pop/box captions (ASS), BGM ducking, and CSV batch production. The free Korean voice option sends the script text to Microsoft's Edge read-aloud service through the unofficial `edge-tts` client, so it runs only after an explicit `--yes`. Word timings are estimates. Captions default to `pop`, and composing runs on Node alone (no bash needed on Windows). YouTube upload is out of scope. See the [recipe](skills/shorts-studio/references/shorts-9x16.md).
 
 <sub>🌐 <a href="README.md">한국어</a> · <b>English</b></sub>
 

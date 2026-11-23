@@ -48,14 +48,14 @@
 
 - 승인 게이트: `edge`는 텍스트를 외부 서버로 보내므로 `--yes` 또는 `DESIGN_CLOUD_OK=1`이 있어야 실행됩니다. 처음 쓸 때 사용자에게 한 번 알립니다.
 - 음색: `ko-KR-SunHiNeural`(여), `ko-KR-InJoonNeural`(남). 목록은 `python -m edge_tts --list-voices`로 확인합니다.
-- **단어 타이밍은 추정값**입니다(`timeline.json`의 `words[].estimated`). 카라오케 색이 실제 발음보다 조금 앞서거나 늦을 수 있으니 음성을 들으며 한 번 확인하고, 어긋나면 `--preset pop`처럼 낱말 단위 동기가 덜 필요한 프리셋을 씁니다.
+- **단어 타이밍은 추정값**입니다(`timeline.json`의 `words[].estimated`). 카라오케 색이 실제 발음보다 조금 앞서거나 늦을 수 있으니 음성을 들으며 한 번 확인하세요. 기본 자막은 낱말 단위 동기에 덜 민감한 `pop`입니다. 윈도우에서 Edge 음성으로 만든 예제 영상은 `pop` 자막이 음성과 거의 맞았고 BGM이 목소리를 가리지 않았습니다(제작자 1회 확인, 15.8초 영상).
 
 ## 5. 자막 프리셋
 
 | 프리셋 | 모양 | 어울리는 곳 |
 |---|---|---|
-| `karaoke` | 읽히는 순서대로 낱말 색이 채워짐 | 정보 전달, 설명이 긴 영상 |
-| `pop` | 쪽마다 살짝 커지며 등장 | 음식·소매·이벤트처럼 속도감이 필요한 영상 |
+| `pop` (기본) | 쪽마다 살짝 커지며 등장 | 대부분의 매장 홍보. 낱말 타이밍이 추정값이어도 어긋남이 덜 보임 |
+| `karaoke` | 읽히는 순서대로 낱말 색이 채워짐 | 정보 전달, 설명이 긴 영상. 단어 타이밍이 추정값이라 음성과 비교해 확인 |
 | `box` | 반투명 검은 박스 위 흰 글씨 | 배경이 복잡한 사진·영상(가독성 우선) |
 
 - 한 줄 11자 이하, 한 쪽 2줄(마지막 쪽이 짧으면 3줄까지). 낱말은 중간에서 자르지 않습니다.
@@ -77,10 +77,10 @@ node skills/shorts-studio/scripts/shorts-pipeline.mjs --script shorts.md --out-d
 node skills/shorts-studio/scripts/shorts-pipeline.mjs --script shorts.md --out-dir _shorts --provider edge --yes
 
 # 3) 자막(ASS)
-node skills/shorts-studio/scripts/subtitle-ass.mjs --timeline _shorts/timeline.json --out _shorts/subs.ass --preset karaoke --font "Malgun Gothic" --title "매장 이름"
+node skills/shorts-studio/scripts/subtitle-ass.mjs --timeline _shorts/timeline.json --out _shorts/subs.ass --preset pop --font "Malgun Gothic" --title "매장 이름"
 
-# 4) 합성 — 배경 영상/이미지, 음성, BGM, 자막 번인
-bash skills/shorts-studio/scripts/shorts-compose.sh --voiceover _shorts/voiceover.mp3 --ass _shorts/subs.ass --video bg.mp4 \
+# 4) 합성 — 배경 영상/이미지, 음성, BGM, 자막 번인 (bash 없이 Node로 실행, Windows 포함)
+node skills/shorts-studio/scripts/shorts-compose.mjs --voiceover _shorts/voiceover.mp3 --ass _shorts/subs.ass --video bg.mp4 \
      --bgm assets/bgm-educational.mp3 --out shorts.mp4
 ```
 

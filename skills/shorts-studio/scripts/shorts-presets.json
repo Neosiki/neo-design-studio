@@ -1,8 +1,8 @@
 {
-  "_note": "업종별 쇼츠 프리셋 번들(제작자 제안값, 시험 후 조정). voice는 edge-tts 한국어 음색, bgm은 assets/ 안의 파일명.",
+  "_note": "업종별 쇼츠 프리셋 번들(제작자 제안값, 시험 후 조정. 자막은 모두 pop이 기본이며 배경이 복잡하면 box, 설명이 긴 영상은 karaoke로 바꿔 쓴다). voice는 edge-tts 한국어 음색, bgm은 assets/ 안의 파일명.",
   "restaurant": { "label": "음식점", "voice": "ko-KR-SunHiNeural", "rate": "+5%", "caption": "pop", "hl": "FFE14D", "em": "FF6B6B", "bgm": "bgm-ad.mp3" },
-  "studio":     { "label": "사진관·공방", "voice": "ko-KR-SunHiNeural", "rate": "-5%", "caption": "box", "hl": "FFE14D", "em": "FFB86B", "bgm": "bgm-educational.mp3" },
-  "leisure":    { "label": "골프·레저", "voice": "ko-KR-InJoonNeural", "rate": "+5%", "caption": "karaoke", "hl": "7CFFB2", "em": "FFE14D", "bgm": "bgm-tech.mp3" },
+  "studio":     { "label": "사진관·공방", "voice": "ko-KR-SunHiNeural", "rate": "-5%", "caption": "pop", "hl": "FFE14D", "em": "FFB86B", "bgm": "bgm-educational.mp3" },
+  "leisure":    { "label": "골프·레저", "voice": "ko-KR-InJoonNeural", "rate": "+5%", "caption": "pop", "hl": "7CFFB2", "em": "FFE14D", "bgm": "bgm-tech.mp3" },
   "retail":     { "label": "소매·온라인몰", "voice": "ko-KR-SunHiNeural", "rate": "+10%", "caption": "pop", "hl": "FFE14D", "em": "FF6B6B", "bgm": "bgm-ad.mp3" },
-  "service":    { "label": "교육·컨설팅", "voice": "ko-KR-InJoonNeural", "rate": "+0%", "caption": "karaoke", "hl": "FFE14D", "em": "6BD6FF", "bgm": "bgm-tutorial.mp3" }
+  "service":    { "label": "교육·컨설팅", "voice": "ko-KR-InJoonNeural", "rate": "+0%", "caption": "pop", "hl": "FFE14D", "em": "6BD6FF", "bgm": "bgm-tutorial.mp3" }
 }
