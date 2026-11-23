@@ -3,11 +3,11 @@
  * subtitle-ass.mjs · timeline.json → ASS 자막 (한국어 카라오케 / 팝인 / 박스 프리셋, 9:16 안전 영역 반영)
  *
  * 사용법:
- *   node skills/shorts-studio/scripts/subtitle-ass.mjs --timeline _shorts/timeline.json --out _shorts/subs.ass --preset karaoke
+ *   node skills/shorts-studio/scripts/subtitle-ass.mjs --timeline _shorts/timeline.json --out _shorts/subs.ass --preset pop
  *   node skills/shorts-studio/scripts/subtitle-ass.mjs --timeline t.json --out s.ass --preset pop --font "Malgun Gothic" --title "열두달사진관"
  *
  * 옵션:
- *   --preset karaoke|pop|box   기본 karaoke (낱말이 읽히는 순서대로 색이 채워짐)
+ *   --preset pop|karaoke|box   기본 pop (쪽마다 살짝 커지며 등장). karaoke는 낱말이 읽히는 순서대로 색이 채워짐
  *   --size 1080x1920           기본 1080x1920 (가로 영상은 1920x1080)
  *   --font <이름>              기본 "Malgun Gothic"(Windows). Mac은 "Apple SD Gothic Neo", 리눅스는 "Noto Sans CJK KR"
  *   --font-size <px>           기본 세로 72 / 가로 56
@@ -21,7 +21,7 @@
 import fs from 'node:fs';
 
 function parseArgs(argv) {
-  const a = { preset: 'karaoke', size: '1080x1920', hl: 'FFE14D', em: 'FF6B6B', font: 'Malgun Gothic' };
+  const a = { preset: 'pop', size: '1080x1920', hl: 'FFE14D', em: 'FF6B6B', font: 'Malgun Gothic' };
   for (let i = 2; i < argv.length; i++) {
     const k = argv[i], v = () => argv[++i];
     if (k === '--timeline') a.timeline = v(); else if (k === '--out') a.out = v(); else if (k === '--preset') a.preset = v();
@@ -107,7 +107,7 @@ export function buildAss(timeline, o) {
 
 function main() {
   const a = parseArgs(process.argv);
-  if (!a.timeline || !a.out) { console.error('사용법: subtitle-ass.mjs --timeline timeline.json --out subs.ass [--preset karaoke|pop|box] [--size 1080x1920] [--font ...] [--title ...]'); process.exit(1); }
+  if (!a.timeline || !a.out) { console.error('사용법: subtitle-ass.mjs --timeline timeline.json --out subs.ass [--preset pop|karaoke|box] [--size 1080x1920] [--font ...] [--title ...]'); process.exit(1); }
   if (!['karaoke', 'pop', 'box'].includes(a.preset)) { console.error('preset은 karaoke, pop, box 중 하나입니다.'); process.exit(1); }
   const tl = JSON.parse(fs.readFileSync(a.timeline, 'utf8'));
   fs.writeFileSync(a.out, buildAss(tl, a), 'utf8');

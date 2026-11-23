@@ -7,11 +7,14 @@ import { fileURLToPath } from 'node:url';
 import { parseScript, tokenize, estimateWords, estimateSentences } from '../skills/shorts-studio/scripts/shorts-pipeline.mjs';
 import { paginate, buildAss } from '../skills/shorts-studio/scripts/subtitle-ass.mjs';
 import { parseVtt } from '../skills/shorts-studio/scripts/cloud/tts-edge.mjs';
+import { parseArgs as parseComposeArgs, escapeFilterPath, buildFfmpegArgs } from '../skills/shorts-studio/scripts/shorts-compose.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const S = path.join(ROOT, 'skills', 'shorts-studio');
 const node = process.execPath;
 const hasFfmpeg = spawnSync('ffmpeg', ['-version']).status === 0;
+const hasProbe = spawnSync('ffprobe', ['-version']).status === 0;
+const hasAss = hasFfmpeg && /\bass\b/.test(spawnSync('ffmpeg', ['-hide_banner', '-filters'], { encoding: 'utf8' }).stdout || '');
 
 const SCRIPT = `---
 title: 시험
@@ -96,6 +99,76 @@ export function run(test, assert) {
     const c = spawnSync(node, [path.join(S, 'scripts', 'shorts-batch.mjs'), '--csv', path.join(S, 'examples', 'batch-sample.csv'), '--out-dir', path.join(os.tmpdir(), 'y'), '--provider', 'edge'], { encoding: 'utf8', env });
     assert(c.status === 2, `batch 종료 코드 ${c.status}`);
   });
+
+  test('합성: 필수 옵션과 알 수 없는 옵션을 검사한다', () => {
+    const a = parseComposeArgs(['--voiceover', 'v.mp3', '--out', 'o.mp4', '--bgm-vol', '0.2']);
+    assert(a.voiceover === 'v.mp3' && a.out === 'o.mp4' && a.size === '1080x1920' && a.bgmVol === '0.2', JSON.stringify(a));
+    let threw = 0;
+    for (const bad of [['--out', 'o.mp4'], ['--voiceover', 'v.mp3', '--out', 'o.mp4', '--nope', 'x'], ['--voiceover', 'v.mp3', '--out', 'o.mp4', '--size', '720p'], ['--voiceover', 'v.mp3', '--out']]) {
+      try { parseComposeArgs(bad); } catch { threw++; }
+    }
+    assert(threw === 4, `오류를 낸 경우 ${threw}/4`);
+  });
+
+  test('합성: Windows 경로의 콜론·역슬래시와 작은따옴표를 필터용으로 이스케이프한다', () => {
+    assert(escapeFilterPath('C:\\Users\\a b\\subs.ass') === "'C\\:/Users/a b/subs.ass'", escapeFilterPath('C:\\Users\\a b\\subs.ass'));
+    assert(escapeFilterPath("o'k.ass") === "'o'\\\\\\''k.ass'", escapeFilterPath("o'k.ass"));
+    assert(escapeFilterPath('_shorts/subs.ass') === "'_shorts/subs.ass'", '상대 경로는 그대로');
+  });
+
+  test('합성: 입력 종류와 BGM 유무에 따라 FFmpeg 인자가 달라진다', () => {
+    const base = { voiceover: 'v.mp3', out: 'o.mp4', size: '1080x1920', bgmVol: '0.35', lufs: '-14' };
+    const plain = buildFfmpegArgs(base, 15.8), join = x => x.join(' ');
+    assert(join(plain).includes('color=c=0x263a2e:s=1080x1920') && !join(plain).includes('sidechaincompress') && plain.at(-1) === 'o.mp4', '단색·BGM 없음');
+    const full = buildFfmpegArgs({ ...base, video: 'bg.mp4', bgm: 'b.mp3', ass: 'C:\\x\\s.ass', fontsdir: 'C:\\Windows\\Fonts' }, 15.8);
+    const f = full[full.indexOf('-filter_complex') + 1];
+    assert(join(full).includes('-stream_loop -1 -i bg.mp4') && f.includes('sidechaincompress') && f.includes("ass='C\\:/x/s.ass':fontsdir='C\\:/Windows/Fonts'"), f);
+    assert(full[full.indexOf('-t') + 1] === '15.8', '길이는 음성 길이');
+    assert(join(buildFfmpegArgs({ ...base, image: 'p.jpg' }, 5)).includes('-loop 1 -i p.jpg'), '이미지 입력');
+  });
+
+  test('자막: 프리셋을 주지 않으면 pop이 기본이다', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'neodesign-shorts-test-'));
+    try {
+      const tl = path.join(dir, 't.json');
+      fs.writeFileSync(tl, JSON.stringify(timeline()));
+      const r = spawnSync(node, [path.join(S, 'scripts', 'subtitle-ass.mjs'), '--timeline', tl, '--out', path.join(dir, 's.ass')], { encoding: 'utf8' });
+      assert(r.status === 0 && /preset=pop/.test(r.stdout), `${r.status} ${r.stdout} ${r.stderr}`);
+      assert(/\\fscx85/.test(fs.readFileSync(path.join(dir, 's.ass'), 'utf8')), 'pop 효과가 없음');
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  });
+
+  test('업종 프리셋의 자막은 모두 유효하다(pop이 기본)', () => {
+    const presets = JSON.parse(fs.readFileSync(path.join(S, 'scripts', 'shorts-presets.json'), 'utf8'));
+    const items = Object.entries(presets).filter(([k]) => !k.startsWith('_'));
+    assert(items.length === 5 && items.every(([, v]) => ['pop', 'karaoke', 'box'].includes(v.caption)), JSON.stringify(items.map(([k, v]) => [k, v.caption])));
+    assert(items.every(([, v]) => v.caption === 'pop'), 'pop이 아닌 프리셋이 있음');
+  });
+
+  if (hasFfmpeg && hasProbe && hasAss) {
+    test('합성: 공백·작은따옴표가 든 경로에서도 자막이 얹힌 MP4가 만들어진다', () => {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), "neodesign shorts 'test' "));
+      try {
+        const sp = path.join(dir, 's.md');
+        fs.writeFileSync(sp, SCRIPT);
+        const o = path.join(dir, 'o');
+        const p = spawnSync(node, [path.join(S, 'scripts', 'shorts-pipeline.mjs'), '--script', sp, '--out-dir', o, '--provider', 'silent'], { encoding: 'utf8' });
+        assert(p.status === 0, `pipeline ${p.stderr}`);
+        const a = spawnSync(node, [path.join(S, 'scripts', 'subtitle-ass.mjs'), '--timeline', path.join(o, 'timeline.json'), '--out', path.join(o, 'subs.ass')], { encoding: 'utf8' });
+        assert(a.status === 0, `ass ${a.stderr}`);
+        const out = path.join(o, 'out.mp4');
+        const c = spawnSync(node, [path.join(S, 'scripts', 'shorts-compose.mjs'), '--voiceover', path.join(o, 'voiceover.mp3'), '--ass', path.join(o, 'subs.ass'), '--out', out, '--size', '540x960'], { encoding: 'utf8' });
+        assert(c.status === 0 && /완료:/.test(c.stdout), `compose ${c.status} ${c.stdout} ${c.stderr}`);
+        const probe = spawnSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0', out], { encoding: 'utf8' });
+        assert(probe.stdout.trim() === '540,960', `해상도 ${probe.stdout}`);
+      } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    });
+
+    test('합성: 음성 파일이 없으면 종료 코드 1과 안내 문구를 낸다', () => {
+      const r = spawnSync(node, [path.join(S, 'scripts', 'shorts-compose.mjs'), '--voiceover', path.join(os.tmpdir(), 'no-such.mp3'), '--out', path.join(os.tmpdir(), 'x.mp4')], { encoding: 'utf8' });
+      assert(r.status === 1 && /음성 길이를 읽지 못했습니다/.test(r.stderr), `${r.status} ${r.stderr}`);
+    });
+  }
 
   if (hasFfmpeg) {
     test('리허설(silent) 파이프라인이 timeline.json과 voiceover.mp3를 만든다', () => {

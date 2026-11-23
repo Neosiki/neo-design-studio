@@ -46,7 +46,7 @@ Codex 수동 설치 예: `git clone https://github.com/Neosiki/neo-design-studio
 
 - 대본 → 한국어 음성 → 카라오케·팝·박스 자막(ASS) → BGM 자동 낮춤 합성 → CSV 일괄 제작을 제공합니다.
 - 리허설(`--provider silent`)은 네트워크를 쓰지 않습니다. 한국어 무료 음성(`--provider edge`)은 대본 텍스트를 Microsoft Edge 읽어주기 서버로 보내므로 `--yes` 승인이 있어야 실행됩니다. 비공식 클라이언트(edge-tts)라 상업 납품에는 공식 Azure Speech를 권합니다.
-- 단어 타이밍은 문장 경계 안에서 글자 수로 추정한 값입니다. Node 18 이상과 FFmpeg(libass)이 필요합니다.
+- 단어 타이밍은 문장 경계 안에서 글자 수로 추정한 값입니다. Node 18 이상과 FFmpeg(libass)이 필요하며 bash는 필요 없습니다(Windows PowerShell 가능). 기본 자막은 pop입니다.
 - 유튜브 업로드·예약 발행은 범위 밖입니다.
 
 [쇼츠 레시피](skills/shorts-studio/references/shorts-9x16.md)
